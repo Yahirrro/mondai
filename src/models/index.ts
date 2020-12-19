@@ -25,3 +25,10 @@ export interface QuestionModel {
     joinUsers: number
   }
 }
+
+export interface AnswerModel {
+  id: string
+  answerId: string
+  questionId: string
+  userId: string
+}

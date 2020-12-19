@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { ReactElement } from 'react'
 
 export default function Home(): ReactElement {
@@ -11,6 +12,9 @@ export default function Home(): ReactElement {
 
       <div>
         <h1>クイズ王</h1>
+        <Link href={'/quiz/asd'}>
+          <a>あああ</a>
+        </Link>
       </div>
     </>
   )
