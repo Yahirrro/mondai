@@ -22,6 +22,8 @@ export const QuestionTitle: React.FunctionComponent<Props> = (props) => {
             @media (max-width: 750px) {
               font-size: 40px;
               line-height: 1.5;
+              margin-left: 0;
+              text-align: center;
             }
             &:before {
               content: 'Q';
@@ -33,6 +35,11 @@ export const QuestionTitle: React.FunctionComponent<Props> = (props) => {
               font-size: 144px;
               line-height: 174px;
               opacity: 0.05;
+              @media (max-width: 750px) {
+                top: 50%;
+                left: 50%;
+                transform: translateY(-50%) translateX(-50%);
+              }
             }
           }
         `}

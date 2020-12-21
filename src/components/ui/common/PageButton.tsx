@@ -2,7 +2,7 @@ type Props = {
   text: string
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
-  onClick?: () => React.MouseEvent<HTMLButtonElement, MouseEvent>
+  onClick?: () => void
   style?: React.CSSProperties
 }
 
@@ -20,6 +20,7 @@ export const PageButton: React.FunctionComponent<Props> = (props) => {
       <style jsx>
         {`
           .PageButton {
+            user-select: none;
             background: #00b2ff;
             color: #ffffff;
             border-radius: 20px;
@@ -36,6 +37,10 @@ export const PageButton: React.FunctionComponent<Props> = (props) => {
             line-height: 33px;
 
             transition: all 0.5s;
+            @media (max-width: 750px) {
+              width: 100%;
+              height: 60px;
+            }
             &:disabled {
               cursor: not-allowed;
               opacity: 0.2;

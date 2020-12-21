@@ -1,2 +1,5 @@
+export * from './QuizAnswer'
 export * from './QuizBadge'
+export * from './QuizNote'
+export * from './QuizQR'
 export * from './QuizTitle'

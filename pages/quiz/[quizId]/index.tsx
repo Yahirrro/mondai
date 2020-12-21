@@ -4,18 +4,23 @@ import Head from 'next/head'
 import { AnswerModel, QuestionModel, QuizModel } from '@components/models'
 import {
   PageButton,
+  QuestionSelect,
   QuestionSelectCard,
   QuestionTitle,
   QuizBadge,
   QuizCard,
+  QuizNote,
+  QuizQR,
+  ScreenLoading,
 } from '@components/ui'
 import React, { useEffect, useState } from 'react'
-import { useCollection, useDocument } from '@nandorojo/swr-firestore'
+import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { ParsedUrlQuery } from 'querystring'
 import { useAuthentication } from '@components/hook/auth'
 
 type Props = {
   params: ParsedUrlQuery
+  quiz: QuizModel
 }
 
 export default function Home(props: Props): React.ReactElement {
@@ -23,10 +28,12 @@ export default function Home(props: Props): React.ReactElement {
   const [value, setValue] = useState(null)
   const [isAnswered, setIsAnswered] = useState(false)
 
-  const { data: quiz } = useDocument<QuizModel>(
+  const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
     props.params.quizId ? `quiz/${props.params.quizId}` : null,
     {
       listen: true,
+      revalidateOnMount: true,
+      initialData: props.quiz,
     }
   )
   const { data: question } = useDocument<QuestionModel>(
@@ -37,7 +44,7 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
-  const { data: userAnswer, add: AddUserAnswer } = useCollection<AnswerModel>(
+  const { data: userAnswer, add: addUserAnswer } = useCollection<AnswerModel>(
     user?.userId ? `quiz/${props.params.quizId}/answer` : null,
     {
       where: ['userId', '==', user?.userId],
@@ -54,18 +61,61 @@ export default function Home(props: Props): React.ReactElement {
     }
   }, [userAnswer, question, quiz])
 
-  if (!quiz?.exists || !question?.exists) return <div>loading</div>
+  if (!quiz) return <ScreenLoading />
 
   const submitAnswer = (event) => {
     event.preventDefault()
     if (value == null) return
     if (userAnswer?.find((data) => data.questionId == question?.id)) return
-    AddUserAnswer({
+    addUserAnswer({
       userId: user?.userId,
-      answerId: value,
+      answer: value,
       questionId: question.id,
     })
     setIsAnswered(true)
+  }
+
+  const checkAnswer = () => {
+    if (
+      userAnswer == [] ||
+      userAnswer == undefined ||
+      userAnswer.find((data) => data.questionId == question.id) == undefined
+    )
+      return false
+
+    console.log(
+      question.choice.indexOf(question.choice[question.answer]),
+      userAnswer.find((data) => data.questionId == question.id).answer
+    )
+
+    if (
+      question.choice.indexOf(question.choice[question.answer]) ==
+      userAnswer.find((data) => data.questionId == question.id).answer
+    )
+      return true
+    else return false
+  }
+
+  const updateStatus = (status: 'answer' | 'waiting' | 'open' | 'archive') => {
+    updateQuiz({
+      currentStatus: status,
+    })
+    setIsAnswered(false)
+  }
+
+  const nextQuestion = () => {
+    console.log(
+      quiz.currentQuestion,
+      quiz.flow.indexOf(quiz.currentQuestion),
+      quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1]
+    )
+    if (quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1] == undefined)
+      return
+    updateQuiz({
+      currentStatus: 'open',
+      currentQuestion: quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1],
+    })
+    setIsAnswered(false)
   }
 
   return (
@@ -124,14 +174,10 @@ export default function Home(props: Props): React.ReactElement {
 
         {/* QRコード */}
         <aside className="QuizPageInvite">
-          <h3 className="QuizPageInvite_title">いますぐ参加しよう</h3>
-          <div className="QuizPageInvite_qr">
-            <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?data=${location.href}&size=100x100`}
-              alt=""
-            />
-            <p>#12121</p>
-          </div>
+          <QuizQR
+            url={`https://quiz.app/quiz/${props.params.quizId}`}
+            code={11212}
+          />
           <style jsx>
             {`
               .QuizPageInvite {
@@ -139,144 +185,169 @@ export default function Home(props: Props): React.ReactElement {
                 z-index: 1;
                 top: var(--mainNormalPaddingSize);
                 right: var(--mainNormalPaddingSize);
-                text-align: center;
-                @media (max-width: 740px) {
+                @media (max-width: 750px) {
                   display: none;
-                }
-                &_title {
-                  display: inline-block;
-                  padding: 10px 15px;
-                  border-radius: 50px;
-                  background: var(--mainAccentColor);
-                  margin-top: 0;
-                  margin-bottom: 15px;
-                }
-                &_qr {
-                  display: block;
-                  width: fit-content;
-                  background-color: white;
-                  padding: 20px;
-                  border-radius: 20px;
-                  margin: auto;
-                  img {
-                    width: 80px;
-                    height: 80px;
-                  }
-                  p {
-                    display: block;
-                    margin-top: 5px;
-                    margin-bottom: 0;
-                    opacity: 0.3;
-                    font-size: 20px;
-                    line-height: 24px;
-                    font-weight: bold;
-                  }
                 }
               }
             `}
           </style>
         </aside>
 
-        <main className="QuizPageContent">
-          <div>
-            {quiz.currentStatus == 'waiting' && (
+        {question?.exists && (
+          <>
+            <main className="QuizPageContent">
               <div>
-                <h2>開始を待っています</h2>
-              </div>
-            )}
-
-            {quiz.currentStatus == 'archive' && (
-              <div>
-                <h2>すでに終了しているクイズです</h2>
-              </div>
-            )}
-
-            {quiz.currentStatus == 'open' && (
-              <>
-                <QuestionTitle title={question?.title}></QuestionTitle>
-                {!isAnswered ? (
-                  //回答前
-                  <form onSubmit={submitAnswer}>
-                    <div className="QuestionSelect">
-                      {question.choice.map((data) => {
-                        return (
-                          <QuestionSelectCard
-                            key={data.title}
-                            title={data.title}>
-                            <input
-                              type="radio"
-                              id={data.title}
-                              name={question.title}
-                              value={data.title}
-                              onChange={() => {
-                                setValue(question.choice.indexOf(data))
-                              }}></input>
-                          </QuestionSelectCard>
-                        )
-                      })}
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <PageButton
-                        text="解答する"
-                        type="submit"
-                        disabled={value == null}></PageButton>
-                    </div>
-                  </form>
-                ) : (
-                  // 回答済み
-                  <div>メイン回答者が回答するのを待っています...</div>
+                {quiz.currentStatus == 'waiting' && (
+                  <div>
+                    <h2>開始を待っています</h2>
+                  </div>
                 )}
-              </>
-            )}
 
-            {quiz.currentStatus == 'answer' && (
-              <div>
-                <h2>{question.title}の正解は</h2>
-                <p>{question.choice[question.answer].title}</p>
+                {quiz.currentStatus == 'archive' && (
+                  <div>
+                    <h2>すでに終了しているクイズです</h2>
+                  </div>
+                )}
 
-                <p>次の問題へ進みます...</p>
+                {quiz.currentStatus == 'open' && (
+                  <>
+                    <QuestionTitle title={question?.title}></QuestionTitle>
+                    {!isAnswered ? (
+                      //回答前
+                      <form onSubmit={submitAnswer}>
+                        <div className="QuestionSelect">
+                          {question.choice.map((data, index) => {
+                            return (
+                              <QuestionSelect
+                                key={data.title}
+                                title={data.title}
+                                index={(index + 1).toString()}>
+                                <input
+                                  type="radio"
+                                  id={data.title}
+                                  name={question.title}
+                                  value={data.title}
+                                  onChange={() => {
+                                    setValue(question.choice.indexOf(data))
+                                  }}></input>
+                              </QuestionSelect>
+                            )
+                          })}
+                        </div>
+                        <div
+                          style={{
+                            textAlign: 'right',
+                          }}>
+                          <PageButton
+                            text="解答する"
+                            type="submit"
+                            disabled={value == null}
+                          />
+                        </div>
+                      </form>
+                    ) : (
+                      // 回答済み
+                      <>
+                        <QuizNote
+                          title={'🤔結果はどうだ'}
+                          style={{ marginTop: '50px' }}>
+                          <p>
+                            あなたはメイン回答者です。「結果を見るボタン」をクリックすると、集計が開始され、すべての参加者の答えを確認できます。
+                          </p>
+                        </QuizNote>
+                        <div
+                          style={{
+                            textAlign: 'right',
+                            marginTop: 'var(--mainNormalPaddingSize)',
+                          }}>
+                          <PageButton
+                            text="結果を見る"
+                            onClick={() => updateStatus('answer')}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+
+                {quiz.currentStatus == 'answer' && (
+                  <div>
+                    <QuestionTitle title={question?.title}></QuestionTitle>
+
+                    <div className="QuestionSelect">
+                      <QuestionSelectCard
+                        title={question?.choice[question.answer].title}
+                        index={'A'}
+                        type="selected"
+                        style={{ cursor: 'default' }}
+                      />
+                      <QuizNote
+                        title={checkAnswer() ? '😚正解！' : '😥不正解...'}>
+                        <p>{question.commentary}</p>
+                      </QuizNote>
+                    </div>
+                    <div
+                      style={{
+                        textAlign: 'right',
+                        marginTop: 'var(--mainNormalPaddingSize)',
+                      }}>
+                      <PageButton
+                        text="次の問題へ進む"
+                        onClick={() => nextQuestion()}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <aside>
-            {userAnswer !== undefined &&
-              userAnswer.map((data) => {
-                return <p key={data.questionId}>{data.questionId}</p>
-              })}
-          </aside>
+              <aside>
+                <h3>全 {quiz?.flow.length}問</h3>
+                <p>回答数：{userAnswer?.length}</p>
+                {userAnswer !== undefined &&
+                  userAnswer.map((data) => {
+                    return <p key={data.questionId}>{data.questionId}</p>
+                  })}
+              </aside>
 
-          <style jsx>
-            {`
-              .QuizPageContent {
-                display: grid;
-                grid-template-columns: 1fr 300px;
-                @media (max-width: 950px) {
-                  grid-template-columns: 1fr;
-                }
-                gap: var(--mainNormalPaddingSize);
-                padding: var(--mainNormalPaddingSize);
-              }
-              .QuestionSelect {
-                display: grid;
-                gap: var(--mainNormalPaddingSize);
-                margin-top: calc(var(--mainNormalPaddingSize) * 1.5);
-                margin-bottom: var(--mainNormalPaddingSize);
-                grid-template-columns: repeat(
-                  auto-fit,
-                  [col-start] minmax(300px, 1fr) [col-end]
-                );
-                &_input {
-                  cursor: pointer;
-                  width: 100%;
-                  height: 60px;
-                  padding: 1rem 1rem;
-                  border: 1px solid whitesmoke;
-                }
-              }
-            `}
-          </style>
-        </main>
+              <style jsx>
+                {`
+                  .QuizPageContent {
+                    display: grid;
+                    grid-template-columns: 1fr 300px;
+                    gap: calc(var(--mainNormalPaddingSize) * 2);
+                    padding: var(--mainNormalPaddingSize);
+                    @media (max-width: 1050px) {
+                      grid-template-columns: 1fr;
+                      padding: calc(var(--mainNormalPaddingSize) * 1.5)
+                        var(--mainNormalPaddingSize);
+                    }
+                  }
+                  .QuestionSelect {
+                    display: grid;
+                    gap: var(--mainNormalPaddingSize);
+                    margin-top: calc(var(--mainNormalPaddingSize) * 1.5);
+                    margin-bottom: var(--mainNormalPaddingSize);
+                    grid-template-columns: repeat(
+                      auto-fit,
+                      [col-start] minmax(340px, 1fr) [col-end]
+                    );
+                    @media (max-width: 750px) {
+                      grid-template-columns: 1fr;
+                      margin-top: calc(var(--mainNormalPaddingSize) * 2);
+                    }
+                    &_input {
+                      cursor: pointer;
+                      width: 100%;
+                      height: 60px;
+                      padding: 1rem 1rem;
+                      border: 1px solid whitesmoke;
+                    }
+                  }
+                `}
+              </style>
+            </main>
+          </>
+        )}
       </div>
     </>
   )
@@ -290,54 +361,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const quiz = await fuego.db
+    .collection('quiz')
+    .doc(params.quizId as string)
+    .get()
   return {
     props: {
       params: params,
-      quiz: {
-        id: 'asd',
-        title: 'クイズ',
-        description: '加藤純一クイズ',
-        permission: {
-          owner: ['a'],
-          moderator: ['a'],
-          answer: 'a',
-        },
-        flow: ['asd1', 'asd2'],
-        currentStatus: 'answer',
-        currentQuestion: 0,
-      },
-      question: [
-        {
-          id: 'asd1',
-          title: 'うんこちゃんの本名は？',
-          answer: 1,
-          choice: [
-            {
-              title: '加藤純一',
-              description: 'string',
-            },
-            {
-              title: '加藤純二',
-              description: 'string',
-            },
-          ],
-        },
-        {
-          id: 'asd2',
-          title: 'asd2',
-          answer: 0,
-          choice: [
-            {
-              title: 'string',
-              description: 'string',
-            },
-            {
-              title: 'string',
-              description: 'string',
-            },
-          ],
-        },
-      ],
+      quiz: quiz.data(),
     },
     revalidate: 60,
   }

@@ -21,6 +21,7 @@ export interface QuestionModel {
     description: string
     answerUsers: null | number
   }>
+  commentary: null | string
   afterAnswer: null | {
     collectRate: string
     joinUsers: number
@@ -29,7 +30,7 @@ export interface QuestionModel {
 
 export interface AnswerModel {
   id?: string
-  answerId: string
+  answer: number
   questionId: string
   userId: string
 }
