@@ -54,16 +54,12 @@ export default function Home(props: Props): React.ReactElement {
     }
   }, [userAnswer, question, quiz])
 
-  if (!quiz || !question || !question) return <div>loading</div>
+  if (!quiz?.exists || !question?.exists) return <div>loading</div>
+
   const submitAnswer = (event) => {
     event.preventDefault()
     if (value == null) return
-    if (userAnswer.find((data) => data.questionId == question.id)) return
-    console.log({
-      answerId: value,
-      questionId: question.id,
-      userId: '',
-    })
+    if (userAnswer?.find((data) => data.questionId == question?.id)) return
     AddUserAnswer({
       userId: user?.userId,
       answerId: value,
@@ -117,6 +113,9 @@ export default function Home(props: Props): React.ReactElement {
                   height: 250px;
                   background: var(--mainAccentColor);
                   border-bottom-right-radius: 124px;
+                  @media (max-width: 750px) {
+                    height: 189px;
+                  }
                 }
               }
             `}
@@ -179,67 +178,84 @@ export default function Home(props: Props): React.ReactElement {
         </aside>
 
         <main className="QuizPageContent">
-          {quiz.currentStatus == 'waiting' && (
-            <>
-              <h2>開始を待っています</h2>
-            </>
-          )}
+          <div>
+            {quiz.currentStatus == 'waiting' && (
+              <div>
+                <h2>開始を待っています</h2>
+              </div>
+            )}
 
-          {quiz.currentStatus == 'archive' && (
-            <>
-              <h2>すでに終了しているクイズです</h2>
-            </>
-          )}
+            {quiz.currentStatus == 'archive' && (
+              <div>
+                <h2>すでに終了しているクイズです</h2>
+              </div>
+            )}
 
-          {quiz.currentStatus == 'open' && (
-            <>
-              <QuestionTitle title={question?.title}></QuestionTitle>
-              {!isAnswered ? (
-                //回答前
-                <form onSubmit={submitAnswer}>
-                  <div className="QuestionSelect">
-                    {question.choice.map((data) => {
-                      return (
-                        <QuestionSelectCard key={data.title} title={data.title}>
-                          <input
-                            type="radio"
-                            id={data.title}
-                            name={question.title}
-                            value={data.title}
-                            onChange={() => {
-                              setValue(question.choice.indexOf(data))
-                            }}></input>
-                        </QuestionSelectCard>
-                      )
-                    })}
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <PageButton
-                      text="解答する"
-                      type="submit"
-                      disabled={value == null}></PageButton>
-                  </div>
-                </form>
-              ) : (
-                // 回答済み
-                <div>メイン回答者が回答するのを待っています...</div>
-              )}
-            </>
-          )}
+            {quiz.currentStatus == 'open' && (
+              <>
+                <QuestionTitle title={question?.title}></QuestionTitle>
+                {!isAnswered ? (
+                  //回答前
+                  <form onSubmit={submitAnswer}>
+                    <div className="QuestionSelect">
+                      {question.choice.map((data) => {
+                        return (
+                          <QuestionSelectCard
+                            key={data.title}
+                            title={data.title}>
+                            <input
+                              type="radio"
+                              id={data.title}
+                              name={question.title}
+                              value={data.title}
+                              onChange={() => {
+                                setValue(question.choice.indexOf(data))
+                              }}></input>
+                          </QuestionSelectCard>
+                        )
+                      })}
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <PageButton
+                        text="解答する"
+                        type="submit"
+                        disabled={value == null}></PageButton>
+                    </div>
+                  </form>
+                ) : (
+                  // 回答済み
+                  <div>メイン回答者が回答するのを待っています...</div>
+                )}
+              </>
+            )}
 
-          {quiz.currentStatus == 'answer' && (
-            <>
-              <h2>{question.title}の正解は</h2>
-              <p>{question.choice[question.answer].title}</p>
+            {quiz.currentStatus == 'answer' && (
+              <div>
+                <h2>{question.title}の正解は</h2>
+                <p>{question.choice[question.answer].title}</p>
 
-              <p>次の問題へ進みます...</p>
-            </>
-          )}
+                <p>次の問題へ進みます...</p>
+              </div>
+            )}
+          </div>
+
+          <aside>
+            {userAnswer !== undefined &&
+              userAnswer.map((data) => {
+                return <p key={data.questionId}>{data.questionId}</p>
+              })}
+          </aside>
 
           <style jsx>
             {`
               .QuizPageContent {
-                padding: 80px var(--mainNormalPaddingSize);
+                display: grid;
+                grid-template-columns: 1fr 300px;
+                @media (max-width: 950px) {
+                  grid-template-columns: 1fr;
+                }
+                gap: var(--mainNormalPaddingSize);
+                padding: var(--mainNormalPaddingSize);
               }
               .QuestionSelect {
                 display: grid;
