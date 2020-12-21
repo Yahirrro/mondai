@@ -1,4 +1,4 @@
-import { QuizModel } from '@models'
+import { QuizModel } from '@components/models'
 import { useDocument } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -16,7 +16,7 @@ export default function Home(props: Props): React.ReactElement {
     }
   )
 
-  const [currentQuestion, setCurrentQuestion] = useState<number>(
+  const [currentQuestion, setCurrentQuestion] = useState<string>(
     quiz?.currentQuestion
   )
 
@@ -54,14 +54,19 @@ export default function Home(props: Props): React.ReactElement {
 
       <br />
       <br />
-      <input
-        type="number"
-        defaultValue={quiz?.currentQuestion}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          const value = Number(event.target.value)
+      <select
+        name="example"
+        onChange={(event) => {
+          const value = event.target.value
           setCurrentQuestion(value)
-        }}
-      />
+        }}>
+        {quiz?.flow.map((data) => (
+          <option key={data} value={data}>
+            {data}
+          </option>
+        ))}
+      </select>
+
       <button
         onClick={() => {
           quizUpdate({ currentQuestion: currentQuestion })

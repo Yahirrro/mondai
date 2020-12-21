@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-display: swap;
+  font-family: var(--mainFontFamily);
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --mainAccentColor: #ffe600;
+  --mainBackgroundColor: #efefef;
+  --mainFontFamily: Inter, Arial, Helvetica Neue, Hiragino Kaku Gothic ProN,
+    Noto Sans JP, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  --mainBoxShadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
+
+  --mainNormalPaddingSize: 50px;
+  @media (max-width: 750px) {
+    --mainNormalPaddingSize: 20px;
+  }
+}

@@ -7,8 +7,9 @@ export interface QuizModel {
     moderator: Array<string> | null
     anser: Array<string> | null
   }
+  flow: Array<string>
   currentStatus: 'waiting' | 'open' | 'answer' | 'archive'
-  currentQuestion: number | null
+  currentQuestion: string | null
 }
 
 export interface QuestionModel {
@@ -27,8 +28,13 @@ export interface QuestionModel {
 }
 
 export interface AnswerModel {
-  id: string
+  id?: string
   answerId: string
   questionId: string
   userId: string
+}
+
+export interface UserModel {
+  userId: string
+  userName: string
 }
