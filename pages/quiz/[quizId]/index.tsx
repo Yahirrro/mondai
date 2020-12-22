@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { AnswerModel, QuestionModel, QuizModel } from '@components/models'
 import {
   PageButton,
+  PageNumber,
   QuestionSelect,
   QuestionSelectCard,
   QuestionTitle,
@@ -82,12 +83,6 @@ export default function Home(props: Props): React.ReactElement {
       userAnswer.find((data) => data.questionId == question.id) == undefined
     )
       return false
-
-    console.log(
-      question.choice.indexOf(question.choice[question.answer]),
-      userAnswer.find((data) => data.questionId == question.id).answer
-    )
-
     if (
       question.choice.indexOf(question.choice[question.answer]) ==
       userAnswer.find((data) => data.questionId == question.id).answer
@@ -96,7 +91,17 @@ export default function Home(props: Props): React.ReactElement {
     else return false
   }
 
-  const updateStatus = (status: 'answer' | 'waiting' | 'open' | 'archive') => {
+  const isRemainingQuizExists = () => {
+    if (quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1] == undefined)
+      return false
+    else return true
+  }
+
+  const getRemainingQuestionCount = () => {
+    return quiz.flow.length - (quiz.flow.indexOf(quiz.currentQuestion) + 1)
+  }
+
+  const updateStatus = (status: 'waiting' | 'open' | 'answer' | 'archive') => {
     updateQuiz({
       currentStatus: status,
     })
@@ -104,13 +109,7 @@ export default function Home(props: Props): React.ReactElement {
   }
 
   const nextQuestion = () => {
-    console.log(
-      quiz.currentQuestion,
-      quiz.flow.indexOf(quiz.currentQuestion),
-      quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1]
-    )
-    if (quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1] == undefined)
-      return
+    if (!isRemainingQuizExists()) return
     updateQuiz({
       currentStatus: 'open',
       currentQuestion: quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1],
@@ -202,13 +201,6 @@ export default function Home(props: Props): React.ReactElement {
                     <h2>開始を待っています</h2>
                   </div>
                 )}
-
-                {quiz.currentStatus == 'archive' && (
-                  <div>
-                    <h2>すでに終了しているクイズです</h2>
-                  </div>
-                )}
-
                 {quiz.currentStatus == 'open' && (
                   <>
                     <QuestionTitle title={question?.title}></QuestionTitle>
@@ -291,10 +283,40 @@ export default function Home(props: Props): React.ReactElement {
                         textAlign: 'right',
                         marginTop: 'var(--mainNormalPaddingSize)',
                       }}>
-                      <PageButton
-                        text="次の問題へ進む"
-                        onClick={() => nextQuestion()}
-                      />
+                      <p>のこり{getRemainingQuestionCount()}問です！</p>
+
+                      {isRemainingQuizExists() ? (
+                        <>
+                          <PageButton
+                            text="次の問題へ進む"
+                            onClick={() => nextQuestion()}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <PageButton
+                            text="全ての結果を見る"
+                            onClick={() => updateStatus('archive')}
+                          />
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {quiz.currentStatus == 'archive' && (
+                  <div>
+                    <h2>全ての問題が終了しました！</h2>
+
+                    <div className="QuestionSelect">
+                      <div>
+                        <h3>すべての参加者数🎉</h3>
+                        <PageNumber number={12121} unit="人" />
+                      </div>
+                      <div>
+                        <h3>ぜんぶ正解した人🎉</h3>
+                        <PageNumber number={5} unit="人" />
+                      </div>
                     </div>
                   </div>
                 )}

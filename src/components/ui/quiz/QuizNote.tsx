@@ -21,6 +21,7 @@ export const QuizNote: React.FunctionComponent<Props> = (props) => {
               background-color: white;
               border-radius: 30px;
               h2 {
+                width: 100%;
                 font-size: 36px;
                 line-height: 49px;
                 @media (max-width: 950px) {
@@ -31,6 +32,7 @@ export const QuizNote: React.FunctionComponent<Props> = (props) => {
               }
             }
             :global(.QuizNote > p) {
+              width: 100%;
               margin-top: 0;
               margin-bottom: 0;
             }
