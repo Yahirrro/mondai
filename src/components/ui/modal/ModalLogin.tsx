@@ -29,10 +29,13 @@ export const ModalLogin: React.FunctionComponent = () => {
         }}>
         Googleでログイン
       </button>
-
+      <p style={{ marginBottom: 0, opacity: 0.5 }}>
+        ログインした時点で、当サービスの利用規約に同意します
+      </p>
       <style jsx>
         {`
           .LoginButton {
+            user-select: none;
             color: #4c7b57;
             border: 1px solid #7f9c7d;
             outline: none;
@@ -45,7 +48,6 @@ export const ModalLogin: React.FunctionComponent = () => {
             font-weight: 700;
             line-height: 20px;
             height: 50px;
-            margin-bottom: 15px;
             box-sizing: border-box;
             text-align: center;
             border-radius: 25px;

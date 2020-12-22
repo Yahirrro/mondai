@@ -313,10 +313,12 @@ export default function Home(props: Props): React.ReactElement {
                         </>
                       ) : (
                         <>
-                          <PageButton
-                            text="全ての結果を見る"
-                            onClick={() => updateStatus('archive')}
-                          />
+                          {isMainAnswer() && (
+                            <PageButton
+                              text="全ての結果を見る"
+                              onClick={() => updateStatus('archive')}
+                            />
+                          )}
                         </>
                       )}
                     </div>

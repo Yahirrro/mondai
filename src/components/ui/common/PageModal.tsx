@@ -45,7 +45,7 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
             position: absolute;
             width: 100%;
             max-width: 600px;
-            border-radius: 16px;
+            border-radius: 30px;
             background-color: white;
             top: 50%;
             left: 50%;
@@ -101,15 +101,13 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
             margin-bottom: 40px;
           }
           :global(.PageModal_info > .PageModal_title) {
-            font-size: 1.5rem;
+            font-size: 2rem;
             margin: 0;
-            color: #4c7b57;
           }
           :global(.PageModal_info > .PageModal_description) {
             font-size: 1rem;
             margin: 0;
             margin-top: 1rem;
-            color: #7f9c7d;
           }
         `}
       </style>
