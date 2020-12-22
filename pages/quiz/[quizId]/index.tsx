@@ -31,7 +31,7 @@ type Props = {
 export default function Home(props: Props): React.ReactElement {
   const user = useAuthentication()
   const { openModal, setModalView } = useUI()
-  const [value, setValue] = useState(null)
+  const [value, setValue] = useState<number | null>(null)
   const [isAnswered, setIsAnswered] = useState(false)
 
   const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
@@ -73,14 +73,6 @@ export default function Home(props: Props): React.ReactElement {
     }
   }, [userAnswer, question, quizJoin, quiz])
 
-  // useEffect(() => {
-  //   if (quizUser?.exists == false) {
-  //     setModalView('QUIZJOIN_VIEW')
-  //     openModal()
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [quizUser?.exists])
-
   if (!quiz?.exists) return <ScreenError code={404} />
 
   const submitAnswer = (event) => {
@@ -103,6 +95,7 @@ export default function Home(props: Props): React.ReactElement {
     addUserAnswer({
       userId: user?.userId,
       answer: value,
+      isCorrectAnswer: value == question.answer,
       questionId: question.id,
     })
     setIsAnswered(true)

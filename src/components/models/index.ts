@@ -32,6 +32,7 @@ export interface QuestionModel {
 export interface AnswerModel {
   id?: string
   answer: number
+  isCorrectAnswer: null | boolean
   questionId: string
   userId: string
 }
