@@ -12,12 +12,13 @@ import {
   QuizCard,
   QuizNote,
   QuizQR,
-  ScreenLoading,
+  ScreenError,
 } from '@components/ui'
 import React, { useEffect, useState } from 'react'
-import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
+import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { ParsedUrlQuery } from 'querystring'
 import { useAuthentication } from '@components/hook/auth'
+import { getQuiz } from '@components/lib/api'
 
 type Props = {
   params: ParsedUrlQuery
@@ -62,7 +63,7 @@ export default function Home(props: Props): React.ReactElement {
     }
   }, [userAnswer, question, quiz])
 
-  if (!quiz) return <ScreenLoading />
+  if (!quiz?.exists) return <ScreenError code={404} />
 
   const submitAnswer = (event) => {
     event.preventDefault()
@@ -174,7 +175,7 @@ export default function Home(props: Props): React.ReactElement {
         {/* QRコード */}
         <aside className="QuizPageInvite">
           <QuizQR
-            url={`https://quiz.app/quiz/${props.params.quizId}`}
+            url={`https://realtimequiz.yahiro.vercel.app/quiz/${props.params.quizId}`}
             code={11212}
           />
           <style jsx>
@@ -383,14 +384,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const quiz = await fuego.db
-    .collection('quiz')
-    .doc(params.quizId as string)
-    .get()
   return {
     props: {
       params: params,
-      quiz: quiz.data(),
+      quiz: await getQuiz(params.quizId as string),
     },
     revalidate: 60,
   }

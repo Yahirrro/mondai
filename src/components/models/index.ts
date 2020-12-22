@@ -1,5 +1,6 @@
 export interface QuizModel {
   id: string
+  exists: boolean
   title: string
   description: string
   permission: {
