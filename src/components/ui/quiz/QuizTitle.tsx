@@ -44,7 +44,7 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
               }
               &_description {
                 font-size: 1rem;
-                line-height: 1rem;
+                line-height: 1.4;
               }
               &_button {
                 width: 100%;

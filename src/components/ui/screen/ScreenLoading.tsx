@@ -26,7 +26,7 @@ export const ScreenLoading: React.FunctionComponent = () => {
       <style jsx>
         {`
           .ScreenLoading {
-            height: 100vh;
+            height: 600px;
             width: 100%;
             background-color: var(--mainBackgroundColor);
             display: flex;

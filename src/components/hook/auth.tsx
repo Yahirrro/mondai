@@ -3,6 +3,7 @@ import { atom, useRecoilState } from 'recoil'
 import { UserModel } from '@components/models'
 
 import { fuego } from '@nandorojo/swr-firestore'
+import { useUI } from '@components/ui/common/context'
 
 export const userState = atom<UserModel>({
   key: 'user',
@@ -10,6 +11,7 @@ export const userState = atom<UserModel>({
 })
 
 export function useAuthentication(): UserModel {
+  const { openModal, setModalView } = useUI()
   const [user, setUser] = useRecoilState<UserModel | null>(userState)
   useEffect(() => {
     if (user !== null) {
@@ -19,12 +21,16 @@ export function useAuthentication(): UserModel {
     fuego.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
         const loginUser = await getUserData(firebaseUser.uid)
-        console.log(loginUser)
         setUser(loginUser)
+        if (loginUser.userName === null) {
+          setModalView('USERNAME_VIEW')
+          openModal()
+        }
       } else {
         setUser(null)
       }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setUser, user])
 
   return user
@@ -38,7 +44,7 @@ async function getUserData(uid: string): Promise<UserModel> {
   if (doc.exists) {
     const userData: UserModel = {
       userId: uid,
-      userName: doc.data().userName,
+      userName: doc.data().userName ? doc.data().userName : null,
     }
     return userData
   }
@@ -50,7 +56,7 @@ async function getUserData(uid: string): Promise<UserModel> {
     })
     const userData: UserModel = {
       userId: uid,
-      userName: '',
+      userName: null,
     }
     return userData
   }

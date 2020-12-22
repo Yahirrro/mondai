@@ -25,6 +25,9 @@ export const QuizBadge: React.FunctionComponent<Props> = (props) => {
                 font-weight: bold;
               }
             }
+            .QuizBadge + .QuizBadge {
+              margin-left: 10px;
+            }
           `}
         </style>
       </div>

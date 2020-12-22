@@ -1,8 +1,7 @@
 type Props = {
-  text: string
+  children: React.ReactNode
   type?: 'button' | 'submit' | 'reset'
-  disabled?: boolean
-  onClick?: () => void
+  onClick?: (event: React.MouseEvent<HTMLInputElement>) => void
   style?: React.CSSProperties
 }
 
@@ -10,48 +9,28 @@ export const PageButton: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <button
-        className="PageButton"
         type={props.type}
-        disabled={props.disabled}
+        className="PageButton"
         onClick={props.onClick}
         style={props.style}>
-        {props.text}
+        {props.children}
       </button>
       <style jsx>
         {`
           .PageButton {
-            user-select: none;
-            background: #00b2ff;
-            color: #ffffff;
-            border-radius: 20px;
-            height: 75px;
-            min-width: 300px;
-            padding: 0 30px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-
             font-family: var(--mainFontFamily);
-            font-weight: bold;
-            font-size: 24px;
-            line-height: 33px;
-
-            transition: all 0.5s;
-            @media (max-width: 750px) {
-              width: 100%;
-              height: 60px;
-            }
-            &:disabled {
-              cursor: not-allowed;
-              opacity: 0.2;
-            }
-            &:hover {
-              box-shadow: var(--mainBoxShadow);
-            }
-            &:active {
-              transform: translateY(5px);
-              box-shadow: none;
-            }
+            word-break: keep-all;
+            background-color: var(--mainAccentColor);
+            color: black;
+            font-weight: 700;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            border-radius: 7px;
+            border: 1px solid black;
+            height: inherit;
+            cursor: pointer;
+            height: 40px;
+            text-decoration: none;
           }
         `}
       </style>

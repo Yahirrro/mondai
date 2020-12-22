@@ -1,3 +1,5 @@
 export * from './PageButton'
+export * from './PageFooter'
+export * from './PageFormInput'
 export * from './PageModal'
 export * from './PageNumber'

@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import { AnswerModel, QuestionModel, QuizModel } from '@components/models'
 import {
-  PageButton,
+  QuizButton,
   PageNumber,
   QuestionSelect,
   QuestionSelectCard,
@@ -13,8 +13,10 @@ import {
   QuizNote,
   QuizQR,
   ScreenError,
+  ScreenLoading,
 } from '@components/ui'
-import React, { useEffect, useState } from 'react'
+import * as firebase from 'firebase/app'
+import { useEffect, useState } from 'react'
 import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { ParsedUrlQuery } from 'querystring'
 import { useAuthentication } from '@components/hook/auth'
@@ -48,8 +50,14 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
+  const { data: quizJoin, set: setQuizJoin } = useDocument(
+    user?.userId ? `quiz/${props.params.quizId}/user/${user?.userId}` : null,
+    {
+      listen: true,
+    }
+  )
   const { data: userAnswer, add: addUserAnswer } = useCollection<AnswerModel>(
-    user?.userId ? `quiz/${props.params.quizId}/answer` : null,
+    user?.userId ? `quiz/${props.params.quizId}/answer/` : null,
     {
       where: ['userId', '==', user?.userId],
       listen: true,
@@ -57,13 +65,21 @@ export default function Home(props: Props): React.ReactElement {
   )
 
   useEffect(() => {
-    console.log(quiz, question, userAnswer)
+    console.log(quiz, question, quizJoin, userAnswer)
     if (userAnswer?.find((data) => data.questionId == question?.id)) {
       setIsAnswered(true)
     } else {
       setIsAnswered(false)
     }
-  }, [userAnswer, question, quiz])
+  }, [userAnswer, question, quizJoin, quiz])
+
+  // useEffect(() => {
+  //   if (quizUser?.exists == false) {
+  //     setModalView('QUIZJOIN_VIEW')
+  //     openModal()
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [quizUser?.exists])
 
   if (!quiz?.exists) return <ScreenError code={404} />
 
@@ -77,6 +93,13 @@ export default function Home(props: Props): React.ReactElement {
     }
     if (value == null) return
     if (userAnswer?.find((data) => data.questionId == question?.id)) return
+
+    if (quizJoin.exists == false) {
+      setQuizJoin({
+        userId: user.userId,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+    }
     addUserAnswer({
       userId: user?.userId,
       answer: value,
@@ -143,7 +166,7 @@ export default function Home(props: Props): React.ReactElement {
         style={{
           background: 'var(--mainBackgroundColor)',
           position: 'relative',
-          minHeight: '100vh',
+          minHeight: 'calc(100vh - 80px)',
         }}>
         {/* ヘッダー */}
         <header className="QuizPageHeader">
@@ -164,8 +187,8 @@ export default function Home(props: Props): React.ReactElement {
                 grid-template-rows: 1fr 30px;
                 &_badge {
                   display: flex;
+                  flex-flow: wrap;
                   height: 30px;
-                  gap: 10px;
                 }
                 &:before {
                   content: '';
@@ -207,7 +230,9 @@ export default function Home(props: Props): React.ReactElement {
           </style>
         </aside>
 
-        {question?.exists && (
+        {!question?.exists ? (
+          <ScreenLoading />
+        ) : (
           <>
             <main className="QuizPageContent">
               <div>
@@ -245,7 +270,7 @@ export default function Home(props: Props): React.ReactElement {
                           style={{
                             textAlign: 'right',
                           }}>
-                          <PageButton
+                          <QuizButton
                             text="解答する"
                             type="submit"
                             disabled={value == null}
@@ -268,7 +293,7 @@ export default function Home(props: Props): React.ReactElement {
                               textAlign: 'right',
                               marginTop: 'var(--mainNormalPaddingSize)',
                             }}>
-                            <PageButton
+                            <QuizButton
                               text="結果を見る"
                               onClick={() => updateStatus('answer')}
                             />
@@ -305,7 +330,7 @@ export default function Home(props: Props): React.ReactElement {
                       {isRemainingQuizExists() ? (
                         <>
                           {isMainAnswer() && (
-                            <PageButton
+                            <QuizButton
                               text="次の問題へ進む"
                               onClick={() => nextQuestion()}
                             />
@@ -314,7 +339,7 @@ export default function Home(props: Props): React.ReactElement {
                       ) : (
                         <>
                           {isMainAnswer() && (
-                            <PageButton
+                            <QuizButton
                               text="全ての結果を見る"
                               onClick={() => updateStatus('archive')}
                             />

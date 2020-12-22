@@ -9,6 +9,7 @@ body {
   margin: 0;
   box-sizing: border-box;
   -webkit-font-smoothing: subpixel-antialiased;
+  background-color: var(--mainBackgroundColor);
 }
 
 a {
@@ -34,7 +35,6 @@ a {
     Noto Sans JP, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   --mainBoxShadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
-
   --mainNormalPaddingSize: 50px;
   @media (max-width: 750px) {
     --mainNormalPaddingSize: 20px;

@@ -40,3 +40,9 @@ export interface UserModel {
   userId: string
   userName: string
 }
+
+export interface quizJoinModel {
+  userId: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createdAt: any
+}
