@@ -1,0 +1,69 @@
+import { useAuthentication } from '@components/hook/auth'
+import { fuego } from '@nandorojo/swr-firestore'
+import { useEffect } from 'react'
+import { useUI } from '../common/context'
+
+export const ModalLogin: React.FunctionComponent = () => {
+  const user = useAuthentication()
+  const { closeModal } = useUI()
+
+  useEffect(() => {
+    if (user !== null) {
+      closeModal()
+    }
+  }, [closeModal, user])
+
+  return (
+    <>
+      <div className="PageModal_info">
+        <h1 className="PageModal_title">ログインしましょう!</h1>
+        <p className="PageModal_description">
+          クイズに参加するには、ログインする必要があります!
+        </p>
+      </div>
+      <button
+        className="LoginButton-google"
+        onClick={() => {
+          const googleAuthProvider = new fuego.auth.GoogleAuthProvider()
+          fuego.auth().signInWithPopup(googleAuthProvider)
+        }}>
+        Googleでログイン
+      </button>
+
+      <style jsx>
+        {`
+          .LoginButton {
+            color: #4c7b57;
+            border: 1px solid #7f9c7d;
+            outline: none;
+            background-color: white;
+            width: 100%;
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 20px;
+            height: 50px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            text-align: center;
+            border-radius: 25px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            font-family: Inter, Arial, Helvetica Neue, Hiragino Kaku Gothic ProN,
+              Noto Sans JP, -apple-system, BlinkMacSystemFont, Segoe UI,
+              sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+              Noto Color Emoji;
+            &-google {
+              @extend .LoginButton;
+              color: #4285f4;
+              border: 1px solid rgba(66, 133, 244, 0.5);
+            }
+          }
+        `}
+      </style>
+    </>
+  )
+}

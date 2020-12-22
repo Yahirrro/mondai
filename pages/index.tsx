@@ -27,6 +27,13 @@ export default function Home(): ReactElement {
           }}>
           Sign In with Google
         </button>
+
+        <button
+          onClick={() => {
+            fuego.auth().signOut()
+          }}>
+          Sign Out
+        </button>
       </div>
     </>
   )

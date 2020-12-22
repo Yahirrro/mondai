@@ -6,6 +6,8 @@ import '../styles/globals.scss'
 import type { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
 import { firebaseConfig } from '@components/lib/firebaseConfig'
+import { AppLayout } from '@components/ui'
+import { ManagedUIContext } from '@components/ui/common/context'
 
 const fuego = new Fuego(firebaseConfig)
 
@@ -14,7 +16,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <FuegoProvider fuego={fuego}>
-        <Component {...pageProps} />
+        <ManagedUIContext>
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+        </ManagedUIContext>
       </FuegoProvider>
     </RecoilRoot>
   )

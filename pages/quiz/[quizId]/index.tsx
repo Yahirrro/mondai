@@ -19,6 +19,7 @@ import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { ParsedUrlQuery } from 'querystring'
 import { useAuthentication } from '@components/hook/auth'
 import { getQuiz } from '@components/lib/api'
+import { useUI } from '@components/ui/common/context'
 
 type Props = {
   params: ParsedUrlQuery
@@ -27,6 +28,7 @@ type Props = {
 
 export default function Home(props: Props): React.ReactElement {
   const user = useAuthentication()
+  const { openModal, setModalView } = useUI()
   const [value, setValue] = useState(null)
   const [isAnswered, setIsAnswered] = useState(false)
 
@@ -67,6 +69,12 @@ export default function Home(props: Props): React.ReactElement {
 
   const submitAnswer = (event) => {
     event.preventDefault()
+
+    if (user == null) {
+      setModalView('LOGIN_VIEW')
+      openModal()
+      return
+    }
     if (value == null) return
     if (userAnswer?.find((data) => data.questionId == question?.id)) return
     addUserAnswer({
@@ -96,6 +104,12 @@ export default function Home(props: Props): React.ReactElement {
     if (quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1] == undefined)
       return false
     else return true
+  }
+
+  const isMainAnswer = () => {
+    if (quiz.permission?.answer?.find((data) => data == user?.userId))
+      return true
+    else return false
   }
 
   const getRemainingQuestionCount = () => {
@@ -248,16 +262,18 @@ export default function Home(props: Props): React.ReactElement {
                             あなたはメイン回答者です。「結果を見るボタン」をクリックすると、集計が開始され、すべての参加者の答えを確認できます。
                           </p>
                         </QuizNote>
-                        <div
-                          style={{
-                            textAlign: 'right',
-                            marginTop: 'var(--mainNormalPaddingSize)',
-                          }}>
-                          <PageButton
-                            text="結果を見る"
-                            onClick={() => updateStatus('answer')}
-                          />
-                        </div>
+                        {isMainAnswer() && (
+                          <div
+                            style={{
+                              textAlign: 'right',
+                              marginTop: 'var(--mainNormalPaddingSize)',
+                            }}>
+                            <PageButton
+                              text="結果を見る"
+                              onClick={() => updateStatus('answer')}
+                            />
+                          </div>
+                        )}
                       </>
                     )}
                   </>
@@ -288,10 +304,12 @@ export default function Home(props: Props): React.ReactElement {
 
                       {isRemainingQuizExists() ? (
                         <>
-                          <PageButton
-                            text="次の問題へ進む"
-                            onClick={() => nextQuestion()}
-                          />
+                          {isMainAnswer() && (
+                            <PageButton
+                              text="次の問題へ進む"
+                              onClick={() => nextQuestion()}
+                            />
+                          )}
                         </>
                       ) : (
                         <>

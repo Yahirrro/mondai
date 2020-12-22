@@ -6,7 +6,7 @@ export interface QuizModel {
   permission: {
     owner: Array<string> | null
     moderator: Array<string> | null
-    anser: Array<string> | null
+    answer: Array<string> | null
   }
   flow: Array<string>
   currentStatus: 'waiting' | 'open' | 'answer' | 'archive'

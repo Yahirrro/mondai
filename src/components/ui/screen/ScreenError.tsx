@@ -1,12 +1,11 @@
 import Head from 'next/head'
 import DefaultErrorPage from 'next/error'
-import { FunctionComponent } from 'react'
 
-type PropsOptional = {
+type Props = {
   code: number
 }
 
-export const ScreenError: FunctionComponent<PropsOptional> = (props) => {
+export const ScreenError: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <Head>
