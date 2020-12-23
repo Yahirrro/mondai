@@ -59,11 +59,13 @@ export default function Home(): ReactElement {
           {`
             .IndexPageHeader {
               position: relative;
+              z-index: 0;
               background-color: var(--mainAccentColor);
               --IndexPageHeaderHeight: 600px;
               height: var(--IndexPageHeaderHeight);
               &_info {
                 position: absolute;
+                z-index: 1;
                 top: 50%;
                 transform: translateY(-50%);
                 width: calc(100% - 40px);
@@ -88,6 +90,7 @@ export default function Home(): ReactElement {
               }
               &_image {
                 position: absolute;
+                z-index: -1;
                 top: 50%;
                 right: 0;
                 transform: translateY(-50%);

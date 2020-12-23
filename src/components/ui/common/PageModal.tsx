@@ -104,7 +104,9 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
               svg {
                 fill: white;
                 height: 24px;
+                min-height: 24px;
                 width: 24px;
+                min-width: 24px;
               }
             }
           }

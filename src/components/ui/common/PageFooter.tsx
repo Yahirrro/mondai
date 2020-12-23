@@ -1,3 +1,5 @@
+import { useAuthentication } from '@components/hook/auth'
+import { fuego } from '@nandorojo/swr-firestore'
 import Link from 'next/link'
 
 type Props = {
@@ -5,6 +7,7 @@ type Props = {
 }
 
 export const PageFooter: React.FunctionComponent<Props> = (props) => {
+  const user = useAuthentication()
   return (
     <>
       <footer className="PageFooter" style={props.style}>
@@ -19,6 +22,11 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
         </div>
         <div>
           <ul className="PageFooter_list">
+            {user?.userId && (
+              <li>
+                <a onClick={() => fuego.auth().signOut()}>ログアウト</a>
+              </li>
+            )}
             <li>
               <Link href="/">
                 <a>利用規約</a>
@@ -46,6 +54,11 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
                 list-style-type: none;
                 li + li {
                   margin-left: 1rem;
+                }
+                li {
+                  a {
+                    cursor: pointer;
+                  }
                 }
               }
             }
