@@ -1,7 +1,17 @@
-import { useUI } from '@components/ui/common/context'
-import React from 'react'
+import dynamic from 'next/dynamic'
 import { PageFooter, PageModal } from '@components/ui/common'
-import { ModalLogin, ModalQuizJoin, ModalUserName } from '@components/ui/modal'
+import { useUI } from '@components/ui/common/context'
+import type {
+  ModalLogin as ModalLoginType,
+  ModalUserName as ModalUserNameType,
+} from '@components/ui/modal'
+
+const ModalLogin = dynamic(() =>
+  import('@components/ui/modal').then((lib) => lib.ModalLogin)
+) as typeof ModalLoginType
+const ModalUserName = dynamic(() =>
+  import('@components/ui/modal').then((lib) => lib.ModalUserName)
+) as typeof ModalUserNameType
 
 type Props = {
   children?: React.ReactNode
@@ -14,7 +24,6 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
       <PageModal open={displayModal} onClose={closeModal}>
         {modalView === 'LOGIN_VIEW' && <ModalLogin />}
         {modalView === 'USERNAME_VIEW' && <ModalUserName />}
-        {modalView === 'QUIZJOIN_VIEW' && <ModalQuizJoin />}
       </PageModal>
 
       {props.children}
