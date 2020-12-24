@@ -278,7 +278,7 @@ export default function Home(props: Props): React.ReactElement {
           </style>
         </aside>
 
-        {!quiz?.exists ? (
+        {!question?.exists ? (
           <ScreenLoading />
         ) : (
           <>
@@ -370,7 +370,7 @@ export default function Home(props: Props): React.ReactElement {
                       />
                       <QuizNote
                         title={checkAnswer() ? '😚正解！' : '😥不正解...'}>
-                        <p>{question.commentary}</p>
+                        {question?.commentary && <p>{question.commentary}</p>}
                       </QuizNote>
                     </div>
 
