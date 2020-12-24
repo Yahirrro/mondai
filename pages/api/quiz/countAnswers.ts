@@ -18,7 +18,6 @@ export default async (
   try {
     const token = request.headers.authorization.split('Bearer ')[1]
     verifyToken = await admin.auth().verifyIdToken(token)
-    console.log(verifyToken)
   } catch {
     response.status(401).json({
       status: 'fail',
