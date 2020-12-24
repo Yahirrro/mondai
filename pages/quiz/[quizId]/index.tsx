@@ -3,7 +3,6 @@ import Head from 'next/head'
 
 import { AnswerModel, QuestionModel, QuizModel } from '@components/models'
 import {
-  IconLoading,
   QuizButton,
   PageNumber,
   QuestionAnswerGraph,
@@ -92,6 +91,7 @@ export default function Home(props: Props): React.ReactElement {
         })
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAnswer, quiz, setCorrectAnswers])
 
   if (!quiz?.exists) return <ScreenError code={404} />
@@ -212,7 +212,11 @@ export default function Home(props: Props): React.ReactElement {
         }}>
         {/* ヘッダー */}
         <header className="QuizPageHeader">
-          <QuizCard title={quiz.title} description={quiz.description} />
+          <QuizCard
+            title={quiz.title}
+            description={quiz.description}
+            icon={quiz.icon}
+          />
           <div className="QuizPageHeader_badge">
             <QuizBadge text={quiz.currentStatus}></QuizBadge>
             <QuizBadge text="○人参加中"></QuizBadge>
@@ -274,7 +278,7 @@ export default function Home(props: Props): React.ReactElement {
           </style>
         </aside>
 
-        {!question?.exists ? (
+        {!quiz?.exists ? (
           <ScreenLoading />
         ) : (
           <>

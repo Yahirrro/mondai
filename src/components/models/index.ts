@@ -3,6 +3,7 @@ export interface QuizModel {
   exists: boolean
   title: string
   description: string
+  icon: string
   inviteCode: null | number
   permission: {
     owner: Array<string> | null

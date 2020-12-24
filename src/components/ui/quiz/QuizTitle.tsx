@@ -1,6 +1,7 @@
 type Props = {
   title: string
   description: string
+  icon: string
   style?: React.CSSProperties
 }
 
@@ -8,11 +9,7 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <div className="QuizCard" style={props.style}>
-        <img
-          className="QuizCard_image"
-          src="https://yt3.ggpht.com/ytc/AAUvwngJkniED47L7KME5_gzHhHLiZIZLIaxJQhTCrxzWA=s900-c-k-c0x00ffffff-no-rj"
-          alt=""
-        />
+        <img className="QuizCard_image" src={props.icon} alt={props.title} />
         <div>
           <h2 className="QuizCard_title">{props.title}</h2>
           <p className="QuizCard_description">{props.description}</p>
