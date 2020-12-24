@@ -89,6 +89,7 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
             line-height: 25px;
             @media (max-width: 520px) {
               flex-flow: wrap;
+              justify-content: center;
             }
             h3 {
               margin-top: 0;

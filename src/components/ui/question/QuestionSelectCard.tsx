@@ -30,6 +30,7 @@ export const QuestionSelectCard: React.FunctionComponent<Props> = (props) => {
               display: flex;
               justify-content: left;
               align-items: center;
+              overflow: hidden;
 
               transition: all 0.5s;
               @media (max-width: 950px) {

@@ -33,6 +33,13 @@ export default function Home(props: Props): React.ReactElement {
   const { openModal, setModalView } = useUI()
   const [value, setValue] = useState<number | null>(null)
   const [isAnswered, setIsAnswered] = useState(false)
+  const [correctAnswers, setCorrectAnswers] = useState<{
+    correct: number
+    incorrect: number
+  }>({
+    correct: 0,
+    incorrect: 0,
+  })
 
   const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
     props.params.quizId ? `quiz/${props.params.quizId}` : null,
@@ -63,7 +70,6 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
-
   useEffect(() => {
     console.log(quiz, question, quizJoin, userAnswer)
     if (userAnswer?.find((data) => data.questionId == question?.id)) {
@@ -72,6 +78,15 @@ export default function Home(props: Props): React.ReactElement {
       setIsAnswered(false)
     }
   }, [userAnswer, question, quizJoin, quiz])
+
+  useEffect(() => {
+    if (quiz.currentStatus !== 'open') {
+      setCorrectAnswers({
+        correct: getCorrectAnswerAmount(),
+        incorrect: getIncorrectAnswerAmount(),
+      })
+    }
+  }, [quiz.currentStatus, setCorrectAnswers])
 
   if (!quiz?.exists) return <ScreenError code={404} />
 
@@ -130,6 +145,16 @@ export default function Home(props: Props): React.ReactElement {
 
   const getRemainingQuestionCount = () => {
     return quiz.flow.length - (quiz.flow.indexOf(quiz.currentQuestion) + 1)
+  }
+
+  const getCorrectAnswerAmount = () => {
+    if (!userAnswer || userAnswer == []) return 0
+    return userAnswer?.filter((data) => data.isCorrectAnswer == true)?.length
+  }
+
+  const getIncorrectAnswerAmount = () => {
+    if (!userAnswer || userAnswer == []) return 0
+    return userAnswer?.filter((data) => data.isCorrectAnswer == false)?.length
   }
 
   const updateStatus = (status: 'waiting' | 'open' | 'answer' | 'archive') => {
@@ -192,6 +217,8 @@ export default function Home(props: Props): React.ReactElement {
                   width: 70vw;
                   height: 250px;
                   background: var(--mainAccentColor);
+                  background-size: auto auto;
+                  background-image: var(--mainBackgroundPattern);
                   border-bottom-right-radius: 124px;
                   @media (max-width: 750px) {
                     height: 189px;
@@ -280,18 +307,20 @@ export default function Home(props: Props): React.ReactElement {
                             あなたはメイン回答者です。「結果を見るボタン」をクリックすると、集計が開始され、すべての参加者の答えを確認できます。
                           </p>
                         </QuizNote>
-                        {isMainAnswer() && (
-                          <div
-                            style={{
-                              textAlign: 'right',
-                              marginTop: 'var(--mainNormalPaddingSize)',
-                            }}>
+                        <div
+                          style={{
+                            textAlign: 'right',
+                            marginTop: 'var(--mainNormalPaddingSize)',
+                          }}>
+                          {isMainAnswer() ? (
                             <QuizButton
                               text="結果を見る"
                               onClick={() => updateStatus('answer')}
                             />
-                          </div>
-                        )}
+                          ) : (
+                            <QuizButton text="結果を見る" disabled />
+                          )}
+                        </div>
                       </>
                     )}
                   </>
@@ -322,21 +351,21 @@ export default function Home(props: Props): React.ReactElement {
 
                       {isRemainingQuizExists() ? (
                         <>
-                          {isMainAnswer() && (
-                            <QuizButton
-                              text="次の問題へ進む"
-                              onClick={() => nextQuestion()}
-                            />
-                          )}
+                          <QuizButton
+                            text="次の問題へ進む"
+                            onClick={() => isMainAnswer() && nextQuestion()}
+                            disabled={!isMainAnswer()}
+                          />
                         </>
                       ) : (
                         <>
-                          {isMainAnswer() && (
-                            <QuizButton
-                              text="全ての結果を見る"
-                              onClick={() => updateStatus('archive')}
-                            />
-                          )}
+                          <QuizButton
+                            text="全ての結果を見る"
+                            onClick={() =>
+                              isMainAnswer() && updateStatus('archive')
+                            }
+                            disabled={!isMainAnswer()}
+                          />
                         </>
                       )}
                     </div>
@@ -362,16 +391,85 @@ export default function Home(props: Props): React.ReactElement {
               </div>
 
               <aside>
-                <h3>全 {quiz?.flow.length}問</h3>
-                <p>回答数：{userAnswer?.length}</p>
-                {userAnswer !== undefined &&
-                  userAnswer.map((data) => {
-                    return <p key={data.questionId}>{data.questionId}</p>
-                  })}
+                <div className="QuizCard">
+                  <h3 className="QuizCard_title">正解状況</h3>
+                  <div className="QuizCard_content">
+                    <div className="QuizCard_number">
+                      <svg
+                        width="50"
+                        height="50"
+                        viewBox="0 0 50 50"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M25 4.16667C13.4791 4.16667 4.16663 13.4792 4.16663 25C4.16663 36.5208 13.4791 45.8333 25 45.8333C36.5208 45.8333 45.8333 36.5208 45.8333 25C45.8333 13.4792 36.5208 4.16667 25 4.16667ZM25 41.6667C15.8125 41.6667 8.33329 34.1875 8.33329 25C8.33329 15.8125 15.8125 8.33333 25 8.33333C34.1875 8.33333 41.6666 15.8125 41.6666 25C41.6666 34.1875 34.1875 41.6667 25 41.6667Z"
+                          fill="#FF0000"
+                          fillOpacity="0.5"
+                        />
+                      </svg>
+                      <p>{correctAnswers.correct}</p>
+                    </div>
+                    <div className="QuizCard_number">
+                      <svg
+                        width="50"
+                        height="50"
+                        viewBox="0 0 50 50"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M39.5834 13.3542L36.6459 10.4167L25.0001 22.0625L13.3542 10.4167L10.4167 13.3542L22.0626 25L10.4167 36.6458L13.3542 39.5833L25.0001 27.9375L36.6459 39.5833L39.5834 36.6458L27.9376 25L39.5834 13.3542Z"
+                          fill="#FF0000"
+                          fillOpacity="0.5"
+                        />
+                      </svg>
+                      <p>{correctAnswers.incorrect}</p>
+                    </div>
+                  </div>
+                  <p className="QuizCard_description">
+                    全{quiz?.flow.length}問
+                  </p>
+                </div>
               </aside>
 
               <style jsx>
                 {`
+                  .QuizCard {
+                    padding: 30px 20px;
+                    background: #ffffff;
+                    border-radius: 20px;
+                    &_title {
+                      text-align: center;
+                      margin-top: 0;
+                      margin-bottom: 10px;
+                      font-size: 24px;
+                      line-height: 33px;
+                    }
+                    &_description {
+                      font-weight: bold;
+                      font-size: 18px;
+                      line-height: 22px;
+                      text-align: center;
+                      color: rgba(0, 0, 0, 0.34);
+                      margin-top: 10px;
+                      margin-bottom: 0;
+                    }
+                    &_content {
+                      display: grid;
+                      grid-template-columns: 1fr 1fr;
+                      gap: 10px;
+                    }
+                    &_number {
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      p {
+                        font-weight: bold;
+                        font-size: 72px;
+                        line-height: 87px;
+                        margin: 0;
+                      }
+                    }
+                  }
                   .QuizPageContent {
                     display: grid;
                     grid-template-columns: 1fr 300px;

@@ -8,7 +8,7 @@ export default function Home(): ReactElement {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>みんなといっしょにクイズ大会 | QuizApp</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -19,6 +19,8 @@ export default function Home(): ReactElement {
           <PageContainer style={{ height: 'var(--IndexPageHeaderHeight)' }}>
             <div className="IndexPageHeader_info">
               <h1>
+                🙋‍♀️🙋‍♂️
+                <br />
                 みんなといっしょに
                 <br />
                 クイズ大会
@@ -61,8 +63,13 @@ export default function Home(): ReactElement {
               position: relative;
               z-index: 0;
               background-color: var(--mainAccentColor);
+              background-size: auto auto;
+              background-image: var(--mainBackgroundPattern);
               --IndexPageHeaderHeight: 600px;
               height: var(--IndexPageHeaderHeight);
+              @media (max-width: 520px) {
+                text-align: center;
+              }
               &_info {
                 position: absolute;
                 z-index: 1;
@@ -85,7 +92,7 @@ export default function Home(): ReactElement {
                 }
                 p {
                   margin-top: 0;
-                  margin-bottom: 30px;
+                  margin-bottom: 50px;
                 }
               }
               &_image {
@@ -99,11 +106,15 @@ export default function Home(): ReactElement {
                 }
               }
               &_wave {
-                height: 50px;
+                height: 70px;
                 width: 100%;
                 position: absolute;
                 bottom: 0;
+                left: 0;
                 fill: var(--mainBackgroundColor);
+                @media (max-width: 750px) {
+                  height: 50px;
+                }
               }
             }
           `}
