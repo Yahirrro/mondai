@@ -12,6 +12,7 @@
     "@nandorojo/swr-firestore": "^0.16.0",
     "@types/styled-jsx": "^2.2.8",
     "firebase": "7.24.0",
+    "firebase-admin": "^9.4.2",
     "next": "10.0.3",
     "node-sass": "^5.0.0",
     "react": "17.0.1",

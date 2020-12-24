@@ -1,8 +1,11 @@
+import { IconLoading } from '@components/ui'
+
 type Props = {
   text: string
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   onClick?: () => void
+  isLoading?: boolean
   style?: React.CSSProperties
 }
 
@@ -15,7 +18,12 @@ export const QuizButton: React.FunctionComponent<Props> = (props) => {
         disabled={props.disabled}
         onClick={props.onClick}
         style={props.style}>
-        {props.text}
+        <div className="QuizButton_content">
+          {props.isLoading && (
+            <IconLoading style={{ stroke: 'white', marginRight: '20px' }} />
+          )}
+          {props.text}
+        </div>
       </button>
       <style jsx>
         {`
@@ -40,6 +48,11 @@ export const QuizButton: React.FunctionComponent<Props> = (props) => {
             @media (max-width: 750px) {
               width: 100%;
               height: 60px;
+            }
+            &_content {
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
             &:disabled {
               cursor: not-allowed;

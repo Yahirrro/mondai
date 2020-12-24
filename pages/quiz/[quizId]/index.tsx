@@ -3,6 +3,7 @@ import Head from 'next/head'
 
 import { AnswerModel, QuestionModel, QuizModel } from '@components/models'
 import {
+  IconLoading,
   QuizButton,
   PageNumber,
   QuestionAnswerGraph,
@@ -18,7 +19,7 @@ import {
 } from '@components/ui'
 import * as firebase from 'firebase/app'
 import { useEffect, useState } from 'react'
-import { useCollection, useDocument } from '@nandorojo/swr-firestore'
+import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { ParsedUrlQuery } from 'querystring'
 import { useAuthentication } from '@components/hook/auth'
 import { getQuiz } from '@components/lib/api'
@@ -34,6 +35,7 @@ export default function Home(props: Props): React.ReactElement {
   const { openModal, setModalView } = useUI()
   const [value, setValue] = useState<number | null>(null)
   const [isAnswered, setIsAnswered] = useState(false)
+  const [isApiLoading, setIsApiLoading] = useState(false)
   const [correctAnswers, setCorrectAnswers] = useState<{
     correct: number
     incorrect: number
@@ -81,6 +83,7 @@ export default function Home(props: Props): React.ReactElement {
   }, [userAnswer, question, quizJoin, quiz])
 
   useEffect(() => {
+    if (!quiz?.exists) return
     if (quiz.currentStatus !== 'open') {
       if (!isAnswered) {
         setCorrectAnswers({
@@ -160,11 +163,30 @@ export default function Home(props: Props): React.ReactElement {
     return userAnswer?.filter((data) => data.isCorrectAnswer == false)?.length
   }
 
-  const updateStatus = (status: 'waiting' | 'open' | 'answer' | 'archive') => {
+  const updateStatus = (status: QuizModel['currentStatus']) => {
     updateQuiz({
       currentStatus: status,
     })
     setIsAnswered(false)
+  }
+
+  const goStatusAnswer = async () => {
+    setIsApiLoading(true)
+    fuego
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(async (idToken) => {
+        await fetch(`/api/quiz/countAnswers?quizId=` + quiz.id, {
+          headers: { authorization: 'Bearer ' + idToken },
+        })
+          .then((data) => {
+            console.log(data)
+            setIsApiLoading(false)
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+      })
   }
 
   const nextQuestion = () => {
@@ -179,10 +201,9 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>{props.quiz?.title} | QuizApp</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <div
         style={{
           background: 'var(--mainBackgroundColor)',
@@ -316,10 +337,13 @@ export default function Home(props: Props): React.ReactElement {
                             marginTop: 'var(--mainNormalPaddingSize)',
                           }}>
                           {isMainAnswer() ? (
-                            <QuizButton
-                              text="結果を見る"
-                              onClick={() => updateStatus('answer')}
-                            />
+                            <>
+                              <QuizButton
+                                text="結果を見る"
+                                isLoading={isApiLoading}
+                                onClick={() => goStatusAnswer()}
+                              />
+                            </>
                           ) : (
                             <QuizButton text="結果を見る" disabled />
                           )}
@@ -510,6 +534,11 @@ export default function Home(props: Props): React.ReactElement {
                       padding: 1rem 1rem;
                       border: 1px solid whitesmoke;
                     }
+                  }
+                  .QuizButtonContainer {
+                    display: flex;
+                    align-items: center;
+                    margin-top: var(--mainNormalPaddingSize);
                   }
                 `}
               </style>

@@ -27,7 +27,7 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
           {allAmount()}人のみんなのこたえ
         </h2>
         <div className="QuestionAnswerGraph_grid">
-          {!props.data[0].answerAmount ? (
+          {props.data[0].answerAmount == null ? (
             <ScreenLoading
               style={{
                 height: 'auto',
@@ -41,7 +41,9 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
                     {index == props.correctAnswer && '👑'}
                     {choice.title}
                     <br />
-                    <small>{choice.answerAmount}人</small>
+                    <small style={{ opacity: 0.5 }}>
+                      {choice.answerAmount}人
+                    </small>
                   </h3>
                   <div
                     className={`QuestionAnswerGraph_graph-${
@@ -57,7 +59,11 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
                           ? 'QuestionAnswerGraph_graphAmount-left'
                           : ''
                       }`}>
-                      <PageNumber number={choice.answerAmount} unit="人" />
+                      <PageNumber
+                        number={choice.answerAmount}
+                        type={index == props.correctAnswer ? 'answer' : null}
+                        unit="人"
+                      />
                     </div>
                   </div>
                 </div>
