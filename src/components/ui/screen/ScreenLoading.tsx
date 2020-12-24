@@ -1,6 +1,10 @@
-export const ScreenLoading: React.FunctionComponent = () => {
+type Props = {
+  style?: React.CSSProperties
+}
+
+export const ScreenLoading: React.FunctionComponent<Props> = (props) => {
   return (
-    <div className="ScreenLoading">
+    <div className="ScreenLoading" style={props.style}>
       <svg
         width="38"
         height="38"

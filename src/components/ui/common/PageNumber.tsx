@@ -1,12 +1,16 @@
 type Props = {
   number: number
   unit: string
+  type?: string
 }
 
 export const PageNumber: React.FunctionComponent<Props> = (props) => {
   return (
     <>
-      <div className="PageNumber">
+      <div
+        className={
+          'PageNumber ' + `${props.type && `PageNumber-` + props.type}`
+        }>
         <p className="PageNumber_number">
           {props.number.toLocaleString()}
           <span className="PageNumber_unit">{props.unit}</span>
@@ -14,7 +18,13 @@ export const PageNumber: React.FunctionComponent<Props> = (props) => {
         <style jsx>
           {`
             .PageNumber {
+              &-small {
+                .PageNumber_number {
+                  font-size: 100px;
+                }
+              }
               &_number {
+                word-break: keep-all;
                 display: inline-block;
                 font-weight: bold;
                 font-size: 144px;

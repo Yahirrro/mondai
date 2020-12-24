@@ -5,6 +5,7 @@ import { AnswerModel, QuestionModel, QuizModel } from '@components/models'
 import {
   QuizButton,
   PageNumber,
+  QuestionAnswerGraph,
   QuestionSelect,
   QuestionSelectCard,
   QuestionTitle,
@@ -81,12 +82,14 @@ export default function Home(props: Props): React.ReactElement {
 
   useEffect(() => {
     if (quiz.currentStatus !== 'open') {
-      setCorrectAnswers({
-        correct: getCorrectAnswerAmount(),
-        incorrect: getIncorrectAnswerAmount(),
-      })
+      if (!isAnswered) {
+        setCorrectAnswers({
+          correct: getCorrectAnswerAmount(),
+          incorrect: getIncorrectAnswerAmount(),
+        })
+      }
     }
-  }, [quiz.currentStatus, setCorrectAnswers])
+  }, [userAnswer, quiz, setCorrectAnswers])
 
   if (!quiz?.exists) return <ScreenError code={404} />
 
@@ -190,7 +193,7 @@ export default function Home(props: Props): React.ReactElement {
         <header className="QuizPageHeader">
           <QuizCard title={quiz.title} description={quiz.description} />
           <div className="QuizPageHeader_badge">
-            <QuizBadge text="開催中"></QuizBadge>
+            <QuizBadge text={quiz.currentStatus}></QuizBadge>
             <QuizBadge text="○人参加中"></QuizBadge>
           </div>
           <style jsx>
@@ -342,6 +345,7 @@ export default function Home(props: Props): React.ReactElement {
                         <p>{question.commentary}</p>
                       </QuizNote>
                     </div>
+
                     <div
                       style={{
                         textAlign: 'right',
@@ -369,6 +373,11 @@ export default function Home(props: Props): React.ReactElement {
                         </>
                       )}
                     </div>
+
+                    <QuestionAnswerGraph
+                      data={question.choice}
+                      correctAnswer={question.answer}
+                    />
                   </div>
                 )}
 

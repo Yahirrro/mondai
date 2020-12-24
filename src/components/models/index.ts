@@ -20,8 +20,7 @@ export interface QuestionModel {
   answer: number
   choice: Array<{
     title: string
-    description: string
-    answerUsers: null | number
+    answerAmount: null | number
   }>
   commentary: null | string
   afterAnswer: null | {

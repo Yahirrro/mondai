@@ -134,6 +134,7 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
                 line-height: 29px;
                 letter-spacing: 0.3em;
                 width: 181px;
+                box-shadow: var(--mainBoxShadow);
                 &::placeholder {
                   opacity: 0.2;
                 }
