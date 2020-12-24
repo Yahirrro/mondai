@@ -6,7 +6,5 @@ type Props = {
 }
 
 export default function Home(props: Props): React.ReactElement {
-  return (
-    <QuizCard title="利用規約" description="当サイトを利用するにあたって" />
-  )
+  return <></>
 }
