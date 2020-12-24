@@ -261,7 +261,7 @@ export default function Home(props: Props): React.ReactElement {
         <aside className="QuizPageInvite">
           <QuizQR
             url={`https://realtimequiz.yahiro.vercel.app/quiz/${props.params.quizId}`}
-            code={11212}
+            code={quiz.inviteCode}
           />
           <style jsx>
             {`
