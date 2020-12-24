@@ -370,6 +370,15 @@ export default function Home(props: Props): React.ReactElement {
                       />
                       <QuizNote
                         title={checkAnswer() ? '😚正解！' : '😥不正解...'}>
+                        <p>
+                          正解は「
+                          <strong>
+                            {`${question.answer}. ${
+                              question?.choice[question.answer].title
+                            }`}
+                          </strong>
+                          」
+                        </p>
                         {question?.commentary && <p>{question.commentary}</p>}
                       </QuizNote>
                     </div>

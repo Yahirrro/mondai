@@ -62,21 +62,23 @@ export default async (
           .where('answer', '==', index)
           .get()
 
-        await choice.push({
+        choice[index] = {
           ...data,
           answerAmount: answerRef.size,
-        })
+        }
       })
     )
+
+    console.log(choice)
     questionRef.update({ choice: choice })
     quizRef.update({ currentStatus: 'answer' })
 
-    response.status(200).send({
+    response.status(200).json({
       status: 'ok',
       message: 'OK',
     })
   } catch (err) {
-    response.status(500).send({
+    response.status(500).json({
       status: 'fail',
       message: 'Internal Server Error',
       error: err,

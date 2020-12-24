@@ -37,14 +37,23 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
             props.data.map((choice, index) => {
               return (
                 <div className="QuestionAnswerGraph_choice" key={choice.title}>
-                  <h3 className="QuestionAnswerGraph_label">
-                    {index == props.correctAnswer && '👑'}
-                    {choice.title}
-                    <br />
-                    <small style={{ opacity: 0.5 }}>
-                      {choice.answerAmount}人
-                    </small>
-                  </h3>
+                  <div
+                    style={{
+                      alignSelf: 'center',
+                    }}>
+                    <h3 className="QuestionAnswerGraph_label">
+                      {index == props.correctAnswer && '👑'}
+                      {choice.title}
+                    </h3>
+                    <p className="QuestionAnswerGraph_labelDescription">
+                      {choice.answerAmount +
+                        '人' +
+                        ' / ' +
+                        (choice.answerAmount / getMostBigAmount()) * 100 +
+                        '%'}
+                    </p>
+                  </div>
+
                   <div
                     className={`QuestionAnswerGraph_graph-${
                       index == props.correctAnswer ? 'correct' : 'incorrect'
@@ -84,19 +93,26 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
             &_grid {
               display: grid;
               grid-auto-columns: 1fr;
-              grid-auto-rows: 100px;
+              grid-auto-rows: 120px;
+              gap: 10px;
             }
             &_choice {
               display: grid;
+              gap: 20px;
               grid-template-columns: 150px 1fr;
-              grid-auto-rows: 100px;
+              grid-auto-rows: 120px;
               @media (max-width: 750px) {
-                grid-template-columns: 100px 1fr;
+                grid-template-columns: 1fr 1fr;
               }
             }
             &_label {
-              align-self: center;
               margin: 0;
+            }
+            &_labelDescription {
+              opacity: 0.5;
+              align-self: center;
+              margin-top: 5px;
+              margin-bottom: 0;
             }
             &_graph {
               user-select: none;

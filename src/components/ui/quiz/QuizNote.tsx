@@ -39,6 +39,9 @@ export const QuizNote: React.FunctionComponent<Props> = (props) => {
             :global(.QuizNote > h2 + p) {
               margin-top: 1rem;
             }
+            :global(.QuizNote > p + p) {
+              margin-top: 1rem;
+            }
           `}
         </style>
       </div>

@@ -11,11 +11,16 @@ export const QuestionSelectCard: React.FunctionComponent<Props> = (props) => {
     <>
       <div
         className={`QuestionSelectCard ${
-          props.type && 'QuestionSelectCard-' + props.type
+          props.type ? 'QuestionSelectCard-' + props.type : ''
         }`}
         style={props.style}>
         <div className="QuestionSelectCard_index">{props.index}</div>
-        <div className="QuestionSelectCard_title">{props.title}</div>
+        <div
+          className={`QuestionSelectCard_title ${
+            props.title.length > 15 ? 'QuestionSelectCard_title-small' : ''
+          }`}>
+          {props.title}
+        </div>
         <style jsx>
           {`
             .QuestionSelectCard {
@@ -35,11 +40,12 @@ export const QuestionSelectCard: React.FunctionComponent<Props> = (props) => {
               transition: all 0.5s;
               @media (max-width: 950px) {
                 height: 120px;
+                padding: 20px;
               }
               &_index {
                 content: counter(item);
                 display: block;
-                width: 80px;
+                min-width: 70px;
                 text-align: center;
                 opacity: 0.1;
                 font-weight: bold;
@@ -57,6 +63,15 @@ export const QuestionSelectCard: React.FunctionComponent<Props> = (props) => {
                 line-height: 49px;
                 @media (max-width: 950px) {
                   font-size: 30px;
+                  line-height: 40px;
+                }
+                &-small {
+                  font-size: 26px;
+                  line-height: 1.5;
+                  @media (max-width: 950px) {
+                    font-size: 22px;
+                    line-height: 1.5;
+                  }
                 }
               }
 
