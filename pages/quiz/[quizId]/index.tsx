@@ -168,13 +168,6 @@ export default function Home(props: Props): React.ReactElement {
     return userAnswer?.filter((data) => data.isCorrectAnswer == false)?.length
   }
 
-  const updateStatus = (status: QuizModel['currentStatus']) => {
-    updateQuiz({
-      currentStatus: status,
-    })
-    setIsAnswered(false)
-  }
-
   const goStatusAnswer = async () => {
     setIsApiLoading(true)
     fuego
