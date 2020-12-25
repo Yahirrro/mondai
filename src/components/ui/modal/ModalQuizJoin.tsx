@@ -1,10 +1,10 @@
 import { useDocument } from '@nandorojo/swr-firestore'
-import { useAuthentication } from '@components/hook/auth'
-import { useUI } from '@components/ui/common/context'
+import { useAuthentication } from '@hook/auth'
+import { useUI } from '@components/ui/context'
 import { PageButton } from '@components/ui'
 import { useRouter } from 'next/router'
 import firebase from 'firebase/app'
-import { QuizModel } from '@components/models'
+import { QuizModel } from '@models'
 
 export const ModalQuizJoin: React.FunctionComponent = () => {
   const user = useAuthentication()

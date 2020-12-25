@@ -1,9 +1,9 @@
 import { useDocument } from '@nandorojo/swr-firestore'
 import { useState } from 'react'
 
-import { useAuthentication } from '@components/hook/auth'
-import { UserModel } from '@components/models'
-import { useUI } from '@components/ui/common/context'
+import { useAuthentication } from '@hook/auth'
+import { UserModel } from '@models'
+import { useUI } from '@components/ui/context'
 import { PageFormInput, PageButton } from '@components/ui'
 
 export const ModalUserName: React.FunctionComponent = () => {

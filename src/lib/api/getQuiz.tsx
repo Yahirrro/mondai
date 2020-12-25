@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
-import '@components/lib/firebase'
-import { QuizModel } from '@components/models'
+import '@lib/firebase'
+import { QuizModel } from '@models'
 
 export const getQuiz = async (quizId: string): Promise<QuizModel | null> => {
   const quizRef = await firebase

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { PageContainer } from '@components/ui'
-import { useAuthentication } from '@components/hook/auth'
-import { useUI } from './context'
+import { useAuthentication } from '@hook/auth'
+import { useUI } from '@components/ui/context'
 
 type Props = {
   style?: React.CSSProperties

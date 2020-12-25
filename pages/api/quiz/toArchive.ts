@@ -2,9 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import admin from 'firebase-admin'
 import _ from 'lodash'
 
-import '@components/lib/firebase-admin'
+import '@lib/firebase-admin'
 
-import { QuestionModel, QuizModel } from '@components/models'
+import { QuestionModel, QuizModel } from '@models'
 
 type Data = {
   status: string

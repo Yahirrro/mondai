@@ -3,7 +3,7 @@ import 'firebase/analytics'
 import 'firebase/auth'
 import 'firebase/firestore'
 
-import { firebaseConfig } from '@components/lib/firebaseConfig'
+import { firebaseConfig } from '@lib/firebaseConfig'
 
 if (firebase.apps.length === 0) {
   // よみこみ

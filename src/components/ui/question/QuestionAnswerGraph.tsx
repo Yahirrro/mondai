@@ -1,4 +1,4 @@
-import { QuestionModel } from '@components/models'
+import { QuestionModel } from '@models'
 import { PageNumber, ScreenLoading } from '@components/ui'
 
 type Props = {

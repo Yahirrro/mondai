@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import '@components/lib/firebase-admin'
+import '@lib/firebase-admin'
 
 import admin from 'firebase-admin'
-import { QuestionModel, QuizModel } from '@components/models'
+import { QuestionModel, QuizModel } from '@models'
 
 type Data = {
   status: string

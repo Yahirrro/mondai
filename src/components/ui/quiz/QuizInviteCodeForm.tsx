@@ -1,4 +1,4 @@
-import { QuizModel } from '@components/models'
+import { QuizModel } from '@models'
 import { useCollection } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'

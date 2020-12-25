@@ -1,4 +1,4 @@
-import { QuizModel } from '@components/models'
+import { QuizModel } from '@models'
 import { useDocument } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'

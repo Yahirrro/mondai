@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import { PageFooter, PageModal } from '@components/ui/common'
-import { useUI } from '@components/ui/common/context'
+import { useUI } from '@components/ui/context'
 import type {
   ModalLogin as ModalLoginType,
   ModalUserName as ModalUserNameType,

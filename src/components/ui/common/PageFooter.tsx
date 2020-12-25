@@ -1,4 +1,4 @@
-import { useAuthentication } from '@components/hook/auth'
+import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import Link from 'next/link'
 

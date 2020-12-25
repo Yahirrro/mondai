@@ -1,7 +1,7 @@
-import { useAuthentication } from '@components/hook/auth'
+import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import { useEffect } from 'react'
-import { useUI } from '../common/context'
+import { useUI } from '@components/ui/context'
 
 export const ModalLogin: React.FunctionComponent = () => {
   const user = useAuthentication()

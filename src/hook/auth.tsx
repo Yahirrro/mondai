@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { atom, useRecoilState } from 'recoil'
-import { UserModel } from '@components/models'
+import { UserModel } from '@models'
 
 import { fuego } from '@nandorojo/swr-firestore'
-import { useUI } from '@components/ui/common/context'
+import { useUI } from '@components/ui/context'
 
 export const userState = atom<UserModel>({
   key: 'user',

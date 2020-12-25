@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 
-import { AnswerModel, QuestionModel, QuizModel } from '@components/models'
+import { AnswerModel, QuestionModel, QuizModel } from '@models'
 import {
   QuizButton,
   PageNumber,
@@ -20,9 +20,9 @@ import firebase from 'firebase/app'
 import { useEffect, useState } from 'react'
 import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { ParsedUrlQuery } from 'querystring'
-import { useAuthentication } from '@components/hook/auth'
-import { getQuiz } from '@components/lib/api'
-import { useUI } from '@components/ui/common/context'
+import { useAuthentication } from '@hook/auth'
+import { getQuiz } from '@lib/api'
+import { useUI } from '@components/ui/context'
 
 type Props = {
   params: ParsedUrlQuery

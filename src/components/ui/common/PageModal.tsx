@@ -1,5 +1,5 @@
 import Modal from 'react-modal'
-import { useUI } from '@components/ui/common/context'
+import { useUI } from '@components/ui/context'
 
 type Props = {
   children?: React.ReactNode
