@@ -6,7 +6,11 @@ type Props = {
 export const QuestionTitle: React.FunctionComponent<Props> = (props) => {
   return (
     <>
-      <h1 className="QuestionTitle" style={props.style}>
+      <h1
+        className={`QuestionTitle ${
+          props.title.length > 30 ? 'QuestionTitle-small' : ''
+        }`}
+        style={props.style}>
         {props.title}
       </h1>
       <style jsx>
@@ -24,6 +28,13 @@ export const QuestionTitle: React.FunctionComponent<Props> = (props) => {
               line-height: 1.5;
               margin-left: 0;
               text-align: center;
+            }
+            &-small {
+              font-size: 3rem;
+              line-height: 1.5;
+              @media (max-width: 750px) {
+                font-size: 2rem;
+              }
             }
             &:before {
               content: 'Q';

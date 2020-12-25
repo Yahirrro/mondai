@@ -59,6 +59,11 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
+  const { data: allQuestion } = useCollection<QuestionModel>(
+    quiz?.currentStatus == 'archive'
+      ? `quiz/${props.params.quizId}/question`
+      : null
+  )
   const { data: quizJoin, set: setQuizJoin } = useDocument(
     user?.userId ? `quiz/${props.params.quizId}/user/${user?.userId}` : null,
     {
@@ -176,7 +181,7 @@ export default function Home(props: Props): React.ReactElement {
       .auth()
       .currentUser.getIdToken(true)
       .then(async (idToken) => {
-        await fetch(`/api/quiz/countAnswers?quizId=` + quiz.id, {
+        await fetch(`/api/quiz/toAnswer?quizId=` + quiz.id, {
           headers: { authorization: 'Bearer ' + idToken },
         })
           .then((data) => {
@@ -196,6 +201,26 @@ export default function Home(props: Props): React.ReactElement {
       currentQuestion: quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1],
     })
     setIsAnswered(false)
+  }
+
+  const finishQuiz = () => {
+    if (isRemainingQuizExists()) return
+    setIsApiLoading(true)
+    fuego
+      .auth()
+      .currentUser.getIdToken(true)
+      .then(async (idToken) => {
+        await fetch(`/api/quiz/toArchive?quizId=` + quiz.id, {
+          headers: { authorization: 'Bearer ' + idToken },
+        })
+          .then((data) => {
+            console.log(data)
+            setIsApiLoading(false)
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+      })
   }
 
   return (
@@ -332,7 +357,9 @@ export default function Home(props: Props): React.ReactElement {
                           title={'🤔結果はどうだ'}
                           style={{ marginTop: '50px' }}>
                           <p>
-                            あなたはメイン回答者です。「結果を見るボタン」をクリックすると、集計が開始され、すべての参加者の答えを確認できます。
+                            {isMainAnswer()
+                              ? 'あなたはメイン回答者です。「結果を見るボタン」をクリックすると、集計が開始され、すべての参加者の答えを確認できます！みんなの様子をみながらボタンを押すといいかもです！'
+                              : 'メイン回答者が次へすすむと、自動的に次の画面が表示されます！ゆったり結果が表示されるのを待ちましょう！'}
                           </p>
                         </QuizNote>
                         <div
@@ -402,19 +429,24 @@ export default function Home(props: Props): React.ReactElement {
                         <>
                           <QuizButton
                             text="全ての結果を見る"
-                            onClick={() =>
-                              isMainAnswer() && updateStatus('archive')
-                            }
+                            isLoading={isApiLoading}
+                            onClick={() => isMainAnswer() && finishQuiz()}
                             disabled={!isMainAnswer()}
                           />
                         </>
                       )}
                     </div>
 
-                    <QuestionAnswerGraph
-                      data={question.choice}
-                      correctAnswer={question.answer}
-                    />
+                    <QuizNote
+                      title="😏みんなのこたえ"
+                      style={{
+                        marginTop: 'calc(var(--mainNormalPaddingSize) * 2)',
+                      }}>
+                      <QuestionAnswerGraph
+                        data={question.choice}
+                        correctAnswer={question.answer}
+                      />
+                    </QuizNote>
                   </div>
                 )}
 
@@ -425,13 +457,33 @@ export default function Home(props: Props): React.ReactElement {
                     <div className="QuestionSelect">
                       <div>
                         <h3>すべての参加者数🎉</h3>
-                        <PageNumber number={12121} unit="人" />
+                        <PageNumber number={quiz?.allUser} unit="人" />
                       </div>
                       <div>
                         <h3>ぜんぶ正解した人🎉</h3>
-                        <PageNumber number={5} unit="人" />
+                        <PageNumber
+                          number={quiz?.allCorrectUser?.length}
+                          unit="人"
+                        />
                       </div>
                     </div>
+
+                    <QuizNote title="😏みんなのこたえ">
+                      {quiz?.flow?.map((data, index) => {
+                        if (!allQuestion) return
+                        const questionData = allQuestion?.find(
+                          (element) => element.id == data
+                        )
+                        return (
+                          <QuestionAnswerGraph
+                            key={questionData.title}
+                            data={questionData.choice}
+                            correctAnswer={questionData.answer}
+                            title={index + 1 + '. ' + questionData.title}
+                          />
+                        )
+                      })}
+                    </QuizNote>
                   </div>
                 )}
               </div>
@@ -534,7 +586,7 @@ export default function Home(props: Props): React.ReactElement {
                     margin-bottom: var(--mainNormalPaddingSize);
                     grid-template-columns: repeat(
                       auto-fit,
-                      [col-start] minmax(340px, 1fr) [col-end]
+                      [col-start] minmax(380px, 1fr) [col-end]
                     );
                     @media (max-width: 750px) {
                       grid-template-columns: 1fr;

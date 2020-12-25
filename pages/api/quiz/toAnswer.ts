@@ -62,9 +62,17 @@ export default async (
           .where('answer', '==', index)
           .get()
 
+        const answerUser = []
+        await Promise.all(
+          await answerRef.docs.map((doc) => {
+            answerUser.push(doc.data().userId)
+          })
+        )
+
         choice[index] = {
           ...data,
           answerAmount: answerRef.size,
+          answerUser: answerUser,
         }
       })
     )
@@ -77,11 +85,13 @@ export default async (
       status: 'ok',
       message: 'OK',
     })
+    return
   } catch (err) {
     response.status(500).json({
       status: 'fail',
       message: 'Internal Server Error',
       error: err,
     })
+    return
   }
 }

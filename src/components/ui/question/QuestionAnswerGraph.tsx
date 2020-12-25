@@ -2,8 +2,11 @@ import { QuestionModel } from '@components/models'
 import { PageNumber, ScreenLoading } from '@components/ui'
 
 type Props = {
+  title?: string
+  children?: React.ReactNode
   data: QuestionModel['choice']
   correctAnswer: number
+  style?: React.CSSProperties
 }
 
 export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
@@ -22,9 +25,9 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
 
   return (
     <>
-      <div className="QuestionAnswerGraph">
+      <div className="QuestionAnswerGraph" style={props.style}>
         <h2 className="QuestionAnswerGraph_title">
-          {allAmount()}人のみんなのこたえ
+          {props.title ? props.title : allAmount() + '人のみんなのこたえ'}
         </h2>
         <div className="QuestionAnswerGraph_grid">
           {props.data[0].answerAmount == null ? (
@@ -84,29 +87,36 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
       <style jsx>
         {`
           .QuestionAnswerGraph {
-            margin-top: calc(var(--mainNormalPaddingSize) * 2);
+            width: 100%;
             &_title {
+              display: inline-block;
+              padding: 5px 15px;
+              background: var(--mainAccentColor);
               margin-top: 0;
-              font-size: 24px;
-              line-height: 33px;
+              margin-bottom: 15px;
+              transform: translateX(-5px);
             }
             &_grid {
               display: grid;
               grid-auto-columns: 1fr;
-              grid-auto-rows: 120px;
+              grid-auto-rows: 100px;
               gap: 10px;
             }
             &_choice {
               display: grid;
-              gap: 20px;
-              grid-template-columns: 150px 1fr;
-              grid-auto-rows: 120px;
+              gap: var(--mainNormalPaddingSize);
+              grid-template-columns: 300px 1fr;
+              grid-auto-rows: 100px;
               @media (max-width: 750px) {
                 grid-template-columns: 1fr 1fr;
               }
             }
             &_label {
+              opacity: 0.8;
               margin: 0;
+              @media (max-width: 750px) {
+                font-size: 1rem;
+              }
             }
             &_labelDescription {
               opacity: 0.5;
@@ -130,6 +140,8 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
               &-correct {
                 @extend .QuestionAnswerGraph_graph;
                 background: #ffe600;
+                background-size: auto auto;
+                background-image: var(--mainBackgroundPattern);
               }
             }
             &_graphAmount {
@@ -146,6 +158,9 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
                 left: 0;
               }
             }
+          }
+          .QuestionAnswerGraph + .QuestionAnswerGraph {
+            margin-top: var(--mainNormalPaddingSize);
           }
         `}
       </style>

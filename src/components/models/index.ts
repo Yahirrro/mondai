@@ -10,6 +10,8 @@ export interface QuizModel {
     moderator: Array<string> | null
     answer: Array<string> | null
   }
+  allCorrectUser: null | Array<string>
+  allUser: null | number
   flow: Array<string>
   currentStatus: 'waiting' | 'open' | 'answer' | 'archive'
   currentQuestion: string | null
@@ -22,6 +24,7 @@ export interface QuestionModel {
   choice: Array<{
     title: string
     answerAmount: null | number
+    answerUser: null | Array<string>
   }>
   commentary: null | string
   afterAnswer: null | {
