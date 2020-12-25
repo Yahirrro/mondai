@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import admin from 'firebase-admin'
+import _ from 'lodash'
+
 import '@components/lib/firebase-admin'
 
-import admin from 'firebase-admin'
 import { QuestionModel, QuizModel } from '@components/models'
 
 type Data = {
@@ -19,10 +21,14 @@ export default async (
     const token = request.headers.authorization.split('Bearer ')[1]
     verifyToken = await admin.auth().verifyIdToken(token)
   } catch {
-    response.status(401).json({
-      status: 'fail',
-      message: 'Unauthorized',
-    })
+    response.statusCode = 401
+    response.setHeader('Content-Type', 'application/json')
+    response.end(
+      JSON.stringify({
+        status: 'fail',
+        message: 'Unauthorized',
+      })
+    )
     return
   }
 
@@ -38,7 +44,7 @@ export default async (
     if (quizData.permission.answer?.includes(verifyToken.uid) == false)
       throw new Error('Quiz not found')
 
-    const anserUsers: Array<string> = []
+    const anserUsers: Array<Array<string>> = []
 
     await Promise.all(
       await quizData.flow.map(async (data) => {
@@ -47,10 +53,12 @@ export default async (
           .doc('quiz/' + request.query.quizId + '/question/' + data)
           .get()
         const question = (await questionRef.data()) as QuestionModel
-        anserUsers.push(...question.choice[question.answer].answerUser)
+        anserUsers.push(question.choice[question.answer].answerUser)
       })
     )
-    const allCorrectUsers = Array.from(new Set(anserUsers))
+    _.intersection(...anserUsers)
+
+    console.log(_.intersection(...anserUsers))
 
     const userRef = await admin
       .firestore()
@@ -59,21 +67,29 @@ export default async (
 
     quizRef.update({
       allUser: userRef.size,
-      allCorrectUser: allCorrectUsers,
+      allCorrectUser: _.intersection(...anserUsers),
       currentStatus: 'archive',
     })
 
-    response.status(200).json({
-      status: 'ok',
-      message: 'OK',
-    })
+    response.statusCode = 200
+    response.setHeader('Content-Type', 'application/json')
+    response.end(
+      JSON.stringify({
+        status: 'ok',
+        message: 'OK',
+      })
+    )
     return
   } catch (err) {
-    response.status(500).json({
-      status: 'fail',
-      message: 'Internal Server Error',
-      error: err,
-    })
+    response.statusCode = 500
+    response.setHeader('Content-Type', 'application/json')
+    response.end(
+      JSON.stringify({
+        status: 'fail',
+        message: 'Internal Server Error',
+        error: err,
+      })
+    )
     return
   }
 }

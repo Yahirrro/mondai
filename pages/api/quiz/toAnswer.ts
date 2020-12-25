@@ -19,10 +19,14 @@ export default async (
     const token = request.headers.authorization.split('Bearer ')[1]
     verifyToken = await admin.auth().verifyIdToken(token)
   } catch {
-    response.status(401).json({
-      status: 'fail',
-      message: 'Unauthorized',
-    })
+    response.statusCode = 401
+    response.setHeader('Content-Type', 'application/json')
+    response.end(
+      JSON.stringify({
+        status: 'fail',
+        message: 'Unauthorized',
+      })
+    )
     return
   }
 
@@ -81,17 +85,25 @@ export default async (
     questionRef.update({ choice: choice })
     quizRef.update({ currentStatus: 'answer' })
 
-    response.status(200).json({
-      status: 'ok',
-      message: 'OK',
-    })
+    response.statusCode = 200
+    response.setHeader('Content-Type', 'application/json')
+    response.end(
+      JSON.stringify({
+        status: 'ok',
+        message: 'OK',
+      })
+    )
     return
   } catch (err) {
-    response.status(500).json({
-      status: 'fail',
-      message: 'Internal Server Error',
-      error: err,
-    })
+    response.statusCode = 500
+    response.setHeader('Content-Type', 'application/json')
+    response.end(
+      JSON.stringify({
+        status: 'fail',
+        message: 'Internal Server Error',
+        error: err,
+      })
+    )
     return
   }
 }
