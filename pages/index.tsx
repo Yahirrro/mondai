@@ -21,7 +21,9 @@ export default function Home(): ReactElement {
               <h1>
                 🙋‍♀️🙋‍♂️
                 <br />
-                みんなといっしょに
+                みんなと
+                <br className="IndexPageHeader_infoBreakpoint" />
+                いっしょに
                 <br />
                 クイズ大会
               </h1>
@@ -65,7 +67,7 @@ export default function Home(): ReactElement {
               background-color: var(--mainAccentColor);
               background-size: auto auto;
               background-image: var(--mainBackgroundPattern);
-              --IndexPageHeaderHeight: 600px;
+              --IndexPageHeaderHeight: 700px;
               height: var(--IndexPageHeaderHeight);
               @media (max-width: 520px) {
                 text-align: center;
@@ -93,6 +95,12 @@ export default function Home(): ReactElement {
                 p {
                   margin-top: 0;
                   margin-bottom: 50px;
+                }
+              }
+              &_infoBreakpoint {
+                display: none;
+                @media (max-width: 520px) {
+                  display: block;
                 }
               }
               &_image {

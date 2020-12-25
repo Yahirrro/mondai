@@ -29,8 +29,10 @@ export const ModalLogin: React.FunctionComponent = () => {
         }}>
         Googleでログイン
       </button>
-      <p style={{ marginBottom: 0, opacity: 0.5 }}>
+      <p style={{ fontSize: '14px', marginBottom: 0, opacity: 0.5 }}>
         ログインした時点で、当サービスの利用規約に同意します
+        <br />
+        アカウント認証とサービス利用に必要な情報のみ利用し、個人情報などの取得は行いません
       </p>
       <style jsx>
         {`

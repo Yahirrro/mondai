@@ -1,6 +1,7 @@
 import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import Link from 'next/link'
+import { useUI } from '@components/ui/context'
 
 type Props = {
   style?: React.CSSProperties
@@ -8,6 +9,7 @@ type Props = {
 
 export const PageFooter: React.FunctionComponent<Props> = (props) => {
   const user = useAuthentication()
+  const { openModal, setModalView } = useUI()
   return (
     <>
       <footer className="PageFooter" style={props.style}>
@@ -22,9 +24,19 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
         </div>
         <div>
           <ul className="PageFooter_list">
-            {user?.userId && (
+            {user?.userId ? (
               <li>
                 <a onClick={() => fuego.auth().signOut()}>ログアウト</a>
+              </li>
+            ) : (
+              <li>
+                <a
+                  onClick={() => {
+                    setModalView('LOGIN_VIEW')
+                    openModal()
+                  }}>
+                  ログイン
+                </a>
               </li>
             )}
             <li>

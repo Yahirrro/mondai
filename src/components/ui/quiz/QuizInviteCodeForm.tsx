@@ -10,7 +10,10 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
   const { data: quiz } = useCollection<QuizModel>(
     String(inviteCode).length == 5 ? `quiz` : null,
     {
-      where: [['inviteCode', '==', inviteCode]],
+      where: [
+        ['currentStatus', '!=', 'archive'],
+        ['inviteCode', '==', inviteCode],
+      ],
       listen: true,
     }
   )
