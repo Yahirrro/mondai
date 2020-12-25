@@ -16,7 +16,7 @@ import {
   ScreenError,
   ScreenLoading,
 } from '@components/ui'
-import * as firebase from 'firebase/app'
+import firebase from 'firebase/app'
 import { useEffect, useState } from 'react'
 import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { ParsedUrlQuery } from 'querystring'

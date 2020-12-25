@@ -3,7 +3,7 @@ import { useAuthentication } from '@components/hook/auth'
 import { useUI } from '@components/ui/common/context'
 import { PageButton } from '@components/ui'
 import { useRouter } from 'next/router'
-import * as firebase from 'firebase/app'
+import firebase from 'firebase/app'
 import { QuizModel } from '@components/models'
 
 export const ModalQuizJoin: React.FunctionComponent = () => {

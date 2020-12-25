@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app'
+import firebase from 'firebase/app'
 import '@components/lib/firebase'
 import { QuizModel } from '@components/models'
 
