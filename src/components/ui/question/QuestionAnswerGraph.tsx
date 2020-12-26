@@ -90,11 +90,10 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
             width: 100%;
             &_title {
               display: inline-block;
-              padding: 5px 15px;
-              background: var(--mainAccentColor);
+              padding-bottom: 10px;
+              border-bottom: 2px solid rgba(0, 0, 0, 0.2);
               margin-top: 0;
               margin-bottom: 15px;
-              transform: translateX(-5px);
             }
             &_grid {
               display: grid;

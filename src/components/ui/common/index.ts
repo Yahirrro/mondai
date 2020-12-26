@@ -1,4 +1,5 @@
 export * from './PageButton'
+export * from './PageCard'
 export * from './PageContainer'
 export * from './PageFooter'
 export * from './PageFormInput'

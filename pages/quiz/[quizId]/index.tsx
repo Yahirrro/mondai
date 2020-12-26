@@ -1,28 +1,38 @@
-import { GetStaticPaths, GetStaticProps } from 'next'
+import firebase from 'firebase/app'
 import Head from 'next/head'
+import { GetStaticPaths, GetStaticProps } from 'next'
+import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
+import { ParsedUrlQuery } from 'querystring'
+import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 
 import { AnswerModel, QuestionModel, QuizModel } from '@models'
 import {
-  QuizButton,
-  PageNumber,
-  QuestionAnswerGraph,
-  QuestionSelect,
-  QuestionSelectCard,
-  QuestionTitle,
-  QuizBadge,
-  QuizCard,
-  QuizNote,
-  QuizQR,
+  QuizCorrectCard,
+  QuizContext,
+  QuizPageHeader,
+  QuizPageInvite,
   ScreenError,
   ScreenLoading,
 } from '@components/ui'
-import firebase from 'firebase/app'
-import { useEffect, useState } from 'react'
-import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
-import { ParsedUrlQuery } from 'querystring'
+
+const QuizScreenWaiting = dynamic(() =>
+  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenWaiting)
+)
+const QuizScreenOpen = dynamic(() =>
+  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenOpen)
+)
+const QuizScreenAnswer = dynamic(() =>
+  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenAnswer)
+)
+const QuizScreenArchive = dynamic(() =>
+  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenArchive)
+)
+
 import { useAuthentication } from '@hook/auth'
 import { getQuiz } from '@lib/api'
 import { useUI } from '@components/ui/context'
+import { getIdToken } from '@lib/api'
 
 type Props = {
   params: ParsedUrlQuery
@@ -32,7 +42,8 @@ type Props = {
 export default function Home(props: Props): React.ReactElement {
   const user = useAuthentication()
   const { openModal, setModalView } = useUI()
-  const [value, setValue] = useState<number | null>(null)
+
+  const [answerValue, setAnswerValue] = useState<number | null>(null)
   const [isAnswered, setIsAnswered] = useState(false)
   const [isApiLoading, setIsApiLoading] = useState(false)
   const [correctAnswers, setCorrectAnswers] = useState<{
@@ -77,6 +88,7 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
+
   useEffect(() => {
     console.log(quiz, question, quizJoin, userAnswer)
     if (userAnswer?.find((data) => data.questionId == question?.id)) {
@@ -87,17 +99,15 @@ export default function Home(props: Props): React.ReactElement {
   }, [userAnswer, question, quizJoin, quiz])
 
   useEffect(() => {
-    if (!quiz?.exists) return
+    if (quiz?.exists == false) return
     if (quiz.currentStatus !== 'open') {
-      if (!isAnswered) {
-        setCorrectAnswers({
-          correct: getCorrectAnswerAmount(),
-          incorrect: getIncorrectAnswerAmount(),
-        })
-      }
+      setCorrectAnswers({
+        correct: getCorrectAnswerAmount(),
+        incorrect: getIncorrectAnswerAmount(),
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userAnswer, quiz, setCorrectAnswers])
+  }, [quiz.currentStatus])
 
   if (!quiz?.exists) return <ScreenError code={404} />
 
@@ -109,7 +119,7 @@ export default function Home(props: Props): React.ReactElement {
       openModal()
       return
     }
-    if (value == null) return
+    if (answerValue == null) return
     if (userAnswer?.find((data) => data.questionId == question?.id)) return
 
     if (quizJoin.exists == false) {
@@ -120,14 +130,14 @@ export default function Home(props: Props): React.ReactElement {
     }
     addUserAnswer({
       userId: user?.userId,
-      answer: value,
-      isCorrectAnswer: value == question.answer,
+      answer: answerValue,
+      isCorrectAnswer: answerValue == question.answer,
       questionId: question.id,
     })
     setIsAnswered(true)
   }
 
-  const checkAnswer = () => {
+  const isCorrectAnswer = () => {
     if (
       userAnswer == [] ||
       userAnswer == undefined ||
@@ -168,26 +178,7 @@ export default function Home(props: Props): React.ReactElement {
     return userAnswer?.filter((data) => data.isCorrectAnswer == false)?.length
   }
 
-  const goStatusAnswer = async () => {
-    setIsApiLoading(true)
-    fuego
-      .auth()
-      .currentUser.getIdToken(true)
-      .then(async (idToken) => {
-        await fetch(`/api/quiz/toAnswer?quizId=` + quiz.id, {
-          headers: { authorization: 'Bearer ' + idToken },
-        })
-          .then((data) => {
-            console.log(data)
-            setIsApiLoading(false)
-          })
-          .catch((error) => {
-            console.error(error)
-          })
-      })
-  }
-
-  const nextQuestion = () => {
+  const goNextQuestion = () => {
     if (!isRemainingQuizExists()) return
     updateQuiz({
       currentStatus: 'open',
@@ -196,23 +187,33 @@ export default function Home(props: Props): React.ReactElement {
     setIsAnswered(false)
   }
 
-  const finishQuiz = () => {
+  const goStatusAnswerScreen = async () => {
+    setIsApiLoading(true)
+    await fetch(`/api/quiz/toAnswer?quizId=` + quiz.id, {
+      headers: { authorization: 'Bearer ' + (await getIdToken()) },
+    })
+      .then((data) => {
+        console.log(data)
+        setIsApiLoading(false)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
+  const goStatusArchiveScreen = async () => {
     if (isRemainingQuizExists()) return
     setIsApiLoading(true)
-    fuego
-      .auth()
-      .currentUser.getIdToken(true)
-      .then(async (idToken) => {
-        await fetch(`/api/quiz/toArchive?quizId=` + quiz.id, {
-          headers: { authorization: 'Bearer ' + idToken },
-        })
-          .then((data) => {
-            console.log(data)
-            setIsApiLoading(false)
-          })
-          .catch((error) => {
-            console.error(error)
-          })
+
+    await fetch(`/api/quiz/toArchive?quizId=` + quiz.id, {
+      headers: { authorization: 'Bearer ' + (await getIdToken()) },
+    })
+      .then((data) => {
+        console.log(data)
+        setIsApiLoading(false)
+      })
+      .catch((error) => {
+        console.error(error)
       })
   }
 
@@ -222,388 +223,77 @@ export default function Home(props: Props): React.ReactElement {
         <title>{props.quiz?.title} | QuizApp</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        style={{
-          background: 'var(--mainBackgroundColor)',
-          position: 'relative',
-          minHeight: 'calc(100vh - 80px)',
+
+      <QuizContext.Provider
+        value={{
+          quiz,
+          question,
+          allQuestion,
+          userAnswer,
+          user,
+          submitAnswer,
+          isCorrectAnswer,
+          isRemainingQuizExists,
+          isMainAnswer,
+          getRemainingQuestionCount,
+          getCorrectAnswerAmount,
+          getIncorrectAnswerAmount,
+          goNextQuestion,
+          goStatusAnswerScreen,
+          goStatusArchiveScreen,
+
+          answerValue,
+          setAnswerValue,
+          isAnswered,
+          setIsAnswered,
+          isApiLoading,
+          setIsApiLoading,
+          correctAnswers,
+          setCorrectAnswers,
         }}>
-        {/* ヘッダー */}
-        <header className="QuizPageHeader">
-          <QuizCard
-            title={quiz.title}
-            description={quiz.description}
-            icon={quiz.icon}
-          />
-          <div className="QuizPageHeader_badge">
-            <QuizBadge text={quiz.currentStatus}></QuizBadge>
-            <QuizBadge text="○人参加中"></QuizBadge>
-          </div>
-          <style jsx>
-            {`
-              .QuizPageHeader {
-                position: relative;
-                z-index: 1;
-                width: fit-content;
-                padding: var(--mainNormalPaddingSize);
-                display: grid;
-                gap: 15px;
-                grid-template-rows: 1fr 30px;
-                &_badge {
-                  display: flex;
-                  flex-flow: wrap;
-                  height: 30px;
-                }
-                &:before {
-                  content: '';
-                  position: absolute;
-                  z-index: -1;
-                  top: 0;
-                  left: 0;
-                  width: 70vw;
-                  height: 250px;
-                  background: var(--mainAccentColor);
-                  background-size: auto auto;
-                  background-image: var(--mainBackgroundPattern);
-                  border-bottom-right-radius: 124px;
-                  @media (max-width: 750px) {
-                    height: 189px;
-                  }
-                }
-              }
-            `}
-          </style>
-        </header>
+        <div className="QuizPage">
+          <QuizPageHeader />
+          <QuizPageInvite />
 
-        {/* QRコード */}
-        <aside className="QuizPageInvite">
-          <QuizQR
-            url={`https://realtimequiz.yahiro.vercel.app/quiz/${props.params.quizId}`}
-            code={quiz.inviteCode}
-          />
-          <style jsx>
-            {`
-              .QuizPageInvite {
-                position: absolute;
-                z-index: 1;
-                top: var(--mainNormalPaddingSize);
-                right: var(--mainNormalPaddingSize);
-                @media (max-width: 750px) {
-                  display: none;
-                }
-              }
-            `}
-          </style>
-        </aside>
-
-        {!question?.exists ? (
-          <ScreenLoading />
-        ) : (
-          <>
-            <main className="QuizPageContent">
-              <div>
-                {quiz.currentStatus == 'waiting' && (
-                  <div>
-                    <h2>開始を待っています</h2>
-                  </div>
-                )}
-                {quiz.currentStatus == 'open' && (
-                  <>
-                    <QuestionTitle title={question?.title}></QuestionTitle>
-                    {!isAnswered ? (
-                      //回答前
-                      <form onSubmit={submitAnswer}>
-                        <div className="QuestionSelect">
-                          {question.choice.map((data, index) => {
-                            return (
-                              <QuestionSelect
-                                key={data.title}
-                                title={data.title}
-                                index={(index + 1).toString()}>
-                                <input
-                                  type="radio"
-                                  id={data.title}
-                                  name={question.title}
-                                  value={data.title}
-                                  onChange={() => {
-                                    setValue(question.choice.indexOf(data))
-                                  }}></input>
-                              </QuestionSelect>
-                            )
-                          })}
-                        </div>
-                        <div
-                          style={{
-                            textAlign: 'right',
-                          }}>
-                          <QuizButton
-                            text="解答する"
-                            type="submit"
-                            disabled={value == null}
-                          />
-                        </div>
-                      </form>
-                    ) : (
-                      // 回答済み
-                      <>
-                        <QuizNote
-                          title={'🤔結果はどうだ'}
-                          style={{ marginTop: '50px' }}>
-                          <p>
-                            {isMainAnswer()
-                              ? 'あなたはメイン回答者です。「結果を見るボタン」をクリックすると、集計が開始され、すべての参加者の答えを確認できます！みんなの様子をみながらボタンを押すといいかもです！'
-                              : 'メイン回答者が次へすすむと、自動的に次の画面が表示されます！ゆったり結果が表示されるのを待ちましょう！'}
-                          </p>
-                        </QuizNote>
-                        <div
-                          style={{
-                            textAlign: 'right',
-                            marginTop: 'var(--mainNormalPaddingSize)',
-                          }}>
-                          {isMainAnswer() ? (
-                            <>
-                              <QuizButton
-                                text="結果を見る"
-                                isLoading={isApiLoading}
-                                onClick={() => goStatusAnswer()}
-                              />
-                            </>
-                          ) : (
-                            <QuizButton text="結果を見る" disabled />
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </>
-                )}
-
-                {quiz.currentStatus == 'answer' && (
-                  <div>
-                    <QuestionTitle title={question?.title}></QuestionTitle>
-
-                    <div className="QuestionSelect">
-                      <QuestionSelectCard
-                        title={question?.choice[question.answer].title}
-                        index={'A'}
-                        type="selected"
-                        style={{ cursor: 'default' }}
-                      />
-                      <QuizNote
-                        title={checkAnswer() ? '😚正解！' : '😥不正解...'}>
-                        <p>
-                          正解は「
-                          <strong>
-                            {`${question.answer}. ${
-                              question?.choice[question.answer].title
-                            }`}
-                          </strong>
-                          」
-                        </p>
-                        {question?.commentary && <p>{question.commentary}</p>}
-                      </QuizNote>
-                    </div>
-
-                    <div
-                      style={{
-                        textAlign: 'right',
-                        marginTop: 'var(--mainNormalPaddingSize)',
-                      }}>
-                      <p>のこり{getRemainingQuestionCount()}問です！</p>
-
-                      {isRemainingQuizExists() ? (
-                        <>
-                          <QuizButton
-                            text="次の問題へ進む"
-                            onClick={() => isMainAnswer() && nextQuestion()}
-                            disabled={!isMainAnswer()}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <QuizButton
-                            text="全ての結果を見る"
-                            isLoading={isApiLoading}
-                            onClick={() => isMainAnswer() && finishQuiz()}
-                            disabled={!isMainAnswer()}
-                          />
-                        </>
-                      )}
-                    </div>
-
-                    <QuizNote
-                      title="😏みんなのこたえ"
-                      style={{
-                        marginTop: 'calc(var(--mainNormalPaddingSize) * 2)',
-                      }}>
-                      <QuestionAnswerGraph
-                        data={question.choice}
-                        correctAnswer={question.answer}
-                      />
-                    </QuizNote>
-                  </div>
-                )}
-
-                {quiz.currentStatus == 'archive' && (
-                  <div>
-                    <h2>全ての問題が終了しました！</h2>
-
-                    <div className="QuestionSelect">
-                      <div>
-                        <h3>すべての参加者数🎉</h3>
-                        <PageNumber number={quiz?.allUser} unit="人" />
-                      </div>
-                      <div>
-                        <h3>ぜんぶ正解した人🎉</h3>
-                        <PageNumber
-                          number={quiz?.allCorrectUser?.length}
-                          unit="人"
-                        />
-                      </div>
-                    </div>
-
-                    <QuizNote title="😏みんなのこたえ">
-                      {quiz?.flow?.map((data, index) => {
-                        if (!allQuestion) return
-                        const questionData = allQuestion?.find(
-                          (element) => element.id == data
-                        )
-                        return (
-                          <QuestionAnswerGraph
-                            key={questionData.title}
-                            data={questionData.choice}
-                            correctAnswer={questionData.answer}
-                            title={index + 1 + '. ' + questionData.title}
-                          />
-                        )
-                      })}
-                    </QuizNote>
-                  </div>
-                )}
-              </div>
-
-              <aside>
-                <div className="QuizCard">
-                  <h3 className="QuizCard_title">正解状況</h3>
-                  <div className="QuizCard_content">
-                    <div className="QuizCard_number">
-                      <svg
-                        width="50"
-                        height="50"
-                        viewBox="0 0 50 50"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M25 4.16667C13.4791 4.16667 4.16663 13.4792 4.16663 25C4.16663 36.5208 13.4791 45.8333 25 45.8333C36.5208 45.8333 45.8333 36.5208 45.8333 25C45.8333 13.4792 36.5208 4.16667 25 4.16667ZM25 41.6667C15.8125 41.6667 8.33329 34.1875 8.33329 25C8.33329 15.8125 15.8125 8.33333 25 8.33333C34.1875 8.33333 41.6666 15.8125 41.6666 25C41.6666 34.1875 34.1875 41.6667 25 41.6667Z"
-                          fill="#FF0000"
-                          fillOpacity="0.5"
-                        />
-                      </svg>
-                      <p>{correctAnswers.correct}</p>
-                    </div>
-                    <div className="QuizCard_number">
-                      <svg
-                        width="50"
-                        height="50"
-                        viewBox="0 0 50 50"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M39.5834 13.3542L36.6459 10.4167L25.0001 22.0625L13.3542 10.4167L10.4167 13.3542L22.0626 25L10.4167 36.6458L13.3542 39.5833L25.0001 27.9375L36.6459 39.5833L39.5834 36.6458L27.9376 25L39.5834 13.3542Z"
-                          fill="#FF0000"
-                          fillOpacity="0.5"
-                        />
-                      </svg>
-                      <p>{correctAnswers.incorrect}</p>
-                    </div>
-                  </div>
-                  <p className="QuizCard_description">
-                    全{quiz?.flow.length}問
-                  </p>
+          <main className="QuizPageContent">
+            {!question?.exists ? (
+              <ScreenLoading />
+            ) : (
+              <>
+                <div>
+                  {quiz.currentStatus == 'waiting' && <QuizScreenWaiting />}
+                  {quiz.currentStatus == 'open' && <QuizScreenOpen />}
+                  {quiz.currentStatus == 'answer' && <QuizScreenAnswer />}
+                  {quiz.currentStatus == 'archive' && <QuizScreenArchive />}
                 </div>
-              </aside>
+                <aside>
+                  <QuizCorrectCard />
+                </aside>
+              </>
+            )}
+          </main>
 
-              <style jsx>
-                {`
-                  .QuizCard {
-                    padding: 30px 20px;
-                    background: #ffffff;
-                    border-radius: 20px;
-                    &_title {
-                      text-align: center;
-                      margin-top: 0;
-                      margin-bottom: 10px;
-                      font-size: 24px;
-                      line-height: 33px;
-                    }
-                    &_description {
-                      font-weight: bold;
-                      font-size: 18px;
-                      line-height: 22px;
-                      text-align: center;
-                      color: rgba(0, 0, 0, 0.34);
-                      margin-top: 10px;
-                      margin-bottom: 0;
-                    }
-                    &_content {
-                      display: grid;
-                      grid-template-columns: 1fr 1fr;
-                      gap: 10px;
-                    }
-                    &_number {
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      p {
-                        font-weight: bold;
-                        font-size: 72px;
-                        line-height: 87px;
-                        margin: 0;
-                      }
-                    }
-                  }
-                  .QuizPageContent {
-                    display: grid;
-                    grid-template-columns: 1fr 300px;
-                    gap: calc(var(--mainNormalPaddingSize) * 2);
-                    padding: var(--mainNormalPaddingSize);
-                    @media (max-width: 1050px) {
-                      grid-template-columns: 1fr;
-                      padding: calc(var(--mainNormalPaddingSize) * 1.5)
-                        var(--mainNormalPaddingSize);
-                    }
-                  }
-                  .QuestionSelect {
-                    display: grid;
-                    gap: var(--mainNormalPaddingSize);
-                    margin-top: calc(var(--mainNormalPaddingSize) * 1.5);
-                    margin-bottom: var(--mainNormalPaddingSize);
-                    grid-template-columns: repeat(
-                      auto-fit,
-                      [col-start] minmax(380px, 1fr) [col-end]
-                    );
-                    @media (max-width: 750px) {
-                      grid-template-columns: 1fr;
-                      margin-top: calc(var(--mainNormalPaddingSize) * 2);
-                    }
-                    &_input {
-                      cursor: pointer;
-                      width: 100%;
-                      height: 60px;
-                      padding: 1rem 1rem;
-                      border: 1px solid whitesmoke;
-                    }
-                  }
-                  .QuizButtonContainer {
-                    display: flex;
-                    align-items: center;
-                    margin-top: var(--mainNormalPaddingSize);
-                  }
-                `}
-              </style>
-            </main>
-          </>
-        )}
-      </div>
+          <style jsx>
+            {`
+              .QuizPage {
+                position: relative;
+                min-height: calc(100vh - 80px);
+              }
+              .QuizPageContent {
+                display: grid;
+                grid-template-columns: 1fr 300px;
+                gap: calc(var(--mainNormalPaddingSize) * 2);
+                padding: var(--mainNormalPaddingSize);
+                @media (max-width: 1050px) {
+                  grid-template-columns: 1fr;
+                  padding: calc(var(--mainNormalPaddingSize) * 1.5)
+                    var(--mainNormalPaddingSize);
+                }
+              }
+            `}
+          </style>
+        </div>
+      </QuizContext.Provider>
     </>
   )
 }
