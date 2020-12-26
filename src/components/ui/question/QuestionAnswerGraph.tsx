@@ -52,7 +52,7 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
                       {choice.answerAmount +
                         '人' +
                         ' / ' +
-                        (choice.answerAmount / getMostBigAmount()) * 100 +
+                        ((choice.answerAmount / allAmount()) * 100).toFixed(1) +
                         '%'}
                     </p>
                   </div>

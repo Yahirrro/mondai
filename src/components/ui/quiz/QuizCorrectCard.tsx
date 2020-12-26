@@ -1,6 +1,11 @@
 import { useContext } from 'react'
 
-import { IconCorrect, PageCard, QuizContext } from '@components/ui'
+import {
+  IconCorrect,
+  IconIncorrect,
+  PageCard,
+  QuizContext,
+} from '@components/ui'
 
 export const QuizCorrectCard: React.FunctionComponent = () => {
   const { quiz, correctAnswers } = useContext(QuizContext)
@@ -14,7 +19,7 @@ export const QuizCorrectCard: React.FunctionComponent = () => {
             <p>{correctAnswers.correct}</p>
           </div>
           <div className="QuizCorrectCard_number">
-            <IconCorrect />
+            <IconIncorrect />
             <p>{correctAnswers.incorrect}</p>
           </div>
         </div>
