@@ -40,7 +40,7 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
               </li>
             )}
             <li>
-              <Link href="/">
+              <Link href="/docs/terms">
                 <a>利用規約</a>
               </Link>
             </li>

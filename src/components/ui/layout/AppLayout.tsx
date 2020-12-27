@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import { DefaultSeo } from 'next-seo'
 import { PageFooter, PageModal } from '@components/ui/common'
 import { useUI } from '@components/ui/context'
 import type {
@@ -21,6 +22,20 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
   const { displayModal, closeModal, modalView } = useUI()
   return (
     <>
+      <DefaultSeo
+        dangerouslySetAllPagesToNoIndex={true}
+        dangerouslySetAllPagesToNoFollow={true}
+        openGraph={{
+          type: 'website',
+          locale: 'ja_JP',
+          site_name: 'realtimequiz',
+        }}
+        twitter={{
+          handle: '@Yahimotto',
+          cardType: 'summary_large_image',
+        }}
+      />
+
       <PageModal open={displayModal} onClose={closeModal}>
         {modalView === 'LOGIN_VIEW' && <ModalLogin />}
         {modalView === 'USERNAME_VIEW' && <ModalUserName />}

@@ -1,5 +1,5 @@
 import firebase from 'firebase/app'
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
@@ -219,10 +219,7 @@ export default function Home(props: Props): React.ReactElement {
 
   return (
     <>
-      <Head>
-        <title>{props.quiz?.title} | QuizApp</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo title={quiz.title} description={quiz.description} />
 
       <QuizContext.Provider
         value={{
