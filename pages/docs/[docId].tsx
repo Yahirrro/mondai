@@ -24,6 +24,11 @@ type Props = {
 export default function Home(props: Props): React.ReactElement {
   return (
     <>
+      <NextSeo
+        title={props.markdown.data.title}
+        description={props.markdown.data.description}
+      />
+
       <figure className="PageContent_wave">
         <svg
           width="1440"
@@ -36,10 +41,6 @@ export default function Home(props: Props): React.ReactElement {
         </svg>
       </figure>
 
-      <NextSeo
-        title={props.markdown.data.title}
-        description={props.markdown.data.description}
-      />
       <PageContainer style={{ maxWidth: '800px' }}>
         <article className="PageContent">
           <h1 className="PageContent_title">{props.markdown.data.title}</h1>
@@ -53,6 +54,7 @@ export default function Home(props: Props): React.ReactElement {
           .PageContent {
             word-break: break-all;
             &_title {
+              margin-top: 0;
               font-size: 3rem;
             }
             &_wave {
@@ -62,7 +64,7 @@ export default function Home(props: Props): React.ReactElement {
               background-size: auto auto;
               background-image: var(--mainBackgroundPattern);
               width: 100%;
-              height: 80px;
+              height: 150px;
               margin: 0;
               svg {
                 position: absolute;

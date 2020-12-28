@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { PageContainer } from '@components/ui'
+import { PageContainer, LogoFull } from '@components/ui'
 import { useAuthentication } from '@hook/auth'
 import { useUI } from '@components/ui/context'
 
@@ -18,10 +18,13 @@ export const PageNavbar: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <nav className="PageNavbar" style={props.style}>
-        <PageContainer style={{ paddingTop: 0, paddingBottom: 0 }}>
+        <PageContainer
+          style={{ paddingTop: 0, paddingBottom: 0, maxWidth: '1600px' }}>
           <div className="PageNavbar_flex">
             <Link href="/">
-              <a></a>
+              <a>
+                <LogoFull style={{ height: '26px', width: 'initial' }} />
+              </a>
             </Link>
             <ul className="PageNavbar_list">
               {!user?.userId && (
@@ -43,13 +46,16 @@ export const PageNavbar: React.FunctionComponent<Props> = (props) => {
             .PageNavbar {
               height: 70px;
               position: absolute;
-              top: 0;
+              top: 30px;
               z-index: 1;
               width: 100%;
               &_flex {
                 height: 70px;
                 display: flex;
                 justify-content: space-between;
+                a {
+                  align-self: center;
+                }
               }
               &_list {
                 display: flex;

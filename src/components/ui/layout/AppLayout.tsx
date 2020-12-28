@@ -1,11 +1,13 @@
 import dynamic from 'next/dynamic'
 import { DefaultSeo } from 'next-seo'
-import { PageFooter, PageModal } from '@components/ui/common'
+import { PageNavbar, PageFooter, PageModal } from '@components/ui/common'
 import { useUI } from '@components/ui/context'
 import type {
   ModalLogin as ModalLoginType,
   ModalUserName as ModalUserNameType,
 } from '@components/ui/modal'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const ModalLogin = dynamic(() =>
   import('@components/ui/modal').then((lib) => lib.ModalLogin)
@@ -20,8 +22,12 @@ type Props = {
 
 export const AppLayout: React.FunctionComponent<Props> = (props) => {
   const { displayModal, closeModal, modalView } = useUI()
+  const router = useRouter()
   return (
     <>
+      <Head>
+        <link rel="icon" href="/logo/LogoIcon.png" />
+      </Head>
       <DefaultSeo
         dangerouslySetAllPagesToNoIndex={true}
         dangerouslySetAllPagesToNoFollow={true}
@@ -40,6 +46,8 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
         {modalView === 'LOGIN_VIEW' && <ModalLogin />}
         {modalView === 'USERNAME_VIEW' && <ModalUserName />}
       </PageModal>
+
+      {router.pathname !== '/quiz/[quizId]' && <PageNavbar />}
 
       {props.children}
 

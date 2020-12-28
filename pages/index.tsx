@@ -1,20 +1,20 @@
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import { ReactElement } from 'react'
 
-import { PageNavbar, PageContainer, QuizInviteCodeForm } from '@components/ui'
+import { PageContainer, QuizInviteCodeForm } from '@components/ui'
 
 export default function Home(): ReactElement {
   return (
     <>
-      <Head>
-        <title>みんなといっしょにクイズ大会 | QuizApp</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <NextSeo
+        title={'mondai | みんなでリアルタイムクイズ大会!'}
+        description={
+          'mondaiはみんなでクイズをリアルタイムにワイワイ解けるアプリです。mondaiをつかえば、友達同士やイベントでリアルタイムにクイズを出題することが出来ます。'
+        }
+      />
 
       <div>
-        <PageNavbar />
-
         <header className="IndexPageHeader">
           <PageContainer style={{ height: 'var(--IndexPageHeaderHeight)' }}>
             <div className="IndexPageHeader_info">
@@ -27,7 +27,7 @@ export default function Home(): ReactElement {
                 <br />
                 クイズ大会
               </h1>
-              <p>リアルタイムクイズアプリ</p>
+              <p>リアルタイムクイズアプリ mondai</p>
               <QuizInviteCodeForm />
             </div>
             <div className="IndexPageHeader_image">
