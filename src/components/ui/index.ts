@@ -1,4 +1,5 @@
 export * from './common'
+export * from './dashboard'
 export * from './icon'
 export * from './layout'
 export * from './logo'

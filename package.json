@@ -12,6 +12,7 @@
     "@nandorojo/swr-firestore": "^0.16.0",
     "@types/styled-jsx": "^2.2.8",
     "firebase": "8.2.1",
+    "formik": "^2.2.6",
     "gray-matter": "^4.0.2",
     "next": "10.0.3",
     "next-seo": "^4.17.0",

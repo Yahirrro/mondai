@@ -1,20 +1,12 @@
-import { ChangeEvent } from 'react'
-
-type Props = {
-  type?: 'text' | string
-  placeholder?: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-}
-
-export const PageFormInput: React.FunctionComponent<Props> = (props) => {
+export const PageFormInput: React.FunctionComponent<
+  React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >
+> = (props) => {
   return (
     <>
-      <input
-        className="PageFormInput"
-        type={props.type}
-        placeholder={props.placeholder}
-        onChange={props.onChange}
-      />
+      <input className="PageFormInput" {...props} />
       <style jsx>
         {`
           .PageFormInput {
@@ -33,6 +25,9 @@ export const PageFormInput: React.FunctionComponent<Props> = (props) => {
             border: 1px solid rgba(76, 123, 87, 0.3);
             border-radius: 4px;
             outline: none;
+          }
+          :global(label > .PageFormInput) {
+            margin-top: 10px;
           }
         `}
       </style>

@@ -1,18 +1,12 @@
-type Props = {
-  children: React.ReactNode
-  type?: 'button' | 'submit' | 'reset'
-  onClick?: (event: React.MouseEvent<HTMLInputElement>) => void
-  style?: React.CSSProperties
-}
-
-export const PageButton: React.FunctionComponent<Props> = (props) => {
+export const PageButton: React.FunctionComponent<
+  React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >
+> = (props) => {
   return (
     <>
-      <button
-        type={props.type}
-        className="PageButton"
-        onClick={props.onClick}
-        style={props.style}>
+      <button className={'PageButton' + ` ${props.className}`} {...props}>
         {props.children}
       </button>
       <style jsx>
