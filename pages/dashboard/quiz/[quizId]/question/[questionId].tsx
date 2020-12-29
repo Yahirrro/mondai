@@ -42,7 +42,7 @@ export default function Home(props: Props): React.ReactElement {
                 updateQuestion({
                   title: value.title,
                   commentary: value.commentary,
-                  answer: answer ? answer : value.answer,
+                  answer: answer == undefined ? value.answer : answer,
                   choice: value.choice,
                 })
               }}>
@@ -61,12 +61,13 @@ export default function Home(props: Props): React.ReactElement {
                       render={(arrayHelpers) => (
                         <div>
                           {values?.choice.map((choice, index) => {
-                            const answerData = answer ? answer : values.answer
+                            const answerData =
+                              answer == undefined ? values.answer : answer
                             return (
                               <label
                                 key={index}
                                 className={`DashboardQuestionSelect${
-                                  answerData == index
+                                  answerData === index
                                     ? ' DashboardQuestionSelect-correctAnswer'
                                     : ''
                                 }`}>
@@ -85,16 +86,22 @@ export default function Home(props: Props): React.ReactElement {
                                     gap: '10px',
                                   }}>
                                   <PageButton
+                                    style={{
+                                      backgroundColor: 'white',
+                                    }}
                                     type="button"
                                     onClick={() => setAnswer(index)}>
-                                    🧨
+                                    💯 正解にする
                                   </PageButton>
                                   <PageButton
+                                    style={{
+                                      backgroundColor: 'white',
+                                    }}
                                     type="button"
                                     onClick={() => {
                                       arrayHelpers.remove(index)
                                     }}>
-                                    ❌
+                                    ❌ 削除する
                                   </PageButton>
                                 </div>
                               </label>
@@ -134,7 +141,13 @@ export default function Home(props: Props): React.ReactElement {
                     </div>
                   </div>
                   <div>
-                    <PageButton type="submit" style={{ width: '100%' }}>
+                    <PageButton
+                      type="submit"
+                      style={{
+                        width: '100%',
+                        color: 'white',
+                        backgroundColor: 'var(--mainPrimaryColor)',
+                      }}>
                       更新する
                     </PageButton>
                   </div>
