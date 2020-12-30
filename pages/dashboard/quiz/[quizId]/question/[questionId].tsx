@@ -3,7 +3,12 @@ import { useDocument } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import React, { useState } from 'react'
-import { DashboardLayout, PageButton, PageFormInput } from '@components/ui'
+import {
+  DashboardLayout,
+  IconIncorrect,
+  PageButton,
+  PageFormInput,
+} from '@components/ui'
 
 import { Formik, Field, Form, FieldArray } from 'formik'
 
@@ -27,7 +32,7 @@ export default function Home(props: Props): React.ReactElement {
       <DashboardLayout quizId={props.params.quizId as string}>
         <div className="DashboardQuestionEdit">
           <div className="DashboardQuestionEdit_info">
-            <h1 className="DashboardQuestionEdit_title">{question?.title}</h1>
+            <h1 className="DashboardQuestionEdit_title">問題の編集</h1>
           </div>
           {question && (
             <Formik
@@ -36,7 +41,7 @@ export default function Home(props: Props): React.ReactElement {
                 console.log({
                   title: value.title,
                   commentary: value.commentary,
-                  answer: answer,
+                  answer: answer == undefined ? value.answer : answer,
                   choice: value.choice,
                 })
                 updateQuestion({
@@ -51,8 +56,12 @@ export default function Home(props: Props): React.ReactElement {
                   <div className="DashboardQuestionEdit_body">
                     <div>
                       <label>
-                        質問のタイトル
+                        問題文
                         <Field as={PageFormInput} name="title" type="text" />
+                        <p className="DashboardQuestionEdit_comment">
+                          問題文は、一番読まれる文章です!
+                          簡潔に、わかりやすく書くと、より楽しいクイズ大会になります!
+                        </p>
                       </label>
                     </div>
 
@@ -67,7 +76,7 @@ export default function Home(props: Props): React.ReactElement {
                               <label
                                 key={index}
                                 className={`DashboardQuestionSelect${
-                                  answerData === index
+                                  answerData == index
                                     ? ' DashboardQuestionSelect-correctAnswer'
                                     : ''
                                 }`}>
@@ -76,24 +85,35 @@ export default function Home(props: Props): React.ReactElement {
                                     as={PageFormInput}
                                     name={`choice[${index}].title`}
                                     type="text"
+                                    required
                                   />
                                 </h3>
-                                <div
-                                  style={{
-                                    position: 'absolute',
-                                    right: '30px',
-                                    display: 'flex',
-                                    gap: '10px',
-                                  }}>
-                                  <PageButton
-                                    style={{
-                                      backgroundColor: 'white',
-                                    }}
-                                    type="button"
-                                    onClick={() => setAnswer(index)}>
-                                    💯 正解にする
-                                  </PageButton>
-                                  <PageButton
+                                <div className="DashboardQuestionSelect_buttonGroup">
+                                  {answerData !== index && (
+                                    <button
+                                      className="DashboardQuestionSelect_button-correctAnswer"
+                                      onClick={() => setAnswer(index)}
+                                      title="正解にする">
+                                      💯
+                                    </button>
+                                  )}
+                                  <button
+                                    className="DashboardQuestionSelect_button-remove"
+                                    title="削除する"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index)
+                                    }}>
+                                    <IconIncorrect />
+                                  </button>
+                                  {/* 
+                                    <PageButton
+                                      style={{
+                                        backgroundColor: 'white',
+                                      }}
+                                      type="button"
+                                      onClick={() => setAnswer(index)}>
+                                      💯 正解にする
+                                    </PageButton><PageButton
                                     style={{
                                       backgroundColor: 'white',
                                     }}
@@ -102,7 +122,7 @@ export default function Home(props: Props): React.ReactElement {
                                       arrayHelpers.remove(index)
                                     }}>
                                     ❌ 削除する
-                                  </PageButton>
+                                  </PageButton> */}
                                 </div>
                               </label>
                             )
@@ -117,7 +137,7 @@ export default function Home(props: Props): React.ReactElement {
                             <PageButton
                               type="button"
                               onClick={() => arrayHelpers.push({ title: '' })}>
-                              質問を追加する
+                              選択肢を追加する
                             </PageButton>
                           </div>
                         </div>
@@ -126,12 +146,15 @@ export default function Home(props: Props): React.ReactElement {
 
                     <div>
                       <label>
-                        質問の解説
+                        問題の解説文
                         <Field
                           as={PageFormInput}
                           name="commentary"
                           type="text"
                         />
+                        <p className="DashboardQuestionEdit_comment">
+                          問題の解説文は、問題が終わったあと、答え合わせのときに表示されます!
+                        </p>
                       </label>
                       {/* <PageFormInput
                     name="commentary"
@@ -162,6 +185,9 @@ export default function Home(props: Props): React.ReactElement {
               padding: 40px 30px;
               border-radius: 30px;
               background: #ffffff;
+              @media (max-width: 1100px) {
+                padding: 40px 20px;
+              }
               &_info {
                 margin-bottom: 40px;
                 h1 {
@@ -177,8 +203,16 @@ export default function Home(props: Props): React.ReactElement {
                   font-weight: bold;
                 }
               }
+              &_comment {
+                margin-top: 6px;
+                margin-bottom: 0;
+                font-size: 0.9rem;
+                font-weight: normal;
+                opacity: 0.6;
+              }
             }
             .DashboardQuestionSelect {
+              counter-increment: index;
               user-select: none;
               cursor: pointer;
               position: relative;
@@ -187,13 +221,88 @@ export default function Home(props: Props): React.ReactElement {
               box-sizing: border-box;
               border-radius: 20px;
               height: 80px;
-              padding: 0 30px;
-              display: flex;
-              align-items: center;
+              padding: 0 20px;
+              display: grid;
+              grid-template-columns: 1fr 110px;
+              gap: var(--mainNormalPaddingSize);
+              transition: all 0.4s;
+              @media (max-width: 750px) {
+                padding: 20px;
+                height: initial;
+                grid-template-columns: 1fr;
+                gap: 10px;
+                width: calc(100% + 20px);
+                transform: translateX(-10px);
+              }
               &-correctAnswer {
                 background-color: var(--mainAccentColor);
               }
               &_title {
+                margin: 0;
+                display: flex;
+                align-items: center;
+                &:before {
+                  content: counter(index);
+                  font-weight: bold;
+                  font-size: 4rem;
+                  line-height: 1;
+                  margin-right: 20px;
+                  min-width: 40px;
+                  text-align: center;
+                  color: rgba(0, 0, 0, 0.34);
+                  @media (max-width: 1100px) {
+                    margin-right: 10px;
+                  }
+                }
+              }
+              &_buttonGroup {
+                display: grid;
+                grid-template-columns: 50px 50px;
+                gap: 10px;
+                align-items: center;
+                @media (max-width: 1100px) {
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                }
+              }
+              &_button {
+                position: relative;
+                cursor: pointer;
+                width: 50px;
+                height: 50px;
+                padding: 10px;
+                border: none;
+                background: white;
+                border-radius: 50%;
+                border: 1px solid #e6e6e6;
+                margin-bottom: 16px;
+                &:before {
+                  font-family: var(--mainFontFamily);
+                  position: absolute;
+                  left: 0;
+                  bottom: -20px;
+                  width: 50px;
+                  opacity: 0.6;
+                }
+                &-correctAnswer {
+                  @extend .DashboardQuestionSelect_button;
+                  background-color: var(--mainAccentColor);
+                  grid-column: 1;
+                  &:before {
+                    content: '正解に';
+                  }
+                }
+                &-remove {
+                  @extend .DashboardQuestionSelect_button;
+                  grid-column: 2;
+                  &:before {
+                    content: '削除';
+                  }
+                }
+                :global(svg) {
+                  width: 28px;
+                  height: 28px;
+                }
               }
               &_input {
                 position: absolute;
