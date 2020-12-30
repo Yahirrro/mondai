@@ -38,61 +38,65 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
   return (
     <>
       <form className="QuizInviteCodeForm">
-        <h3>コードを入力して今すぐ参加</h3>
-        <div className="QuizInviteCodeForm_input">
-          <input
-            placeholder="_____"
-            type="number"
-            pattern="\d*"
-            maxLength={5}
-            onChange={(object) => {
-              if (object.target.value.length > object.target.maxLength) {
-                object.target.value = object.target.value.slice(
-                  0,
-                  object.target.maxLength
-                )
-              }
-              setInviteCode(Number(object.target.value))
-            }}
-          />
-          {isLoading && (
-            <svg
-              width="38"
-              height="38"
-              viewBox="0 0 38 38"
-              xmlns="http://www.w3.org/2000/svg"
-              stroke="black">
-              <g fill="none" fillRule="evenodd">
-                <g transform="translate(1 1)" strokeWidth="2">
-                  <circle strokeOpacity=".5" cx="18" cy="18" r="18" />
-                  <path d="M36 18c0-9.94-8.06-18-18-18">
-                    <animateTransform
-                      attributeName="transform"
-                      type="rotate"
-                      from="0 18 18"
-                      to="360 18 18"
-                      dur="1s"
-                      repeatCount="indefinite"
-                    />
-                  </path>
+        <label className="QuizInviteCodeForm_label">
+          <h3>コードを入力して今すぐ参加</h3>
+          <div className="QuizInviteCodeForm_input">
+            <input
+              placeholder="_____"
+              type="number"
+              pattern="\d*"
+              maxLength={5}
+              onChange={(object) => {
+                if (object.target.value.length > object.target.maxLength) {
+                  object.target.value = object.target.value.slice(
+                    0,
+                    object.target.maxLength
+                  )
+                }
+                setInviteCode(Number(object.target.value))
+              }}
+            />
+            {isLoading && (
+              <svg
+                width="38"
+                height="38"
+                viewBox="0 0 38 38"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="black">
+                <g fill="none" fillRule="evenodd">
+                  <g transform="translate(1 1)" strokeWidth="2">
+                    <circle strokeOpacity=".5" cx="18" cy="18" r="18" />
+                    <path d="M36 18c0-9.94-8.06-18-18-18">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 18 18"
+                        to="360 18 18"
+                        dur="1s"
+                        repeatCount="indefinite"
+                      />
+                    </path>
+                  </g>
                 </g>
-              </g>
-            </svg>
-          )}
-        </div>
+              </svg>
+            )}
+          </div>
+        </label>
       </form>
       <style jsx>
         {`
           .QuizInviteCodeForm {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
             font-weight: bold;
             font-size: 18px;
             line-height: 25px;
-            @media (max-width: 520px) {
-              flex-flow: wrap;
-              justify-content: center;
+            &_label {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              @media (max-width: 520px) {
+                flex-flow: wrap;
+                justify-content: center;
+              }
             }
             h3 {
               margin-top: 0;
