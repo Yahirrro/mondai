@@ -1,6 +1,11 @@
 import dynamic from 'next/dynamic'
 import { DefaultSeo } from 'next-seo'
-import { PageNavbar, PageFooter, PageModal } from '@components/ui/common'
+import {
+  PageNavbar,
+  PageFooter,
+  PageModal,
+  PageAccentWave,
+} from '@components/ui'
 import { useUI } from '@components/ui/context'
 import type {
   ModalLogin as ModalLoginType,
@@ -8,6 +13,7 @@ import type {
 } from '@components/ui/modal'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import React from 'react'
 
 const ModalLogin = dynamic(() =>
   import('@components/ui/modal').then((lib) => lib.ModalLogin)
@@ -54,6 +60,10 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
         {modalView === 'LOGIN_VIEW' && <ModalLogin />}
         {modalView === 'USERNAME_VIEW' && <ModalUserName />}
       </PageModal>
+
+      {!(router.pathname == '/quiz/[quizId]' || router.pathname == '/') && (
+        <PageAccentWave />
+      )}
 
       {router.pathname !== '/quiz/[quizId]' && <PageNavbar />}
 

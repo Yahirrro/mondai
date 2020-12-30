@@ -1,8 +1,5 @@
-import { DashboardLayout, DashboardQuizLayout } from '@components/ui'
-import { QuestionModel, QuizModel } from '@models'
-import { useCollection, useDocument } from '@nandorojo/swr-firestore'
-import { GetStaticPaths, GetStaticProps } from 'next'
-import { ParsedUrlQuery } from 'querystring'
+import { DashboardLayout } from '@components/ui'
+import { GetStaticProps } from 'next'
 import React from 'react'
 
 export default function Home(): React.ReactElement {

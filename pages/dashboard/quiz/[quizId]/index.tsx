@@ -1,6 +1,13 @@
-import { DashboardQuizLayout } from '@components/ui'
-import { QuestionModel, QuizModel } from '@models'
-import { useCollection, useDocument } from '@nandorojo/swr-firestore'
+import {
+  DashboardFormikField,
+  DashboardQuizLayout,
+  PageButton,
+  QuizNote,
+  ScreenLoading,
+} from '@components/ui'
+import { QuizModel } from '@models'
+import { useDocument } from '@nandorojo/swr-firestore'
+import { Form, Formik } from 'formik'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
@@ -10,14 +17,8 @@ type Props = {
 }
 
 export default function Home(props: Props): React.ReactElement {
-  const { data: quiz } = useDocument<QuizModel>(
+  const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
     props.params.quizId ? `quiz/${props.params.quizId}` : null,
-    {
-      listen: true,
-    }
-  )
-  const { data: questions } = useCollection<QuestionModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}/question` : null,
     {
       listen: true,
     }
@@ -26,7 +27,60 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
-        <h2>クイズのタイトルとか説明文を変えるフォーム</h2>
+        <QuizNote title="クイズのタイトルとか説明文を変えるフォーム">
+          {!quiz ? (
+            <ScreenLoading style={{ backgroundColor: 'white' }} />
+          ) : (
+            <Formik
+              enableReinitialize
+              initialValues={quiz}
+              onSubmit={async (value: QuizModel) => {
+                console.log({
+                  title: value.title,
+                  description: value.description,
+                  icon: value.icon,
+                })
+                updateQuiz({
+                  title: value.title,
+                  description: value.description,
+                  icon: value.icon,
+                })
+              }}>
+              {() => (
+                <Form style={{ width: '100%' }}>
+                  <DashboardFormikField
+                    title="👶クイズのタイトル"
+                    description="このクイズをひとことであらわすなら?"
+                    name="title"
+                  />
+                  <DashboardFormikField
+                    title="🙌クイズの説明文"
+                    description="説明文だよ！ちょっとだけかいてね！"
+                    name="description"
+                  />
+                  <DashboardFormikField
+                    title="🖼クイズのアイコンURL"
+                    description="好きなアイコンを指定しよう！"
+                    name="icon"
+                    type="url"
+                  />
+
+                  <PageButton
+                    type="submit"
+                    buttontype="big"
+                    style={{
+                      marginTop: 'var(--mainNormalPaddingSize)',
+                      width: '100%',
+                      color: 'white',
+                      backgroundColor: 'var(--mainPrimaryColor)',
+                    }}>
+                    更新する
+                  </PageButton>
+                </Form>
+              )}
+            </Formik>
+          )}
+        </QuizNote>
       </DashboardQuizLayout>
       <style jsx>
         {`

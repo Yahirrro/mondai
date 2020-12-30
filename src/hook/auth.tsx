@@ -31,7 +31,7 @@ export function useAuthentication(): UserModel {
       }
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setUser, user])
+  }, [user])
 
   return user
 }

@@ -35,35 +35,19 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
       <DashboardLayout
         top={
           <div className="DashboardQuizLayout_header">
-            <QuizCard
-              title={quiz?.title}
-              description={quiz?.description}
-              icon={quiz?.icon}
-            />
+            <Link href={`/dashboard/quiz/${props.quizId}`}>
+              <a>
+                <QuizCard
+                  title={quiz?.title}
+                  description={quiz?.description}
+                  icon={quiz?.icon}
+                />
+              </a>
+            </Link>
           </div>
         }
         side={
           <div className="DashboardQuizLayout_side">
-            {router.pathname ==
-              '/dashboard/quiz/[quizId]/question/[questionId]' && (
-              <>
-                {quiz?.flow.map((data, index) => {
-                  const question = questions?.find(
-                    (questions) => data == questions.id
-                  )
-                  if (!question) return
-                  return (
-                    <DashboardQuestionCard
-                      key={question.id}
-                      index={index}
-                      quiz={quiz}
-                      question={question}
-                      type="small"
-                    />
-                  )
-                })}
-              </>
-            )}
             <ul>
               <li>
                 <Link href={`/dashboard/quiz/${props.quizId}`}>
@@ -94,24 +78,20 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
             &_side {
               ul {
                 display: grid;
-                grid-template-rows: 50px;
+                grid-template-rows: 30px;
                 gap: 10px;
                 list-style-type: none;
                 padding: 0;
                 li {
                   display: flex;
-                  height: 50px;
+                  height: 30px;
                   align-items: center;
-                  font-weight: bold;
-                  font-size: 1.3rem;
-
+                  font-size: 1rem;
+                  color: rgba(0, 0, 0, 0.5);
                   &:before {
-                    content: '';
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    background-color: var(--mainAccentColor);
+                    content: '●';
                     margin-right: 10px;
+                    color: var(--mainAccentColor);
                   }
                 }
               }

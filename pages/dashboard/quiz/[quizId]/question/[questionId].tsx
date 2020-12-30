@@ -1,22 +1,39 @@
-import { QuestionModel } from '@models'
-import { useDocument } from '@nandorojo/swr-firestore'
+import { QuestionModel, QuizModel } from '@models'
+import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
+  DashboardFormikField,
+  DashboardQuestionCard,
   DashboardQuizLayout,
   IconIncorrect,
   PageButton,
   PageFormInput,
+  QuizNote,
   ScreenError,
   ScreenLoading,
 } from '@components/ui'
 
 import { Formik, Field, Form, FieldArray } from 'formik'
+import { useRouter } from 'next/router'
 
 type Props = { params: ParsedUrlQuery }
 
 export default function Home(props: Props): React.ReactElement {
+  const router = useRouter()
+  const { data: quiz } = useDocument<QuizModel>(
+    props.params.quizId ? `quiz/${props.params.quizId}` : null,
+    {
+      listen: true,
+    }
+  )
+  const { data: questions } = useCollection<QuestionModel>(
+    props.params.quizId ? `quiz/${props.params.quizId}/question` : null,
+    {
+      listen: true,
+    }
+  )
   const { data: question, update: updateQuestion } = useDocument<QuestionModel>(
     props.params.questionId
       ? `quiz/${props.params.quizId}/question/${props.params.questionId}`
@@ -28,6 +45,9 @@ export default function Home(props: Props): React.ReactElement {
   const [answer, setAnswer] = useState<number>(
     question?.answer && question.answer
   )
+  useEffect(() => {
+    setAnswer(question?.answer)
+  }, [question?.answer, router.query.questionId])
 
   if (question !== undefined && question?.exists == false)
     return <ScreenError code={404} />
@@ -35,10 +55,7 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
-        <div className="DashboardQuestionEdit">
-          <div className="DashboardQuestionEdit_info">
-            <h1 className="DashboardQuestionEdit_title">問題の編集</h1>
-          </div>
+        <QuizNote title="問題の編集">
           {!question ? (
             <ScreenLoading style={{ backgroundColor: 'white' }} />
           ) : (
@@ -60,17 +77,14 @@ export default function Home(props: Props): React.ReactElement {
                 })
               }}>
               {({ values }) => (
-                <Form>
+                <Form style={{ width: '100%' }}>
                   <div className="DashboardQuestionEdit_body">
                     <div>
-                      <label>
-                        問題文
-                        <Field as={PageFormInput} name="title" type="text" />
-                        <p className="DashboardQuestionEdit_comment">
-                          問題文は、一番読まれる文章です!
-                          簡潔に、わかりやすく書くと、より楽しいクイズ大会になります!
-                        </p>
-                      </label>
+                      <DashboardFormikField
+                        title="🤔問題文"
+                        description="問題文は、一番読まれる文章です!簡潔に、わかりやすく書くと、より楽しいクイズ大会になります!"
+                        name="title"
+                      />
                     </div>
 
                     <FieldArray
@@ -81,7 +95,7 @@ export default function Home(props: Props): React.ReactElement {
                             const answerData =
                               answer == undefined ? values.answer : answer
                             return (
-                              <label
+                              <div
                                 key={index}
                                 className={`DashboardQuestionSelect${
                                   answerData == index
@@ -100,7 +114,9 @@ export default function Home(props: Props): React.ReactElement {
                                   {answerData !== index && (
                                     <button
                                       className="DashboardQuestionSelect_button-correctAnswer"
-                                      onClick={() => setAnswer(index)}
+                                      onClick={() => {
+                                        setAnswer(index)
+                                      }}
                                       title="正解にする">
                                       💯
                                     </button>
@@ -114,7 +130,7 @@ export default function Home(props: Props): React.ReactElement {
                                     <IconIncorrect />
                                   </button>
                                 </div>
-                              </label>
+                              </div>
                             )
                           })}
 
@@ -135,23 +151,19 @@ export default function Home(props: Props): React.ReactElement {
                     />
 
                     <div>
-                      <label>
-                        問題の解説文
-                        <Field
-                          as={PageFormInput}
-                          name="commentary"
-                          type="text"
-                        />
-                        <p className="DashboardQuestionEdit_comment">
-                          問題の解説文は、問題が終わったあと、答え合わせのときに表示されます!
-                        </p>
-                      </label>
+                      <DashboardFormikField
+                        title="🎉問題の解説文"
+                        description="問題の解説文は、問題が終わったあと、答え合わせのときに表示されます!"
+                        name="commentary"
+                      />
                     </div>
                   </div>
                   <div>
                     <PageButton
                       type="submit"
+                      buttontype="big"
                       style={{
+                        marginTop: 'var(--mainNormalPaddingSize)',
                         width: '100%',
                         color: 'white',
                         backgroundColor: 'var(--mainPrimaryColor)',
@@ -163,9 +175,48 @@ export default function Home(props: Props): React.ReactElement {
               )}
             </Formik>
           )}
+        </QuizNote>
+        <h2
+          style={{
+            marginTop: 'var(--mainNormalPaddingSize)',
+            marginBottom: '10px',
+          }}>
+          別の質問
+        </h2>
+        <div className="DashboardQuestionCardSlider">
+          {quiz?.flow.map((data, index) => {
+            const question = questions?.find(
+              (questions) => data == questions.id
+            )
+            if (!question) return
+            return (
+              <DashboardQuestionCard
+                key={question.id}
+                index={index}
+                quiz={quiz}
+                question={question}
+                type="small"
+              />
+            )
+          })}
         </div>
         <style jsx>
           {`
+            .DashboardQuestionCardSlider {
+              display: grid;
+              gap: 10px;
+              grid-auto-flow: column;
+              grid-auto-columns: 300px;
+              overflow-x: auto;
+              scroll-snap-type: x mandatory;
+              scroll-behavior: smooth;
+              :global(.DashboardQuestionCard) {
+                scroll-snap-align: start;
+              }
+              :global(.DashboardQuestionCard + .DashboardQuestionCard) {
+                margin: 0 !important;
+              }
+            }
             .DashboardQuestionEdit {
               padding: 40px 30px;
               border-radius: 30px;
@@ -181,9 +232,7 @@ export default function Home(props: Props): React.ReactElement {
               }
               &_body {
                 display: grid;
-                gap: 50px;
-                margin-top: 50px;
-                margin-bottom: 50px;
+                gap: 30px;
                 label {
                   font-weight: bold;
                 }
@@ -212,10 +261,10 @@ export default function Home(props: Props): React.ReactElement {
               gap: var(--mainNormalPaddingSize);
               transition: all 0.4s;
               @media (max-width: 750px) {
-                padding: 20px;
+                padding: 10px 20px;
                 height: initial;
                 grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 0px;
                 width: calc(100% + 20px);
                 transform: translateX(-10px);
               }
@@ -245,9 +294,8 @@ export default function Home(props: Props): React.ReactElement {
                 grid-template-columns: 50px 50px;
                 gap: 10px;
                 align-items: center;
-                @media (max-width: 1100px) {
-                  display: grid;
-                  grid-template-columns: 1fr 1fr;
+                @media (max-width: 750px) {
+                  grid-template-columns: 1fr 50px 50px;
                 }
               }
               &_button {
@@ -273,6 +321,9 @@ export default function Home(props: Props): React.ReactElement {
                   @extend .DashboardQuestionSelect_button;
                   background-color: var(--mainAccentColor);
                   grid-column: 1;
+                  @media (max-width: 750px) {
+                    grid-column: 2;
+                  }
                   &:before {
                     content: '正解に';
                   }
@@ -280,6 +331,9 @@ export default function Home(props: Props): React.ReactElement {
                 &-remove {
                   @extend .DashboardQuestionSelect_button;
                   grid-column: 2;
+                  @media (max-width: 750px) {
+                    grid-column: 3;
+                  }
                   &:before {
                     content: '削除';
                   }
@@ -295,6 +349,9 @@ export default function Home(props: Props): React.ReactElement {
               }
               & + & {
                 margin-top: 10px;
+                @media (max-width: 750px) {
+                  margin-top: 20px;
+                }
               }
             }
           `}

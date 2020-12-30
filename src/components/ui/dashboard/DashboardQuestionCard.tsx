@@ -1,5 +1,5 @@
 import { QuestionModel, QuizModel } from '@models'
-import { DashboardContext, PageButton } from '@components/ui'
+import { DashboardContext, PageButton, QuestionTitle } from '@components/ui'
 import React, { useContext } from 'react'
 import Link from 'next/link'
 
@@ -22,46 +22,58 @@ export const DashboardQuestionCard: React.FunctionComponent<Props> = (
           className={`DashboardQuestionCard${
             props.type ? ` DashboardQuestionCard-${props.type}` : ''
           }`}>
+          <QuestionTitle type="mini" title={props.question?.title} />
           <div className="DashboardQuestionCard_info">
-            <p>{`${props.index + 1}問目`}</p>
-            <h2 className="DashboardQuestionCard_title">
-              {props.question?.title}
-            </h2>
+            <p>{props.index + 1}問目</p>
+            <p>
+              <strong>答え: </strong>
+              {props.question.choice[props.question.answer].title}
+            </p>
           </div>
-          {/* <div className="DashboardQuestionCard_button">
-            <PageButton style={{ minWidth: '150px' }}>編集する</PageButton>
-          </div> */}
-
           <style jsx>
             {`
               .DashboardQuestionCard {
                 cursor: pointer;
                 display: grid;
                 grid-template-columns: 1fr;
-                gap: 30px;
-                padding: 40px 30px;
+                gap: 10px;
+                padding: 35px 20px 20px;
                 border-radius: 30px;
                 background: #ffffff;
                 &-small {
                   border-radius: 20px;
                   padding: 20px;
-                  .DashboardQuestionCard_title {
+                  :global(.QuestionTitle-mini) {
+                    margin-left: 0;
                     font-size: 1.2rem;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    &:before {
+                      display: none;
+                    }
+                  }
+                  .DashboardQuestionCard_info {
+                    overflow: hidden;
+                    margin-left: 0px;
+                    align-self: self-end;
+                    p {
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    }
                   }
                 }
-                &_info,
-                &_body {
-                  overflow: hidden;
+                &_info {
+                  opacity: 0.5;
+                  margin-left: 40px;
+                  @media (max-width: 750px) {
+                    margin-left: 0;
+                  }
                   p,
                   h2 {
                     margin: 0;
                   }
-                }
-                &_button {
-                  align-self: center;
                 }
                 & + & {
                   margin-top: 20px;
