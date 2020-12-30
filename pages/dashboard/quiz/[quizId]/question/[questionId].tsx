@@ -4,10 +4,12 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import React, { useState } from 'react'
 import {
-  DashboardLayout,
+  DashboardQuizLayout,
   IconIncorrect,
   PageButton,
   PageFormInput,
+  ScreenError,
+  ScreenLoading,
 } from '@components/ui'
 
 import { Formik, Field, Form, FieldArray } from 'formik'
@@ -27,15 +29,21 @@ export default function Home(props: Props): React.ReactElement {
     question?.answer && question.answer
   )
 
+  if (question !== undefined && question?.exists == false)
+    return <ScreenError code={404} />
+
   return (
     <>
-      <DashboardLayout quizId={props.params.quizId as string}>
+      <DashboardQuizLayout quizId={props.params.quizId as string}>
         <div className="DashboardQuestionEdit">
           <div className="DashboardQuestionEdit_info">
             <h1 className="DashboardQuestionEdit_title">問題の編集</h1>
           </div>
-          {question && (
+          {!question ? (
+            <ScreenLoading style={{ backgroundColor: 'white' }} />
+          ) : (
             <Formik
+              enableReinitialize
               initialValues={question}
               onSubmit={async (value: QuestionModel) => {
                 console.log({
@@ -105,24 +113,6 @@ export default function Home(props: Props): React.ReactElement {
                                     }}>
                                     <IconIncorrect />
                                   </button>
-                                  {/* 
-                                    <PageButton
-                                      style={{
-                                        backgroundColor: 'white',
-                                      }}
-                                      type="button"
-                                      onClick={() => setAnswer(index)}>
-                                      💯 正解にする
-                                    </PageButton><PageButton
-                                    style={{
-                                      backgroundColor: 'white',
-                                    }}
-                                    type="button"
-                                    onClick={() => {
-                                      arrayHelpers.remove(index)
-                                    }}>
-                                    ❌ 削除する
-                                  </PageButton> */}
                                 </div>
                               </label>
                             )
@@ -156,11 +146,6 @@ export default function Home(props: Props): React.ReactElement {
                           問題の解説文は、問題が終わったあと、答え合わせのときに表示されます!
                         </p>
                       </label>
-                      {/* <PageFormInput
-                    name="commentary"
-                    onChange={(event) =>
-                      console.log(event.target.value)
-                    }></PageFormInput> */}
                     </div>
                   </div>
                   <div>
@@ -314,7 +299,7 @@ export default function Home(props: Props): React.ReactElement {
             }
           `}
         </style>
-      </DashboardLayout>
+      </DashboardQuizLayout>
     </>
   )
 }

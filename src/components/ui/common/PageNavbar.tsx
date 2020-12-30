@@ -37,7 +37,13 @@ export const PageNavbar: React.FunctionComponent<Props> = (props) => {
                   </li>
                 </>
               )}
-              {user?.userId && <li>[user] {user?.userName}</li>}
+              {user?.userId && (
+                <li>
+                  <Link href="/dashboard/">
+                    <a href="">[user] {user?.userName}</a>
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </PageContainer>

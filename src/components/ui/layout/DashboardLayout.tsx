@@ -4,16 +4,18 @@ import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import React, { useState } from 'react'
 
 type Props = {
-  quizId: string
   children?: React.ReactNode
+  side?: React.ReactNode
+  top?: React.ReactNode
 }
 
 export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <PageContainer style={{ marginTop: '100px' }}>
+        {props.top}
         <div className="DashboardGrid">
-          <aside></aside>
+          <aside>{props.side}</aside>
           <div>{props.children}</div>
         </div>
       </PageContainer>

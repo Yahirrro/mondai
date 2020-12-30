@@ -26,7 +26,7 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
-        <h2>クイズのタイトルとか説明文を変えるフォーム</h2>
+        <h2>メイン回答者や編集者などを追加するフォーム</h2>
       </DashboardQuizLayout>
       <style jsx>
         {`
