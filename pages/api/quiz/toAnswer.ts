@@ -15,7 +15,10 @@ export default apiHandler.get(async (req, res) => {
   const quizData = (await (await quiz).data()) as QuizModel
 
   if (
-    quizData.permission.answer?.includes(verifyToken.uid) == false ||
+    quizData.permission?.includes({
+      userId: verifyToken.uid,
+      permission: 'answer',
+    }) == false ||
     quizData.currentStatus !== 'open' ||
     !quizData.currentQuestion
   )

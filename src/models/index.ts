@@ -5,11 +5,10 @@ export interface QuizModel {
   description: string
   icon: string
   inviteCode: null | number
-  permission: {
-    owner: Array<string> | null
-    moderator: Array<string> | null
-    answer: Array<string> | null
-  }
+  permission: Array<{
+    userId: string
+    permission: 'owner' | 'moderator' | 'answer'
+  }>
   allCorrectUser: null | Array<string>
   allUser: null | number
   flow: Array<string>

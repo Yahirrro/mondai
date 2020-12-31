@@ -17,7 +17,12 @@ export default apiHandler.get(async (req, res) => {
   if (!(await quiz).exists) throw new Error('Unauthorized')
   const quizData = (await (await quiz).data()) as QuizModel
 
-  if (quizData.permission.answer?.includes(verifyToken.uid) == false)
+  if (
+    quizData.permission?.includes({
+      userId: verifyToken.uid,
+      permission: 'answer',
+    }) == false
+  )
     throw new Error('Quiz not found')
 
   const anserUsers: Array<Array<string>> = []

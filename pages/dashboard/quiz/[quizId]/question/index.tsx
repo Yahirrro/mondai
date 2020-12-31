@@ -4,6 +4,7 @@ import {
   DashboardQuizLayout,
   PageButton,
   QuizNote,
+  ScreenError,
   ScreenLoading,
 } from '@components/ui'
 import { QuestionModel, QuizModel } from '@models'
@@ -31,6 +32,8 @@ export default function Home(props: Props): React.ReactElement {
     }
   )
 
+  if (quiz?.exists == false) return <ScreenError code={404} />
+
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
@@ -44,7 +47,7 @@ export default function Home(props: Props): React.ReactElement {
         </header>
 
         <div>
-          {quiz?.exists == false ? (
+          {quiz == undefined ? (
             <ScreenLoading />
           ) : (
             quiz?.flow.map((data, index) => {

@@ -3,6 +3,7 @@ import {
   DashboardQuizLayout,
   PageButton,
   QuizNote,
+  ScreenError,
   ScreenLoading,
 } from '@components/ui'
 import { QuizModel } from '@models'
@@ -23,6 +24,7 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
+  if (quiz?.exists == false) return <ScreenError code={404} />
 
   return (
     <>
