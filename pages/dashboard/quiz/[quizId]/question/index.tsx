@@ -1,4 +1,5 @@
 import {
+  DashboardQuestionFormAdd,
   DashboardQuestionCard,
   DashboardQuestionEdit,
   DashboardQuizLayout,
@@ -7,6 +8,7 @@ import {
   ScreenError,
   ScreenLoading,
 } from '@components/ui'
+import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuestionModel, QuizModel } from '@models'
 import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
 import firebase from 'firebase/app'
@@ -19,6 +21,7 @@ type Props = {
   params: ParsedUrlQuery
 }
 export default function Home(props: Props): React.ReactElement {
+  const { setDashboardQuizUI } = useDashboardQuizUI()
   const { data: quiz } = useDocument<QuizModel>(
     props.params.quizId ? `quiz/${props.params.quizId}` : null,
     {
@@ -41,7 +44,16 @@ export default function Home(props: Props): React.ReactElement {
           <div className="DashboardFlex">
             <div>問題数： {quiz?.flow.length}</div>
             <div>
-              <PageButton>問題をふやす</PageButton>
+              <PageButton
+                onClick={() =>
+                  setDashboardQuizUI({
+                    type: 'addQuestion',
+                    open: true,
+                    optional: { quizId: quiz.id },
+                  })
+                }>
+                問題をふやす
+              </PageButton>
             </div>
           </div>
         </header>
@@ -57,17 +69,22 @@ export default function Home(props: Props): React.ReactElement {
               if (!question) return
               return (
                 <DashboardQuestionCard
-                  key={question.id}
                   index={index}
                   quiz={quiz}
                   question={question}
+                  key={question.id}
+                  onClick={() =>
+                    setDashboardQuizUI({
+                      type: 'editQuestion',
+                      open: true,
+                      optional: { questionId: question.id },
+                    })
+                  }
                 />
               )
             })
           )}
         </div>
-
-        <DashboardQuestionAdd quizId={quiz?.id} />
       </DashboardQuizLayout>
       <style jsx>
         {`
@@ -79,92 +96,6 @@ export default function Home(props: Props): React.ReactElement {
         `}
       </style>
     </>
-  )
-}
-
-export const DashboardQuestionAdd: React.FunctionComponent<{
-  quizId: string
-}> = (props) => {
-  const [answer, setAnswer] = useState<number>(null)
-  const submitQuestion = async (
-    value,
-    { setSubmitting, setErrors, setStatus, resetForm }
-  ) => {
-    try {
-      fuego.db
-        .collection(`/quiz/${props.quizId}/question`)
-        .add({
-          title: value.title,
-          choice: value.choice,
-          answer: answer,
-          commentary: value.commentary,
-        })
-        .then((docRef) => {
-          console.log('Document written with ID: ', docRef.id)
-          fuego.db.doc(`/quiz/${props.quizId}`).update({
-            flow: firebase.firestore.FieldValue.arrayUnion(docRef.id),
-          })
-          resetForm({})
-          setAnswer(null)
-          setStatus({ success: true })
-        })
-    } catch (error) {
-      console.error(error)
-      setStatus({ success: false })
-      setSubmitting(false)
-      setErrors({ submit: error.message })
-    }
-  }
-  return (
-    <Formik
-      enableReinitialize
-      initialValues={{
-        title: '',
-        choice: [],
-        answer: null,
-        commentary: '',
-      }}
-      validate={(values) => {
-        const errors = {} as { [key: string]: string }
-        if (values.choice.length == 0) {
-          errors.choice =
-            '選択肢がありません。「選択肢を追加する」を押して、追加しましょう!'
-        } else if (answer == null) {
-          errors.choice =
-            '正解がありません。「正解に」を押して、正解を作りましょう!'
-        }
-        return errors
-      }}
-      onSubmit={submitQuestion}>
-      {({ values, errors, isSubmitting }) => (
-        <Form
-          style={{
-            width: '100%',
-            marginTop: 'var(--mainNormalPaddingSize)',
-          }}>
-          <QuizNote title="問題をふやす">
-            <DashboardQuestionEdit
-              values={values}
-              setAnswer={setAnswer}
-              answer={answer}
-              errors={errors}
-            />
-            <PageButton
-              type="submit"
-              buttontype="big"
-              disabled={isSubmitting}
-              style={{
-                marginTop: 'var(--mainNormalPaddingSize)',
-                width: '100%',
-                color: 'white',
-                backgroundColor: 'var(--mainPrimaryColor)',
-              }}>
-              追加する
-            </PageButton>
-          </QuizNote>
-        </Form>
-      )}
-    </Formik>
   )
 }
 

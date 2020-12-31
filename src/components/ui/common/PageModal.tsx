@@ -4,13 +4,15 @@ type Props = {
   children?: React.ReactNode
   open: boolean
   onClose: () => void
+  style?: React.CSSProperties
+  type?: 'big'
 }
 
 export const PageModal: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <Modal
-        className="PageModal"
+        className={`PageModal${props.type ? ` PageModal-${props.type}` : ''}`}
         ariaHideApp={false}
         isOpen={props.open}
         onRequestClose={props.onClose}
@@ -61,6 +63,9 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
               max-width: inherit;
               height: auto;
               border-radius: 0;
+            }
+            &-big {
+              max-width: 750px;
             }
             &_body {
               position: relative;

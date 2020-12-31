@@ -30,12 +30,6 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
-  const { data: questions } = useCollection<QuestionModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}/question` : null,
-    {
-      listen: true,
-    }
-  )
   const { data: question, update: updateQuestion } = useDocument<QuestionModel>(
     props.params.questionId
       ? `quiz/${props.params.quizId}/question/${props.params.questionId}`
@@ -123,30 +117,6 @@ export default function Home(props: Props): React.ReactElement {
             onClick={removeQuestion}>
             削除する
           </PageButton>
-        </div>
-        <h2
-          style={{
-            marginTop: 'var(--mainNormalPaddingSize)',
-            marginBottom: '10px',
-          }}>
-          別の質問
-        </h2>
-        <div className="DashboardQuestionCardSlider">
-          {quiz?.flow.map((data, index) => {
-            const question = questions?.find(
-              (questions) => data == questions.id
-            )
-            if (!question) return
-            return (
-              <DashboardQuestionCard
-                key={question.id}
-                index={index}
-                quiz={quiz}
-                question={question}
-                type="small"
-              />
-            )
-          })}
         </div>
         <style jsx>
           {`

@@ -41,7 +41,7 @@ export const DashboardQuestionEdit: React.FunctionComponent<Props> = (
           name="choice"
           render={(arrayHelpers) => (
             <div>
-              {props.values?.choice.map((choice, index) => {
+              {props.values?.choice?.map((choice, index) => {
                 const answerData =
                   props.answer == undefined ? props.values.answer : props.answer
                 return (
