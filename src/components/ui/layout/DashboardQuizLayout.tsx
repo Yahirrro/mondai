@@ -1,10 +1,6 @@
-import {
-  DashboardLayout,
-  DashboardQuestionCard,
-  QuizCard,
-} from '@components/ui'
-import { useCollection, useDocument } from '@nandorojo/swr-firestore'
-import { QuestionModel, QuizModel } from '@models'
+import { DashboardLayout, QuizCard } from '@components/ui'
+import { useDocument } from '@nandorojo/swr-firestore'
+import { QuizModel } from '@models'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -18,14 +14,6 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
   const router = useRouter()
   const { data: quiz } = useDocument<QuizModel>(
     props.quizId ? `quiz/${props.quizId}` : null,
-    {
-      listen: true,
-    }
-  )
-  const { data: questions } = useCollection<QuestionModel>(
-    router.pathname == '/dashboard/quiz/[quizId]/question/[questionId]'
-      ? `quiz/${props.quizId}/question`
-      : null,
     {
       listen: true,
     }
@@ -51,17 +39,36 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
             <ul>
               <li>
                 <Link href={`/dashboard/quiz/${props.quizId}`}>
-                  <a>クイズの編集</a>
+                  <a
+                    className={
+                      router.pathname == '/dashboard/quiz/[quizId]' &&
+                      `DashboardQuizLayout_link-active`
+                    }>
+                    クイズの編集
+                  </a>
                 </Link>
               </li>
               <li>
                 <Link href={`/dashboard/quiz/${props.quizId}/question`}>
-                  <a>問題をつくる</a>
+                  <a
+                    className={
+                      router.pathname == '/dashboard/quiz/[quizId]/question' &&
+                      `DashboardQuizLayout_link-active`
+                    }>
+                    問題をつくる
+                  </a>
                 </Link>
               </li>
               <li>
                 <Link href={`/dashboard/quiz/${props.quizId}/permission`}>
-                  <a>権限を設定</a>
+                  <a
+                    className={
+                      router.pathname ==
+                        '/dashboard/quiz/[quizId]/permission' &&
+                      `DashboardQuizLayout_link-active`
+                    }>
+                    権限を設定
+                  </a>
                 </Link>
               </li>
             </ul>
@@ -95,6 +102,10 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
                   }
                 }
               }
+            }
+            &_link-active {
+              font-weight: bold;
+              color: rgba(0, 0, 0, 0.8);
             }
           }
         `}

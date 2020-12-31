@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { PageContainer, ScreenError } from '@components/ui'
+import { PageContainer } from '@components/ui'
 import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'

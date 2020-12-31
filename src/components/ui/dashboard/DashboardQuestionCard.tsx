@@ -1,6 +1,5 @@
 import { QuestionModel, QuizModel } from '@models'
-import { DashboardContext, PageButton, QuestionTitle } from '@components/ui'
-import React, { useContext } from 'react'
+import { QuestionTitle } from '@components/ui'
 import Link from 'next/link'
 
 type Props = {

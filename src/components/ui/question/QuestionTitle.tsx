@@ -60,6 +60,9 @@ export const QuestionTitle: React.FunctionComponent<Props> = (props) => {
               margin-top: 0;
               font-size: 1.8rem;
               line-height: 1.5;
+              @media (max-width: 750px) {
+                font-size: 1.3rem;
+              }
               &:before {
                 top: 50%;
                 transform: translateY(-50%);

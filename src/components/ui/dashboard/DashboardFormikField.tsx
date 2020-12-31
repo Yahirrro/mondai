@@ -5,6 +5,7 @@ import { PageFormInput } from '@components/ui'
 type Props = {
   title: string
   description: string
+  error?: string
 }
 
 export const DashboardFormikField: React.FunctionComponent<
@@ -16,9 +17,14 @@ export const DashboardFormikField: React.FunctionComponent<
       <h3 className="DashboardFormikField_title">{props.title}</h3>
       <Field {...props} as={PageFormInput} required />
       <p className="DashboardFormikField_description">{props.description}</p>
+
+      {props.error && (
+        <p className="DashboardFormikField_error">{props.error}</p>
+      )}
       <style jsx>
         {`
           .DashboardFormikField {
+            width: 100%;
             font-weight: bold;
             display: block;
             &_title {
@@ -34,6 +40,11 @@ export const DashboardFormikField: React.FunctionComponent<
               font-size: 0.9rem;
               font-weight: normal;
               opacity: 0.6;
+            }
+            &_error {
+              color: rgba(255, 0, 0, 0.6);
+              margin-top: 4px;
+              margin-bottom: 0;
             }
             & + & {
               margin-top: 30px;

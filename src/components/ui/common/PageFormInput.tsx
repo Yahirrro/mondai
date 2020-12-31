@@ -25,6 +25,9 @@ export const PageFormInput: React.FunctionComponent<
             border: 1px solid rgba(76, 123, 87, 0.3);
             border-radius: 4px;
             outline: none;
+            &::placeholder {
+              opacity: 0.5;
+            }
           }
           :global(label > .PageFormInput) {
             margin-top: 10px;
