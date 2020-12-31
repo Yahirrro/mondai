@@ -39,7 +39,7 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
 
   const submitQuestion = async (
     value,
-    { setSubmitting, setErrors, setStatus, resetForm }
+    { setSubmitting, setErrors, setStatus }
   ) => {
     try {
       updateQuestion({

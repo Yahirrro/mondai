@@ -1,4 +1,9 @@
-import { DashboardLayout, PageModal, QuizCard } from '@components/ui'
+import {
+  DashboardLayout,
+  PageButton,
+  PageModal,
+  QuizCard,
+} from '@components/ui'
 import { useDocument } from '@nandorojo/swr-firestore'
 import { QuizModel } from '@models'
 import Link from 'next/link'
@@ -12,6 +17,9 @@ const DashboardQuestionFormAdd = dynamic(() =>
 )
 const DashboardQuestionFormEdit = dynamic(() =>
   import('@components/ui').then((lib) => lib.DashboardQuestionFormEdit)
+)
+const DashboardQuizFormStatus = dynamic(() =>
+  import('@components/ui').then((lib) => lib.DashboardQuizFormStatus)
 )
 
 type Props = {
@@ -28,6 +36,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
       listen: true,
     }
   )
+
   return (
     <>
       <DashboardLayout
@@ -81,13 +90,24 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
                   </a>
                 </Link>
               </li>
+              <li>
+                <PageButton
+                  onClick={() =>
+                    setDashboardQuizUI({ type: 'statusQuiz', open: true })
+                  }>
+                  あそぶ
+                </PageButton>
+              </li>
             </ul>
           </div>
         }>
         <PageModal
           open={dashboardQuizUI.open}
-          onClose={() =>
-            setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+          onRequestClose={() =>
+            setDashboardQuizUI({
+              type: dashboardQuizUI.type,
+              open: false,
+            })
           }
           type="big">
           {dashboardQuizUI.type == 'addQuestion' && (
@@ -96,6 +116,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
           {dashboardQuizUI.type == 'editQuestion' && (
             <DashboardQuestionFormEdit />
           )}
+          {dashboardQuizUI.type == 'statusQuiz' && <DashboardQuizFormStatus />}
         </PageModal>
 
         {props.children}

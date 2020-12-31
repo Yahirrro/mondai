@@ -1,7 +1,7 @@
 import { atom, SetterOrUpdater, useRecoilState } from 'recoil'
 
 type Props = {
-  type: 'addQuestion' | 'editQuestion'
+  type: 'addQuestion' | 'editQuestion' | 'statusQuiz'
   open: boolean
   optional?: {
     quizId?: string

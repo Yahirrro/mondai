@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 type Props = {
   children?: React.ReactNode
   open: boolean
-  onClose: () => void
+  onRequestClose?(event: React.MouseEvent | React.KeyboardEvent): void
   style?: React.CSSProperties
   type?: 'big'
 }
@@ -15,16 +15,10 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
         className={`PageModal${props.type ? ` PageModal-${props.type}` : ''}`}
         ariaHideApp={false}
         isOpen={props.open}
-        onRequestClose={props.onClose}
-        style={{
-          overlay: {
-            zIndex: '100000',
-            backgroundColor: 'rgba(0, 0, 0, 35%)',
-            backdropFilter: 'blur(10px)',
-          },
-        }}>
+        onRequestClose={props.onRequestClose}
+        closeTimeoutMS={0}>
         <div className="PageModal_body">
-          <button className="PageModal_close" onClick={props.onClose}>
+          <button className="PageModal_close" onClick={props.onRequestClose}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
@@ -44,6 +38,12 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
           .ReactModal__Body--open {
             overflow: hidden;
           }
+          .ReactModal__Overlay {
+            background-color: rgba(0, 0, 0, 0.35) !important;
+            z-index: 100000;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+          }
           .PageModal {
             position: absolute;
             width: 100%;
@@ -56,6 +56,8 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
               0 0 1px rgba(1, 0, 0, 0.1);
             outline: none;
+            opacity: 0;
+            transition: all 0.3s;
             @media (max-width: 750px) {
               top: 0;
               left: inherit;
@@ -104,6 +106,21 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
                 min-width: 24px;
               }
             }
+          }
+          .ReactModal__Content--after-open {
+            opacity: 1;
+          }
+          .ReactModal__Content--before-close {
+            opacity: 0;
+          }
+          .ReactModal__Overlay {
+            transition: all 0.3s;
+          }
+          .ReactModal__Overlay--after-open {
+            opacity: 1;
+          }
+          .ReactModal__Overlay--before-close {
+            opacity: 0;
           }
           :global(.PageModal_body > .PageModal_info) {
             margin-bottom: 40px;

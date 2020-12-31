@@ -1,4 +1,8 @@
-import { DashboardQuizLayout } from '@components/ui'
+import {
+  DashboardQuizLayout,
+  DashboardQuizFormEditPerm,
+  ScreenLoading,
+} from '@components/ui'
 import { QuestionModel, QuizModel } from '@models'
 import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
@@ -16,17 +20,11 @@ export default function Home(props: Props): React.ReactElement {
       listen: true,
     }
   )
-  const { data: questions } = useCollection<QuestionModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}/question` : null,
-    {
-      listen: true,
-    }
-  )
 
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
-        <h2>メイン回答者や編集者などを追加するフォーム</h2>
+        {!quiz ? <ScreenLoading /> : <DashboardQuizFormEditPerm />}
       </DashboardQuizLayout>
       <style jsx>
         {`
