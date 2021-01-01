@@ -3,8 +3,8 @@ import {
   DashboardQuizFormEditPerm,
   ScreenLoading,
 } from '@components/ui'
-import { QuestionModel, QuizModel } from '@models'
-import { useCollection, useDocument } from '@nandorojo/swr-firestore'
+import { QuizModel } from '@models'
+import { useDocument } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'

@@ -55,6 +55,9 @@ export const PageNavbar: React.FunctionComponent<Props> = (props) => {
               top: 30px;
               z-index: 1;
               width: 100%;
+              @media (max-width: 750px) {
+                top: 10px;
+              }
               &_flex {
                 height: 70px;
                 display: flex;

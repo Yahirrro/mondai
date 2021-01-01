@@ -1,21 +1,16 @@
 import { QuizModel } from '@models'
-import { Field, FieldArray, Form, Formik } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
-import {
-  DashboardFormikField,
-  PageButton,
-  PageFormInput,
-  QuizNote,
-} from '@components/ui'
+import { PageButton, PageFormInput, QuizNote } from '@components/ui'
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import firebase from 'firebase/app'
 
 export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
-  const [formUserId, setFormUserId] = useState<string>(null)
-  const [formPermission, setFormPermission] = useState<string>(null)
+  const [formUserId] = useState<string>(null)
+  const [formPermission] = useState<string>(null)
   const router = useRouter()
-  const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
+  const { data: quiz } = useDocument<QuizModel>(
     router.query.quizId ? `quiz/${router.query.quizId}` : null,
     {
       listen: true,

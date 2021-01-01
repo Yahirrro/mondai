@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import { useDashboardQuizUI } from '@hook/dashboard'
+import { NextSeo } from 'next-seo'
 
 const DashboardQuestionFormAdd = dynamic(() =>
   import('@components/ui').then((lib) => lib.DashboardQuestionFormAdd)
@@ -39,6 +40,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
 
   return (
     <>
+      {quiz && <NextSeo title={quiz.title} />}
       <DashboardLayout
         top={
           <div className="DashboardQuizLayout_header">
@@ -92,6 +94,9 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
               </li>
               <li>
                 <PageButton
+                  style={{
+                    width: '100%',
+                  }}
                   onClick={() =>
                     setDashboardQuizUI({ type: 'statusQuiz', open: true })
                   }>
@@ -126,7 +131,6 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
         {`
           .DashboardQuizLayout {
             &_header {
-              margin-bottom: var(--mainNormalPaddingSize);
             }
             &_side {
               ul {

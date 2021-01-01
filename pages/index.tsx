@@ -1,8 +1,12 @@
 import { NextSeo } from 'next-seo'
 import Image from 'next/image'
-import { ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 
-import { PageContainer, QuizInviteCodeForm } from '@components/ui'
+import {
+  PageAccentWave,
+  PageContainer,
+  QuizInviteCodeForm,
+} from '@components/ui'
 
 export default function Home(): ReactElement {
   return (
@@ -40,19 +44,7 @@ export default function Home(): ReactElement {
               />
             </div>
           </PageContainer>
-          <svg
-            className="IndexPageHeader_wave"
-            width="1440"
-            height="50"
-            viewBox="0 0 1440 50"
-            fill="none"
-            preserveAspectRatio="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M0 50L80 37.4884C160 25.1643 320 -0.139996 480 0.000583377C640 -0.139996 800 25.1643 960 35.0049C1120 44.8454 1280 40.1594 1360 37.4884L1440 35.0049V50H1360C1280 50 1120 50 960 50C800 50 640 50 480 50C320 50 160 50 80 50H0Z"
-              fill="#EFEFEF"
-            />
-          </svg>
+          <PageAccentWave />
         </header>
 
         <PageContainer>
@@ -113,7 +105,7 @@ export default function Home(): ReactElement {
                   display: none;
                 }
               }
-              &_wave {
+              :global(.PageAccentWave) {
                 height: 70px;
                 width: 100%;
                 position: absolute;

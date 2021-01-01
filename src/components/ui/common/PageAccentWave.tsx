@@ -20,11 +20,12 @@ export const PageAccentWave: React.FunctionComponent = () => {
               background-size: auto auto;
               background-image: var(--mainBackgroundPattern);
               width: 100%;
-              height: 150px;
+              height: 70px;
               margin: 0;
               svg {
                 position: absolute;
                 bottom: 0;
+                left: 0;
                 width: 100%;
                 fill: var(--mainBackgroundColor);
               }
