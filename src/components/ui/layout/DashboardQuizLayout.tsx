@@ -167,7 +167,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
               }
             }
             &_sideFull {
-              grid-column: 1/5;
+              grid-column: 1/4;
             }
             &_link-active {
               font-weight: bold;
