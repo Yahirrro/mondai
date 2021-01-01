@@ -1,12 +1,14 @@
 import {
   DashboardQuizFormEditDetail,
   DashboardQuizLayout,
+  QuestionAnswerGraph,
   QuizNote,
   ScreenError,
   ScreenLoading,
 } from '@components/ui'
-import { QuizModel } from '@models'
-import { useDocument } from '@nandorojo/swr-firestore'
+import { useQuizData } from '@hook/dashboard'
+import { QuestionModel } from '@models'
+import { useCollection } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
@@ -16,8 +18,11 @@ type Props = {
 }
 
 export default function Home(props: Props): React.ReactElement {
-  const { data: quiz } = useDocument<QuizModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}` : null,
+  const { quizData: quiz } = useQuizData()
+  const { data: questions } = useCollection<QuestionModel>(
+    props.params.quizId && quiz?.currentStatus == 'archive'
+      ? `quiz/${props.params.quizId}/question`
+      : null,
     {
       listen: true,
     }
@@ -27,15 +32,34 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
-        <QuizNote title="クイズのタイトルとか説明文を変えるフォーム">
-          {!quiz ? (
-            <ScreenLoading style={{ backgroundColor: 'white' }} />
-          ) : (
-            <DashboardQuizFormEditDetail
-              quizId={props.params.quizId as string}
-            />
-          )}
-        </QuizNote>
+        {quiz?.currentStatus !== 'archive' ? (
+          <QuizNote title="クイズのタイトルとか説明文を変えるフォーム">
+            {!quiz ? (
+              <ScreenLoading style={{ backgroundColor: 'white' }} />
+            ) : (
+              <DashboardQuizFormEditDetail
+                quizId={props.params.quizId as string}
+              />
+            )}
+          </QuizNote>
+        ) : (
+          <QuizNote title="😏みんなのこたえ">
+            {quiz?.flow?.map((data, index) => {
+              if (!questions) return
+              const questionData = questions?.find(
+                (element) => element.id == data
+              )
+              return (
+                <QuestionAnswerGraph
+                  key={questionData.title}
+                  data={questionData.choice}
+                  correctAnswer={questionData.answer}
+                  title={index + 1 + '. ' + questionData.title}
+                />
+              )
+            })}
+          </QuizNote>
+        )}
       </DashboardQuizLayout>
       <style jsx>
         {`

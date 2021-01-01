@@ -40,11 +40,13 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
               title="👶クイズのタイトル"
               description="このクイズをひとことであらわすなら?"
               name="title"
+              required
             />
             <DashboardFormikField
               title="🙌クイズの説明文"
               description="説明文だよ！ちょっとだけかいてね！"
               name="description"
+              required
             />
             <DashboardFormikField
               title="🖼クイズのアイコンURL"

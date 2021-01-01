@@ -18,12 +18,15 @@ export default apiHandler.get(async (req, res) => {
   const quizData = (await (await quiz).data()) as QuizModel
 
   if (
-    quizData.permission?.includes({
-      userId: verifyToken.uid,
-      permission: 'answer',
-    }) == false
-  )
-    throw new Error('Quiz not found')
+    quizData.permission.some(
+      (data) => data.userId == verifyToken.uid && data.permission == 'answer'
+    ) == false
+  ) {
+    res.status(401).json({
+      status: 'fail',
+      message: '権限がありません',
+    })
+  }
 
   const anserUsers: Array<Array<string>> = []
 

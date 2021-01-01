@@ -24,9 +24,8 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
     value,
     { setSubmitting, setErrors, setStatus, resetForm }
   ) => {
-    console.log(value)
     try {
-      fuego.db.doc(`quiz/${router.query.quizId}`).update({
+      await fuego.db.doc(`quiz/${router.query.quizId}`).update({
         permission: firebase.firestore.FieldValue.arrayUnion(value),
       })
       resetForm({})

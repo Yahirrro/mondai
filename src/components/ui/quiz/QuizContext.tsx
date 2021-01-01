@@ -16,6 +16,7 @@ type Context = {
   getCorrectAnswerAmount: () => number
   getIncorrectAnswerAmount: () => number
   goNextQuestion: () => void
+  goStatusOpenScreen: () => void
   goStatusAnswerScreen: () => void
   goStatusArchiveScreen: () => void
 

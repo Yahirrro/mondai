@@ -1,10 +1,25 @@
 import React, { useEffect } from 'react'
-import { PageContainer } from '@components/ui'
+import { PageContainer, PageModal } from '@components/ui'
 import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { NextSeo } from 'next-seo'
+import { DefaultSeo } from 'next-seo'
+import { useDashboardQuizUI } from '@hook/dashboard'
+import dynamic from 'next/dynamic'
+
+const DashboardQuestionFormAdd = dynamic(() =>
+  import('@components/ui').then((lib) => lib.DashboardQuestionFormAdd)
+)
+const DashboardQuestionFormEdit = dynamic(() =>
+  import('@components/ui').then((lib) => lib.DashboardQuestionFormEdit)
+)
+const DashboardQuizFormStatus = dynamic(() =>
+  import('@components/ui').then((lib) => lib.DashboardQuizFormStatus)
+)
+const DashboardQuizFormCreate = dynamic(() =>
+  import('@components/ui').then((lib) => lib.DashboardQuizFormCreate)
+)
 
 type Props = {
   children?: React.ReactNode
@@ -15,6 +30,7 @@ type Props = {
 export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
   const router = useRouter()
   const user = useAuthentication()
+  const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
   useEffect(() => {
     fuego.auth().onAuthStateChanged(async (firebaseUser) => {
       if (!firebaseUser) {
@@ -24,7 +40,7 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
   }, [router, user])
   return (
     <>
-      <NextSeo title="ダッシュボード" />
+      <DefaultSeo title="ダッシュボード" />
 
       <PageContainer style={{ marginTop: '10px' }}>
         <div className="DashboardLayout">
@@ -46,12 +62,29 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
         </div>
       </PageContainer>
 
+      <PageModal
+        open={dashboardQuizUI.open}
+        onRequestClose={() =>
+          setDashboardQuizUI({
+            type: dashboardQuizUI.type,
+            open: false,
+          })
+        }
+        type="big">
+        {dashboardQuizUI.type == 'addQuestion' && <DashboardQuestionFormAdd />}
+        {dashboardQuizUI.type == 'editQuestion' && (
+          <DashboardQuestionFormEdit />
+        )}
+        {dashboardQuizUI.type == 'statusQuiz' && <DashboardQuizFormStatus />}
+        {dashboardQuizUI.type == 'createQuiz' && <DashboardQuizFormCreate />}
+      </PageModal>
+
       <style jsx>
         {`
           .DashboardLayout {
             display: grid;
-            gap: 30px 100px;
-            grid-template-columns: 200px 1fr;
+            gap: 30px 80px;
+            grid-template-columns: 280px 1fr;
             @media (max-width: 900px) {
               grid-template-columns: 1fr;
               gap: calc(var(--mainNormalPaddingSize) / 2);

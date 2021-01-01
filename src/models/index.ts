@@ -12,7 +12,7 @@ export interface QuizModel {
   allCorrectUser: null | Array<string>
   allUser: null | number
   flow: Array<string>
-  currentStatus: 'waiting' | 'open' | 'answer' | 'archive'
+  currentStatus: 'creating' | 'waiting' | 'open' | 'answer' | 'archive'
   currentQuestion: string | null
 }
 

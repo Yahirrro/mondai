@@ -2,10 +2,11 @@ import {
   DashboardQuizLayout,
   DashboardQuizFormEditPerm,
   ScreenLoading,
+  ScreenError,
 } from '@components/ui'
-import { QuizModel } from '@models'
-import { useDocument } from '@nandorojo/swr-firestore'
+import { useQuizData } from '@hook/dashboard'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { NextSeo } from 'next-seo'
 import { ParsedUrlQuery } from 'querystring'
 import React from 'react'
 
@@ -14,16 +15,13 @@ type Props = {
 }
 
 export default function Home(props: Props): React.ReactElement {
-  const { data: quiz } = useDocument<QuizModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}` : null,
-    {
-      listen: true,
-    }
-  )
+  const { quizData: quiz } = useQuizData()
 
+  if (quiz?.exists == false) return <ScreenError code={404} />
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
+        <NextSeo title={`${quiz?.title}の権限を変える`} />
         {!quiz ? <ScreenLoading /> : <DashboardQuizFormEditPerm />}
       </DashboardQuizLayout>
       <style jsx>

@@ -11,7 +11,10 @@ export const ScreenError: React.FunctionComponent<Props> = (props) => {
       <Head>
         <meta name="robots" content="noindex" />
       </Head>
-      <DefaultErrorPage statusCode={props.code} />
+      <DefaultErrorPage
+        style={{ backgroundColor: 'var(--mainBackgroundColor)' }}
+        statusCode={props.code}
+      />
     </>
   )
 }

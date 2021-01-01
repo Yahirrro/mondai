@@ -16,6 +16,7 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
       ? `quiz/${router.query.quizId}/question/${dashboardQuizUI.optional?.questionId}`
       : null,
     {
+      initialData: dashboardQuizUI.optional?.questionData,
       listen: true,
     }
   )

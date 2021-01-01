@@ -1,3 +1,6 @@
+export * from './IconAdd'
 export * from './IconCorrect'
+export * from './IconFace'
 export * from './IconIncorrect'
 export * from './IconLoading'
+export * from './IconPencil'

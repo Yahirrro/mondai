@@ -159,10 +159,9 @@ export default function Home(props: Props): React.ReactElement {
   }
 
   const isMainAnswer = () => {
-    return quiz.permission?.includes({
-      userId: user?.userId,
-      permission: 'answer',
-    })
+    return quiz.permission?.some(
+      (data) => data.userId == user.userId && data.permission == 'answer'
+    )
   }
 
   const getRemainingQuestionCount = () => {
@@ -186,6 +185,12 @@ export default function Home(props: Props): React.ReactElement {
       currentQuestion: quiz.flow[quiz.flow.indexOf(quiz.currentQuestion) + 1],
     })
     setIsAnswered(false)
+  }
+
+  const goStatusOpenScreen = async () => {
+    updateQuiz({
+      currentStatus: 'open',
+    })
   }
 
   const goStatusAnswerScreen = async () => {
@@ -237,6 +242,7 @@ export default function Home(props: Props): React.ReactElement {
           getCorrectAnswerAmount,
           getIncorrectAnswerAmount,
           goNextQuestion,
+          goStatusOpenScreen,
           goStatusAnswerScreen,
           goStatusArchiveScreen,
 

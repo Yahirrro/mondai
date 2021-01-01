@@ -15,7 +15,7 @@ export const DashboardFormikField: React.FunctionComponent<
   return (
     <label className="DashboardFormikField">
       <h3 className="DashboardFormikField_title">{props.title}</h3>
-      <Field {...props} as={PageFormInput} required />
+      <Field {...props} as={PageFormInput} />
       <p className="DashboardFormikField_description">{props.description}</p>
 
       {props.error && (

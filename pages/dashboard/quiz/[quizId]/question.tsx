@@ -1,33 +1,23 @@
 import {
-  DashboardQuestionFormAdd,
   DashboardQuestionCard,
-  DashboardQuestionEdit,
   DashboardQuizLayout,
   PageButton,
-  QuizNote,
   ScreenError,
   ScreenLoading,
 } from '@components/ui'
-import { useDashboardQuizUI } from '@hook/dashboard'
-import { QuestionModel, QuizModel } from '@models'
-import { fuego, useCollection, useDocument } from '@nandorojo/swr-firestore'
-import firebase from 'firebase/app'
-import { Form, Formik } from 'formik'
+import { useDashboardQuizUI, useQuizData } from '@hook/dashboard'
+import { QuestionModel } from '@models'
+import { useCollection } from '@nandorojo/swr-firestore'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { NextSeo } from 'next-seo'
 import { ParsedUrlQuery } from 'querystring'
-import React, { useState } from 'react'
 
 type Props = {
   params: ParsedUrlQuery
 }
 export default function Home(props: Props): React.ReactElement {
   const { setDashboardQuizUI } = useDashboardQuizUI()
-  const { data: quiz } = useDocument<QuizModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}` : null,
-    {
-      listen: true,
-    }
-  )
+  const { quizData: quiz } = useQuizData()
   const { data: questions } = useCollection<QuestionModel>(
     props.params.quizId ? `quiz/${props.params.quizId}/question` : null,
     {
@@ -40,6 +30,8 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <DashboardQuizLayout quizId={props.params.quizId as string}>
+        <NextSeo title={`${quiz?.title}の問題をつくる`} />
+
         <header style={{ marginBottom: '30px' }}>
           <div className="DashboardFlex">
             <div>問題数： {quiz?.flow.length}</div>
@@ -77,7 +69,10 @@ export default function Home(props: Props): React.ReactElement {
                     setDashboardQuizUI({
                       type: 'editQuestion',
                       open: true,
-                      optional: { questionId: question.id },
+                      optional: {
+                        questionId: question.id,
+                        questionData: question,
+                      },
                     })
                   }
                 />
