@@ -73,7 +73,7 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
                   <option value="" disabled>
                     選択してください
                   </option>
-                  <option value="manage">つくるひと</option>
+                  <option value="moderator">つくるひと</option>
                   <option value="answer">メイン回答者</option>
                 </Field>
                 <PageButton type="submit">選択肢を追加する</PageButton>
