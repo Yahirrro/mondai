@@ -40,19 +40,22 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
               title="👶クイズのタイトル"
               description="このクイズをひとことであらわすなら?"
               name="title"
+              placeholder="たとえば: わかるかな? VTuberクイズ!"
               required
             />
             <DashboardFormikField
               title="🙌クイズの説明文"
               description="説明文だよ！ちょっとだけかいてね！"
               name="description"
+              placeholder="たとえば: わかるひとにはわかる! とくべつな問題をチョイス!"
               required
             />
             <DashboardFormikField
               title="🖼クイズのアイコンURL"
-              description="好きなアイコンを指定しよう！"
+              description="なくてもいいよ! 好きなアイコンを指定しよう！"
               name="icon"
               type="url"
+              placeholder="たとえば: https://yahiro.me/yahiro.png"
             />
 
             <PageButton
