@@ -37,7 +37,9 @@ export const QuizScreenAnswer: React.FunctionComponent = () => {
           <p>
             正解は「
             <strong>
-              {`${question.answer}. ${question?.choice[question.answer].title}`}
+              {`${question.answer + 1}. ${
+                question?.choice[question.answer].title
+              }`}
             </strong>
             」
           </p>

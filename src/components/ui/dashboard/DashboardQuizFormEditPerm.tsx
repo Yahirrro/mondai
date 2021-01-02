@@ -40,7 +40,7 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
 
   return (
     <>
-      <QuizNote title="権限を編集する">
+      <QuizNote title="🗝権限を編集する">
         <div
           style={{
             display: 'grid',
@@ -76,7 +76,7 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
                   <option value="moderator">つくるひと</option>
                   <option value="answer">メイン回答者</option>
                 </Field>
-                <PageButton type="submit">選択肢を追加する</PageButton>
+                <PageButton type="submit">権限を与える</PageButton>
               </div>
             </Form>
           )}

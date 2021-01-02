@@ -22,8 +22,17 @@ export default function Home(props: Props): React.ReactElement {
 
   return (
     <div>
-      <h1>{quiz?.title}</h1>
+      <h1>
+        {quiz?.title} / {quiz?.currentStatus}
+      </h1>
 
+      <button
+        onClick={() => {
+          quizUpdate({ currentStatus: 'creating' })
+        }}>
+        managed-update: creating
+      </button>
+      <br />
       <button
         onClick={() => {
           quizUpdate({ currentStatus: 'waiting' })

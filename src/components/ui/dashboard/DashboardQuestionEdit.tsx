@@ -2,6 +2,7 @@ import React from 'react'
 import {
   DashboardFormikField,
   DashboardQuestionChoiceEdit,
+  IconAdd,
   PageButton,
 } from '@components/ui'
 import { FieldArray, FormikErrors } from 'formik'
@@ -58,8 +59,9 @@ export const DashboardQuestionEdit: React.FunctionComponent<Props> = (
               <div className="DashboardQuestionEdit_addbutton">
                 <PageButton
                   type="button"
+                  icon={<IconAdd />}
                   onClick={() => arrayHelpers.push({ title: '' })}>
-                  選択肢を追加する
+                  選択肢をふやす
                 </PageButton>
               </div>
               <p className="DashboardQuestionEdit_error">

@@ -14,7 +14,7 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
         ) : (
           <div className="QuizCard_imageBox"></div>
         )}
-        <div>
+        <div className="QuizCard_info">
           <h2 className="QuizCard_title">{props.title}</h2>
           <p className="QuizCard_description">{props.description}</p>
         </div>
@@ -31,6 +31,7 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
               &_image,
               &_imageBox {
                 width: 64px;
+                min-width: 64px;
                 height: 64px;
                 margin-right: 20px;
                 border-radius: 50%;
@@ -49,10 +50,23 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
               }
               &_description {
                 font-size: 1rem;
+                font-weight: bold;
+                opacity: 0.5;
                 line-height: 1.4;
               }
               &_button {
                 width: 100%;
+              }
+              @media (max-width: 750px) {
+                width: 100%;
+                &_info {
+                  display: grid;
+                  gap: 8px;
+                }
+                &_title {
+                  font-size: 1.6rem;
+                  line-height: 1.4;
+                }
               }
             }
           `}

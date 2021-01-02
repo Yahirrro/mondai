@@ -20,7 +20,6 @@ export default function Home(): React.ReactElement {
     ],
     listen: true,
   })
-  console.log(quiz)
   return (
     <>
       <NextSeo title="ダッシュボード" />

@@ -21,18 +21,23 @@ export const QuizNote: React.FunctionComponent<Props> = (props) => {
               background-color: white;
               border-radius: 30px;
               @media (max-width: 750px) {
-                padding: 20px;
+                padding: 30px 20px;
               }
               h2 {
                 width: 100%;
-                font-size: 36px;
-                line-height: 49px;
-                @media (max-width: 950px) {
-                  font-size: 30px;
-                }
+                font-size: 2rem;
+                line-height: 1.4;
                 margin-top: 0;
-                margin-bottom: 1rem;
+                margin-bottom: 20px;
+                @media (max-width: 950px) {
+                  font-size: 2rem;
+                  line-height: 1.4;
+                  margin-bottom: 30px;
+                }
               }
+            }
+            :global(.QuizNote + .QuizNote) {
+              margin-top: var(--mainNormalPaddingSize);
             }
             :global(.QuizNote > p) {
               width: 100%;

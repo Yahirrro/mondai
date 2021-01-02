@@ -100,16 +100,17 @@ export default function Home(props: Props): React.ReactElement {
 
   useEffect(() => {
     if (quiz?.exists == false) return
-    if (quiz.currentStatus !== 'open') {
+    if (quiz?.currentStatus !== 'open') {
       setCorrectAnswers({
-        correct: getCorrectAnswerAmount(),
-        incorrect: getIncorrectAnswerAmount(),
+        correct: userAnswer && getCorrectAnswerAmount(),
+        incorrect: userAnswer && getIncorrectAnswerAmount(),
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quiz.currentStatus])
+  }, [quiz?.currentStatus])
 
   if (!quiz?.exists) return <ScreenError code={404} />
+  if (quiz?.currentStatus == 'creating') return <ScreenError code={404} />
 
   const submitAnswer = (event) => {
     event.preventDefault()

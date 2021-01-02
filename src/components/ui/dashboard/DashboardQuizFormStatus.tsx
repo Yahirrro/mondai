@@ -1,14 +1,12 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { PageButton, QuizNote } from '@components/ui'
-import { useQuizData } from '@hook/dashboard'
-import { useDocument } from '@nandorojo/swr-firestore'
-import { QuizModel } from '@models'
 import { getIdToken } from '@lib/api'
-import useSWR from 'swr'
+import { useDashboardQuizUI } from '@hook/dashboard'
 
 export const DashboardQuizFormStatus: React.FunctionComponent = () => {
   const router = useRouter()
+  const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
 
   const [errorMsg, setErrorMsg] = useState<string>(null)
 
@@ -27,19 +25,29 @@ export const DashboardQuizFormStatus: React.FunctionComponent = () => {
       }
     }
     setErrorMsg((await data()).message as string)
+    setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
     return
   }
 
   return (
-    <QuizNote title="クイズをあそぶ!" style={{ padding: 0 }}>
-      <p>ボタンを押すと、クイズをみんなであそべるようになります!</p>
+    <QuizNote title="😆クイズをあそぶ!" style={{ padding: 0 }}>
       <p>
-        ⚠️ボタンを押してからクイズの編集はできなくなりますので、ご注意ください
+        クイズをみんなであそべる、<strong>👻クイズ大会</strong>
+        を開く準備をはじめます！
+      </p>
+      <p>
+        🛑注意:
+        <strong> ボタンを押してから🚫クイズの編集はできなくなります</strong>
       </p>
 
       <PageButton
         buttontype="big"
-        style={{ width: '100%', marginTop: '40px' }}
+        style={{
+          width: '100%',
+          marginTop: '40px',
+          color: 'white',
+          backgroundColor: 'var(--mainPrimaryColor)',
+        }}
         onClick={submit}>
         クイズをあそぶ!
       </PageButton>

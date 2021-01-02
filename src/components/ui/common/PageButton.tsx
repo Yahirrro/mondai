@@ -1,5 +1,6 @@
 type Props = {
   buttontype?: string
+  icon?: React.ReactNode
 }
 
 export const PageButton: React.FunctionComponent<
@@ -19,6 +20,7 @@ export const PageButton: React.FunctionComponent<
           }`
         }
         {...props}>
+        {props.icon && <div className="PageButton_icon">{props.icon}</div>}
         {props.children}
       </button>
       <style jsx>
@@ -38,10 +40,22 @@ export const PageButton: React.FunctionComponent<
             cursor: pointer;
             height: 40px;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             &-big {
               height: 50px;
               border-radius: 25px;
               font-size: 1.2rem;
+            }
+            &_icon {
+              height: 27px;
+              width: 27px;
+              margin-right: 5px;
+              :global(svg) {
+                height: 27px;
+                width: 27px;
+              }
             }
           }
         `}
