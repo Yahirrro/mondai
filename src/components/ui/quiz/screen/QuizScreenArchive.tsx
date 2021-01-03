@@ -4,9 +4,12 @@ import {
   QuestionSelectGrid,
   QuestionAnswerGraph,
   QuizNote,
+  IconAdd,
+  PageButton,
 } from '@components/ui'
 
 import { QuizContext } from '@components/ui'
+import Link from 'next/link'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {
   const { quiz, allQuestion } = useContext(QuizContext)
@@ -26,6 +29,20 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
         </div>
       </QuestionSelectGrid>
 
+      <QuizNote title="😍おつかれさまでした!">
+        <p>クイズ大会おつかれさまでした👺</p>
+        <p>mondaiをつかったクイズ大会はいかがでしたか？</p>
+        <p>
+          たのしんでもらえたなら、またmondaiをつかってクイズ大会をひらいてみてください😘
+        </p>
+        <Link href="/dashboard">
+          <a style={{ marginTop: '20px', width: '100%' }}>
+            <PageButton icon={<IconAdd />} style={{ width: '100%' }}>
+              いますぐクイズをつくる
+            </PageButton>
+          </a>
+        </Link>
+      </QuizNote>
       <QuizNote title="😏みんなのこたえ">
         {quiz?.flow?.map((data, index) => {
           if (!allQuestion) return
