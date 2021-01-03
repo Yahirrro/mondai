@@ -1,8 +1,7 @@
 import Link from 'next/link'
-import { PageContainer, LogoFull } from '@components/ui'
+import { PageContainer, LogoFull, IconFace } from '@components/ui'
 import { useAuthentication } from '@hook/auth'
 import { useUI } from '@components/ui/context'
-
 type Props = {
   style?: React.CSSProperties
 }
@@ -38,11 +37,20 @@ export const PageNavbar: React.FunctionComponent<Props> = (props) => {
                 </>
               )}
               {user?.userId && (
-                <li>
-                  <Link href="/dashboard/">
-                    <a href="">[user] {user?.userName}</a>
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link href="/dashboard/">
+                      <a>ダッシュボード</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/dashboard/">
+                      <a>
+                        <IconFace />
+                      </a>
+                    </Link>
+                  </li>
+                </>
               )}
             </ul>
           </div>
@@ -76,6 +84,9 @@ export const PageNavbar: React.FunctionComponent<Props> = (props) => {
                   font-weight: bold;
                   a {
                     cursor: pointer;
+                  }
+                  :global(svg) {
+                    vertical-align: middle;
                   }
                 }
                 li + li {
