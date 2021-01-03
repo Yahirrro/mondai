@@ -102,8 +102,8 @@ export default function Home(props: Props): React.ReactElement {
     if (quiz?.exists == false) return
     if (quiz?.currentStatus !== 'open') {
       setCorrectAnswers({
-        correct: userAnswer && getCorrectAnswerAmount(),
-        incorrect: userAnswer && getIncorrectAnswerAmount(),
+        correct: userAnswer ? getCorrectAnswerAmount() : 0,
+        incorrect: userAnswer ? getIncorrectAnswerAmount() : 0,
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,7 +161,7 @@ export default function Home(props: Props): React.ReactElement {
 
   const isMainAnswer = () => {
     return quiz.permission?.some(
-      (data) => data.userId == user.userId && data.permission == 'answer'
+      (data) => data.userId == user?.userId && data.permission == 'answer'
     )
   }
 
