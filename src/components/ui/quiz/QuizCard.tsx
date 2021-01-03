@@ -1,3 +1,5 @@
+import { IconLoading } from '@components/ui'
+
 type Props = {
   title: string
   description: string
@@ -15,7 +17,9 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
           <div className="QuizCard_imageBox"></div>
         )}
         <div className="QuizCard_info">
-          <h2 className="QuizCard_title">{props.title}</h2>
+          <h2 className="QuizCard_title">
+            {props.title ? props.title : <IconLoading />}
+          </h2>
           <p className="QuizCard_description">{props.description}</p>
         </div>
 

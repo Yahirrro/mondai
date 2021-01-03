@@ -1,4 +1,13 @@
-import { DashboardLayout, PageButton, PageCard, QuizCard } from '@components/ui'
+import {
+  DashboardLayout,
+  IconAdd,
+  IconFace,
+  PageButton,
+  PageCard,
+  QuizCard,
+  QuizNote,
+  ScreenLoading,
+} from '@components/ui'
 import { useAuthentication } from '@hook/auth'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuizModel } from '@models'
@@ -12,11 +21,17 @@ export default function Home(): React.ReactElement {
   const user = useAuthentication()
   const { setDashboardQuizUI } = useDashboardQuizUI()
 
-  const { data: quiz } = useCollection<QuizModel>(`quiz`, {
+  const { data: quizzes } = useCollection<QuizModel>(`quiz`, {
     where: [
-      'permission',
-      'array-contains-any',
-      [{ userId: user?.userId, permission: 'owner' }],
+      [
+        'permission',
+        'array-contains-any',
+        [
+          { userId: user?.userId, permission: 'owner' },
+          { userId: user?.userId, permission: 'moderator' },
+        ],
+      ],
+      ['currentStatus', '!=', 'archive'],
     ],
     listen: true,
   })
@@ -26,11 +41,14 @@ export default function Home(): React.ReactElement {
       <DashboardLayout
         side={
           <>
-            <PageCard title={user?.userName} description="ユーザー">
-              <></>
-            </PageCard>
+            <PageCard
+              icon={<IconFace />}
+              title={user?.userName}
+              description="ユーザー"
+            />
             <PageButton
               style={{ width: '100%', marginTop: '20px' }}
+              icon={<IconAdd />}
               onClick={() =>
                 setDashboardQuizUI({
                   type: 'createQuiz',
@@ -41,9 +59,10 @@ export default function Home(): React.ReactElement {
             </PageButton>
           </>
         }>
-        <h2>げんざいのくいずいちらん</h2>
+        <h2 className="DashboardLayout_title">🎈つくっているクイズ</h2>
         <div className="DashboardQuizIndex">
-          {quiz?.map((data) => {
+          {!quizzes && <ScreenLoading />}
+          {quizzes?.map((data) => {
             return (
               <Link key={data.title} href={`/dashboard/quiz/${data.id}`}>
                 <a>
@@ -57,6 +76,25 @@ export default function Home(): React.ReactElement {
               </Link>
             )
           })}
+          {quizzes?.length == 0 && (
+            <>
+              <QuizNote title="😥クイズがまだありません!">
+                <p>あなたがつくっているクイズがまだあリません😫</p>
+                <p>いますぐクイズをつくってみませんか🤩</p>
+                <PageButton
+                  style={{ width: '100%', marginTop: '20px' }}
+                  icon={<IconAdd />}
+                  onClick={() =>
+                    setDashboardQuizUI({
+                      type: 'createQuiz',
+                      open: true,
+                    })
+                  }>
+                  クイズをつくる
+                </PageButton>
+              </QuizNote>
+            </>
+          )}
         </div>
       </DashboardLayout>
       <style jsx>

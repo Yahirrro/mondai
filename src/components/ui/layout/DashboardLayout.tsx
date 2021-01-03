@@ -57,7 +57,12 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
           {props.top && (
             <div className="DashboardLayout_header">{props.top}</div>
           )}
-          <aside className="DashboardLayout_sidebar">{props.side}</aside>
+          <aside
+            className={`DashboardLayout_sidebar ${
+              router.pathname == '/dashboard' && 'DashboardLayout_sidebar-index'
+            }`}>
+            {props.side}
+          </aside>
           <div className="DashboardLayout_content">{props.children}</div>
         </div>
       </PageContainer>
@@ -97,6 +102,19 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
             &_sidebar,
             &_content {
               overflow: hidden;
+            }
+            &_sidebar-index {
+              @media (max-width: 900px) {
+                margin-top: 50px;
+                order: 1;
+              }
+            }
+            &_content {
+              :global(.DashboardLayout_title) {
+                margin-top: 0;
+                margin-bottom: 20px;
+                font-size: 1.5em;
+              }
             }
           }
           .DashboardBreadcrumb {

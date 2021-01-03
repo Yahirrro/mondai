@@ -46,7 +46,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
         {() => (
           <Form style={{ width: '100%' }}>
             <QuizNote
-              title="問題をつくる"
+              title="クイズをつくる"
               style={{
                 padding: '0',
               }}>

@@ -11,13 +11,14 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
     String(inviteCode).length == 5 ? `quiz` : null,
     {
       where: [
-        ['currentStatus', '!=', 'archive'],
         ['inviteCode', '==', inviteCode],
+        // ['currentStatus', '!=', 'archive'],
       ],
       listen: true,
     }
   )
   useEffect(() => {
+    console.log(quiz)
     if (quiz?.find((data) => data.inviteCode == inviteCode)) {
       router.push(`/quiz/${quiz[0].id}`)
       return

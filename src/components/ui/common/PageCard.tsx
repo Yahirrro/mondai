@@ -1,14 +1,20 @@
+import { IconLoading } from '@components/ui'
+
 type Props = {
-  children: React.ReactNode
+  children?: React.ReactNode
   title: string
   description: string
+  icon?: React.ReactNode
   style?: React.CSSProperties
 }
 
 export const PageCard: React.FunctionComponent<Props> = (props) => {
   return (
     <div className="PageCard">
-      <h3 className="PageCard_title">{props.title}</h3>
+      {props.icon && <div className="PageCard_icon">{props.icon}</div>}
+      <h3 className="PageCard_title">
+        {props.title ? props.title : <IconLoading />}
+      </h3>
       <p className="PageCard_description">{props.description}</p>
       {props.children}
       <style jsx>
@@ -17,6 +23,15 @@ export const PageCard: React.FunctionComponent<Props> = (props) => {
             padding: 30px 20px;
             background: #ffffff;
             border-radius: 20px;
+            &_icon {
+              height: 32px;
+              text-align: center;
+              margin-bottom: 10px;
+              :global(svg) {
+                width: 32px;
+                height: 32px;
+              }
+            }
             &_title {
               text-align: center;
               margin-top: 0;

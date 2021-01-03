@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { PageButton, QuizNote } from '@components/ui'
+import { PageButton, QuizNote, IconLoading } from '@components/ui'
 import { getIdToken } from '@lib/api'
 import { useDashboardQuizUI } from '@hook/dashboard'
 
@@ -9,16 +9,19 @@ export const DashboardQuizFormStatus: React.FunctionComponent = () => {
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
 
   const [errorMsg, setErrorMsg] = useState<string>(null)
+  const [apiLoading, setApiLoading] = useState<boolean>(false)
 
   const submit = async () => {
     const data = async (): Promise<{ status: string; message: string }> => {
       try {
+        setApiLoading(true)
         const data = await fetch(
           `/api/quiz/toWaiting?quizId=` + router.query.quizId,
           {
             headers: { authorization: 'Bearer ' + (await getIdToken()) },
           }
         )
+        setApiLoading(false)
         return data.json()
       } catch (error) {
         console.log(error)
@@ -42,6 +45,7 @@ export const DashboardQuizFormStatus: React.FunctionComponent = () => {
 
       <PageButton
         buttontype="big"
+        icon={apiLoading ? <IconLoading style={{ stroke: 'white' }} /> : null}
         style={{
           width: '100%',
           marginTop: '40px',

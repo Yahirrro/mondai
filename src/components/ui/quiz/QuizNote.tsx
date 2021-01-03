@@ -25,13 +25,12 @@ export const QuizNote: React.FunctionComponent<Props> = (props) => {
               }
               h2 {
                 width: 100%;
-                font-size: 2rem;
+                font-size: 1.7em;
                 line-height: 1.4;
                 margin-top: 0;
                 margin-bottom: 20px;
                 @media (max-width: 950px) {
-                  font-size: 2rem;
-                  line-height: 1.4;
+                  font-size: 1.5rem;
                   margin-bottom: 30px;
                 }
               }
