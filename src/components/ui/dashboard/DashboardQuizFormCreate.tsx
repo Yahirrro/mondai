@@ -1,6 +1,11 @@
 import { Form, Formik } from 'formik'
-import React from 'react'
-import { DashboardFormikField, PageButton, QuizNote } from '@components/ui'
+import { useState } from 'react'
+import {
+  DashboardFormikField,
+  DashboardQuizEmojiPicker,
+  PageButton,
+  QuizNote,
+} from '@components/ui'
 import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
@@ -10,13 +15,24 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
   const router = useRouter()
   const user = useAuthentication()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
+  const [emoji, setEmoji] = useState<string>('')
 
   const submitPermission = async (
     value,
     { setSubmitting, setErrors, setStatus }
   ) => {
     try {
-      const addQuiz = await fuego.db.collection(`quiz`).add(value)
+      const addQuiz = await fuego.db.collection(`quiz`).add({
+        title: value.title,
+        description: value.description,
+        emoji: emoji,
+        flow: [],
+        currentStatus: 'creating',
+        permission: [
+          { userId: user?.userId, permission: 'owner' },
+          { userId: user?.userId, permission: 'answer' },
+        ],
+      })
       router.push(`/dashboard/quiz/${addQuiz.id}`)
       setStatus({ success: true })
       setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
@@ -34,7 +50,6 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
         initialValues={{
           title: '',
           description: '',
-          icon: '',
           flow: [],
           currentStatus: 'creating',
           permission: [
@@ -43,7 +58,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
           ],
         }}
         onSubmit={submitPermission}>
-        {() => (
+        {({ values }) => (
           <Form style={{ width: '100%' }}>
             <QuizNote
               title="クイズをつくる"
@@ -54,6 +69,10 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
                 さあ、クイズをつくってみましょう!
                 項目はすべてあとから編集できます!
               </p>
+              <DashboardQuizEmojiPicker
+                emoji={emoji ? emoji : values.emoji}
+                setEmoji={setEmoji}
+              />
               <DashboardFormikField
                 title="👶クイズのタイトル"
                 description="このクイズをひとことであらわすなら?"
@@ -67,13 +86,6 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
                 name="description"
                 placeholder="たとえば: わかるひとにはわかる! とくべつな問題をチョイス!"
                 required
-              />
-              <DashboardFormikField
-                title="🖼クイズのアイコンURL"
-                description="なくてもいいよ! 好きなアイコンを指定しよう！"
-                name="icon"
-                type="url"
-                placeholder="たとえば: https://yahiro.me/yahiro.png"
               />
               <PageButton
                 type="submit"

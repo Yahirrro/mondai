@@ -47,6 +47,7 @@ export default function Home(): React.ReactElement {
               description="ユーザー"
             />
             <PageButton
+              buttontype="big"
               style={{ width: '100%', marginTop: '20px' }}
               icon={<IconAdd />}
               onClick={() =>
