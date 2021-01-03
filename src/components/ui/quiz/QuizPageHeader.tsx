@@ -11,7 +11,7 @@ export const QuizPageHeader: React.FunctionComponent = () => {
         <QuizCard
           title={quiz.title}
           description={quiz.description}
-          icon={quiz.icon}
+          emoji={quiz.emoji}
         />
         <div className="QuizPageHeader_badge">
           <QuizBadge text={quiz.currentStatus}></QuizBadge>

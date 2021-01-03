@@ -1,9 +1,9 @@
-import { IconLoading } from '@components/ui'
+import { QuizIconEmoji, IconLoading } from '@components/ui'
 
 type Props = {
   title: string
   description: string
-  icon: string
+  emoji: string
   style?: React.CSSProperties
 }
 
@@ -11,11 +11,9 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <div className="QuizCard" style={props.style}>
-        {props.icon ? (
-          <img className="QuizCard_image" src={props.icon} alt={props.title} />
-        ) : (
-          <div className="QuizCard_imageBox"></div>
-        )}
+        <div className="QuizCard_emoji">
+          <QuizIconEmoji emoji={props.emoji} />
+        </div>
         <div className="QuizCard_info">
           <h2 className="QuizCard_title">
             {props.title ? props.title : <IconLoading />}
@@ -26,22 +24,19 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
         <style jsx>
           {`
             .QuizCard {
+              user-select: none;
               background-color: white;
               display: inline-flex;
               flex-direction: row;
               align-items: flex-start;
               border-radius: 20px;
               padding: 20px;
-              &_image,
-              &_imageBox {
+              &_emoji {
                 width: 64px;
                 min-width: 64px;
                 height: 64px;
                 margin-right: 20px;
                 border-radius: 50%;
-              }
-              &_imageBox {
-                background-color: var(--mainAccentColor);
               }
               &_title,
               &_description {

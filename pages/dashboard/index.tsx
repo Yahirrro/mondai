@@ -70,7 +70,7 @@ export default function Home(): React.ReactElement {
                     style={{ width: '100%' }}
                     title={data.title}
                     description={data.description}
-                    icon={data.icon}
+                    emoji={data.emoji}
                   />
                 </a>
               </Link>
