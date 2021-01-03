@@ -16,7 +16,7 @@ export const ModalLogin: React.FunctionComponent = () => {
   return (
     <>
       <div className="PageModal_info">
-        <h1 className="PageModal_title">ログインしましょう!</h1>
+        <h1 className="PageModal_title">🤩ログインしよう!</h1>
         <p className="PageModal_description">
           クイズに参加するには、ログインする必要があります!
         </p>

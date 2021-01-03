@@ -27,9 +27,9 @@ export const ModalUserName: React.FunctionComponent = () => {
   return (
     <>
       <div className="PageModal_info">
-        <h1 className="PageModal_title">表示名を登録しましょう!</h1>
+        <h1 className="PageModal_title">😗ユーザー名を登録しよう!</h1>
         <p className="PageModal_description">
-          表示名を登録することで、クイズ終了時に表示されるようになります!
+          ここで決めた名前がmondaiのいろんなところでつかわれるようになります!
         </p>
       </div>
       <form
