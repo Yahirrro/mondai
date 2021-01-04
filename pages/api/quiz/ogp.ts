@@ -44,8 +44,8 @@ export default apiHandler.get(async (req, res) => {
   const buffer = canvas.toBuffer()
 
   res.writeHead(200, {
-    'Cache-Control': 'public, max-age=315360000000, s_maxage=315360000',
-    Expires: new Date(Date.now() + 315360000000).toUTCString(),
+    'Cache-Control': 'public, max-age=86400, s_maxage=86400',
+    Expires: new Date(Date.now() + 86400).toUTCString(),
     'Content-Type': 'image/png',
     'Content-Length': buffer.length,
   })
