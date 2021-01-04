@@ -15,7 +15,8 @@ export const DashboardQuizEmojiPicker: React.FunctionComponent<Props> = (
   const [useEmojiPicker, setUseEmojiPicker] = useState<boolean>(false)
   return (
     <label className="DashboardQuizEmojiPicker">
-      <h3 className="DashboardQuizEmojiPicker_title">えもじアイコンをえらぶ</h3>
+      <h3 className="DashboardQuizEmojiPicker_title">絵文字アイコンをえらぶ</h3>
+
       <button
         className="DashboardQuizEmojiPicker_emoji"
         type="button"
@@ -29,7 +30,7 @@ export const DashboardQuizEmojiPicker: React.FunctionComponent<Props> = (
               setUseEmojiPicker(false)
             }}>
             <Picker
-              title="アイコン絵文字をえらぼう!"
+              title="絵文字アイコンをえらぼう!"
               onSelect={(emoji: BaseEmoji) => {
                 props.setEmoji(emoji.native)
               }}

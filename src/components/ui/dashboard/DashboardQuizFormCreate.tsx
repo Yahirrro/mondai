@@ -15,7 +15,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
   const router = useRouter()
   const user = useAuthentication()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
-  const [emoji, setEmoji] = useState<string>('')
+  const [emoji, setEmoji] = useState<string>('🍜')
 
   const submitPermission = async (
     value,
