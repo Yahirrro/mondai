@@ -21,7 +21,7 @@ export default function Home(): React.ReactElement {
   const user = useAuthentication()
   const { setDashboardQuizUI } = useDashboardQuizUI()
 
-  const { data: quizzes } = useCollection<QuizModel>(`quiz`, {
+  const { data: quizzes } = useCollection<QuizModel>(user?.userId && `quiz`, {
     where: [
       [
         `permission.${user?.userId}`,
