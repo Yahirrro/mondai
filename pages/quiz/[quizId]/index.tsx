@@ -225,7 +225,20 @@ export default function Home(props: Props): React.ReactElement {
 
   return (
     <>
-      <NextSeo title={quiz.title} description={quiz.description} />
+      <NextSeo
+        title={quiz.title}
+        description={quiz.description}
+        openGraph={{
+          images: [
+            {
+              url: `https://dev.mondai.page/api/quiz/ogp?title=${quiz.title}&description=${quiz.description}&emoji=${quiz.emoji}`,
+              width: 1200,
+              height: 630,
+              alt: quiz.title,
+            },
+          ],
+        }}
+      />
 
       <QuizContext.Provider
         value={{
