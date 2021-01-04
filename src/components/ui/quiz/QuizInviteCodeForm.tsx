@@ -1,5 +1,3 @@
-import { QuizModel } from '@models'
-import { useCollection } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -7,33 +5,29 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
   const router = useRouter()
   const [inviteCode, setInviteCode] = useState<number>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { data: quiz } = useCollection<QuizModel>(
-    String(inviteCode).length == 5 ? `quiz` : null,
-    {
-      where: [
-        ['inviteCode', '==', inviteCode],
-        // ['currentStatus', '!=', 'archive'],
-      ],
-      listen: true,
-    }
-  )
-  useEffect(() => {
-    console.log(quiz)
-    if (quiz?.find((data) => data.inviteCode == inviteCode)) {
-      router.push(`/quiz/${quiz[0].id}`)
-      return
-    }
-    if (quiz !== []) {
+
+  const submitInviteCode = async (): Promise<{
+    status: string
+    data: string
+  }> => {
+    try {
+      setIsLoading(true)
+      const data = await fetch(`/api/quiz/goQuiz?inviteCode=` + inviteCode)
       setIsLoading(false)
+
+      if (data.status == 200) router.push(`/quiz/${(await data.json()).data}`)
       return
+    } catch (error) {
+      console.log(error)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quiz])
+  }
 
   useEffect(() => {
     if (String(inviteCode).length == 5) {
       setIsLoading(true)
+      submitInviteCode()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inviteCode])
 
   return (

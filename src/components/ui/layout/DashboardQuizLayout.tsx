@@ -205,6 +205,9 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
             }
             &_sideFull {
               grid-column: 1/4;
+              @media (max-width: 900px) {
+                grid-column: 1/5;
+              }
             }
             &_link-active {
               p {

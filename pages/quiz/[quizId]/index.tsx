@@ -54,7 +54,11 @@ export default function Home(props: Props): React.ReactElement {
     incorrect: 0,
   })
 
-  const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
+  const {
+    data: quiz,
+    update: updateQuiz,
+    error: errorQuiz,
+  } = useDocument<QuizModel>(
     props.params.quizId ? `quiz/${props.params.quizId}` : null,
     {
       listen: true,
@@ -109,7 +113,7 @@ export default function Home(props: Props): React.ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quiz?.currentStatus])
 
-  if (!quiz?.exists) return <ScreenError code={404} />
+  if (!quiz?.exists || errorQuiz) return <ScreenError code={404} />
   if (quiz?.currentStatus == 'creating') return <ScreenError code={404} />
 
   const submitAnswer = (event) => {
