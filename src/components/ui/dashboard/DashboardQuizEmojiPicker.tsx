@@ -33,7 +33,7 @@ export const DashboardQuizEmojiPicker: React.FunctionComponent<Props> = (
               onSelect={(emoji: BaseEmoji) => {
                 props.setEmoji(emoji.native)
               }}
-              native
+              set="twitter"
               showPreview={false}
               showSkinTones={false}
             />

@@ -1,3 +1,5 @@
+import Twemoji from 'react-twemoji'
+
 type Props = {
   emoji: string
   style?: React.CSSProperties
@@ -7,8 +9,15 @@ export const QuizIconEmoji: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <div className="QuizIconEmoji" style={props.style}>
-        {props.emoji}
-
+        <Twemoji
+          options={{
+            className: 'twemoji',
+            noWrapper: true,
+            folder: 'svg',
+            ext: '.svg',
+          }}>
+          {props.emoji}
+        </Twemoji>
         <style jsx>
           {`
             .QuizIconEmoji {
@@ -20,6 +29,11 @@ export const QuizIconEmoji: React.FunctionComponent<Props> = (props) => {
               display: flex;
               justify-content: center;
               align-items: center;
+              :global(.twemoji) {
+                height: 32px;
+                width: 32px;
+                vertical-align: middle;
+              }
             }
           `}
         </style>
