@@ -4,7 +4,7 @@ import { createCanvas, registerFont, loadImage } from 'canvas'
 import { fillTextWithTwemoji } from 'node-canvas-with-twemoji'
 
 export default apiHandler.get(async (req, res) => {
-  registerFont(path.resolve('./src/ogp/NotoSansJP-Bold.otf'), {
+  registerFont(path.resolve('./ogp/NotoSansJP-Bold.otf'), {
     family: 'NotoSansJP-Bold',
   })
   const width = 1200
@@ -12,7 +12,7 @@ export default apiHandler.get(async (req, res) => {
   const canvas = createCanvas(width, height)
   const context = canvas.getContext('2d')
 
-  const test = await loadImage(path.resolve('./src/ogp/ogpBase.jpg'))
+  const test = await loadImage(path.resolve('./ogp/ogpBase.jpg'))
   context.drawImage(test, 0, 0, 1200, 630)
 
   context.font = '130px NotoSansJP-Bold'

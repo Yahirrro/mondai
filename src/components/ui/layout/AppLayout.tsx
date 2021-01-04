@@ -48,7 +48,7 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
         openGraph={{
           type: 'website',
           locale: 'ja_JP',
-          site_name: 'realtimequiz',
+          site_name: 'mondai',
         }}
         twitter={{
           handle: '@Yahimotto',
