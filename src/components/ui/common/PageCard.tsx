@@ -44,7 +44,7 @@ export const PageCard: React.FunctionComponent<Props> = (props) => {
               font-size: 18px;
               line-height: 22px;
               text-align: center;
-              color: rgba(0, 0, 0, 0.34);
+              color: rgba(0, 0, 0, 0.5);
               margin-top: 10px;
               margin-bottom: 0;
             }

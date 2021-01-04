@@ -15,7 +15,7 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
     <>
       <footer className="PageFooter" style={props.style}>
         <Link href="/">
-          <a>
+          <a aria-label="mondai トップページへ">
             <LogoFull
               style={{ height: 'initial', width: '120px', opacity: 0.5 }}
             />
@@ -55,7 +55,7 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
               padding-right: var(--mainNormalPaddingSize);
               padding-bottom: var(--mainNormalPaddingSize);
               width: 100%;
-              color: #9d9d9d;
+              color: #7d7d7d;
               @media (max-width: 550px) {
                 height: initial;
                 gap: 15px;

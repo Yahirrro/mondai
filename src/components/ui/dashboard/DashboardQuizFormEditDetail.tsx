@@ -109,7 +109,7 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
                   opacity: 0.6,
                 }}
                 onClick={removeQuestion}>
-                この問題を削除する
+                このクイズを削除する
               </a>
             </div>
           </Form>

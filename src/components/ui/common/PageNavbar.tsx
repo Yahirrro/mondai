@@ -21,7 +21,7 @@ export const PageNavbar: React.FunctionComponent<Props> = (props) => {
           style={{ paddingTop: 0, paddingBottom: 0, maxWidth: '1600px' }}>
           <div className="PageNavbar_flex">
             <Link href="/">
-              <a>
+              <a aria-label="mondai トップページへ">
                 <LogoFull style={{ height: '26px', width: 'initial' }} />
               </a>
             </Link>

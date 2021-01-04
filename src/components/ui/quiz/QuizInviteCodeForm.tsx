@@ -41,7 +41,7 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
     <>
       <form className="QuizInviteCodeForm">
         <label className="QuizInviteCodeForm_label">
-          <h3>コードを入力して今すぐ参加</h3>
+          <p className="QuizInviteCodeForm_text">コードを入力して今すぐ参加</p>
           <div className="QuizInviteCodeForm_input">
             <input
               placeholder="_____"
@@ -100,7 +100,7 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
                 justify-content: center;
               }
             }
-            h3 {
+            &_text {
               margin-top: 0;
               margin-bottom: 0;
               @media (max-width: 520px) {
