@@ -25,7 +25,7 @@ export const DashboardQuizFormStatus: React.FunctionComponent = () => {
         setApiLoading(false)
         return data.json()
       } catch (error) {
-        console.log(error)
+        console.error(error)
         toast.success('😥クイズ大会を始める準備ができませんでした')
       }
     }

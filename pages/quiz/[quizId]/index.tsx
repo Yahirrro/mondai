@@ -94,7 +94,6 @@ export default function Home(props: Props): React.ReactElement {
   )
 
   useEffect(() => {
-    console.log(quiz, question, quizJoin, userAnswer)
     if (userAnswer?.find((data) => data.questionId == question?.id)) {
       setIsAnswered(true)
     } else {
@@ -202,7 +201,6 @@ export default function Home(props: Props): React.ReactElement {
       headers: { authorization: 'Bearer ' + (await getIdToken()) },
     })
       .then((data) => {
-        console.log(data)
         setIsApiLoading(false)
       })
       .catch((error) => {
@@ -218,7 +216,6 @@ export default function Home(props: Props): React.ReactElement {
       headers: { authorization: 'Bearer ' + (await getIdToken()) },
     })
       .then((data) => {
-        console.log(data)
         setIsApiLoading(false)
       })
       .catch((error) => {

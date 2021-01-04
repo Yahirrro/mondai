@@ -33,7 +33,6 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
       try {
         await Promise.all(
           await quiz.flow.map(async (data) => {
-            console.log(data)
             await fuego.db.doc(`quiz/${quiz.id}/question/${data}`).delete()
           })
         )
@@ -53,11 +52,6 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
         enableReinitialize
         initialValues={quiz}
         onSubmit={async (value: QuizModel) => {
-          console.log({
-            title: value.title,
-            description: value.description,
-            emoji: emoji ? emoji : value.emoji,
-          })
           updateQuiz({
             title: value.title,
             description: value.description,

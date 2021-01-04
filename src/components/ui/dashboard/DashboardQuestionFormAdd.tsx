@@ -23,7 +23,6 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
           commentary: value.commentary,
         })
         .then((docRef) => {
-          console.log('Document written with ID: ', docRef.id)
           fuego.db.doc(`/quiz/${dashboardQuizUI.optional?.quizId}`).update({
             flow: firebase.firestore.FieldValue.arrayUnion(docRef.id),
           })

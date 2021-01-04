@@ -55,7 +55,6 @@ export default apiHandler.get(async (req, res) => {
       return InviteCode()
     }
   }
-  console.log(await InviteCode())
 
   await quizRef.update({
     currentStatus: 'waiting',

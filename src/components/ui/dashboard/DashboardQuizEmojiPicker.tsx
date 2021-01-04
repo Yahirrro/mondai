@@ -1,8 +1,13 @@
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { QuizIconEmoji } from '@components/ui'
 import OutsideClickHandler from 'react-outside-click-handler'
 import 'emoji-mart/css/emoji-mart.css'
-import { BaseEmoji, Picker } from 'emoji-mart'
+import type { BaseEmoji, Picker as PickerType } from 'emoji-mart'
+
+const Picker = dynamic(() =>
+  import('emoji-mart').then((lib) => lib.Picker)
+) as typeof PickerType
 
 type Props = {
   emoji: string

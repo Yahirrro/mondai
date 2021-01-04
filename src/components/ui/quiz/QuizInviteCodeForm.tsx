@@ -24,12 +24,11 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
       }
       return
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
   useEffect(() => {
-    console.log(inviteCode)
     if (inviteCode?.length == 5) {
       setIsLoading(true)
       submitInviteCode()
