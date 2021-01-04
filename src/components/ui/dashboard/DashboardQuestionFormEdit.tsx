@@ -6,6 +6,7 @@ import { QuizNote, PageButton, DashboardQuestionEdit } from '@components/ui'
 import { QuestionModel } from '@models'
 import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'
+import { toast } from 'react-toastify'
 
 export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
   const router = useRouter()
@@ -32,8 +33,10 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
           .delete()
 
         setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+        toast.success('😃問題を削除できました!')
       } catch (error) {
         console.error(error)
+        toast.error('😥問題の削除に失敗しました')
       }
     }
   }
@@ -49,12 +52,14 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
         answer: answer == undefined ? value.answer : answer,
         choice: value.choice,
       })
+      toast.success('😆問題を編集できました!')
       setStatus({ success: true })
     } catch (error) {
       console.error(error)
       setStatus({ success: false })
       setSubmitting(false)
       setErrors({ submit: error.message })
+      toast.error('😥問題の編集に失敗しました')
     }
   }
 

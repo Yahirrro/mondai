@@ -7,6 +7,7 @@ import {
   DashboardQuizEmojiPicker,
 } from '@components/ui'
 import { useDocument } from '@nandorojo/swr-firestore'
+import { toast } from 'react-toastify'
 
 type Props = {
   quizId: string
@@ -39,6 +40,7 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
             description: value.description,
             emoji: emoji ? emoji : value.emoji,
           })
+          toast.success('😆クイズを更新できました!')
         }}>
         {({ values }) => (
           <Form style={{ width: '100%' }}>

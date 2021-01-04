@@ -3,8 +3,8 @@ import { Field, Form, Formik } from 'formik'
 import { PageButton, PageFormInput, QuizNote } from '@components/ui'
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
-import firebase from 'firebase/app'
 import { useAuthentication } from '@hook/auth'
+import { toast } from 'react-toastify'
 
 export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
   const router = useRouter()
@@ -26,11 +26,13 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
       })
       resetForm({})
       setStatus({ success: true })
+      toast.success('😆権限を追加できました')
     } catch (error) {
       console.error(error)
       setStatus({ success: false })
       setSubmitting(false)
       setErrors({ submit: error.message })
+      toast.error('😥権限の追加に失敗しました')
     }
   }
 

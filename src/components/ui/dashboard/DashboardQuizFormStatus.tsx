@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { PageButton, QuizNote, IconLoading } from '@components/ui'
 import { getIdToken } from '@lib/api'
 import { useDashboardQuizUI } from '@hook/dashboard'
+import { toast } from 'react-toastify'
 
 export const DashboardQuizFormStatus: React.FunctionComponent = () => {
   const router = useRouter()
@@ -25,10 +26,12 @@ export const DashboardQuizFormStatus: React.FunctionComponent = () => {
         return data.json()
       } catch (error) {
         console.log(error)
+        toast.success('😥クイズ大会を始める準備ができませんでした')
       }
     }
     setErrorMsg((await data()).message as string)
     setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+    toast('😆クイズ大会を始める準備ができました!')
     return
   }
 

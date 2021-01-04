@@ -12,6 +12,9 @@ import { firebaseConfig } from '@lib/firebaseConfig'
 import { AppLayout } from '@components/ui'
 import { ManagedUIContext } from '@components/ui/context'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import '../styles/globals.scss'
 
 const fuego = new Fuego(firebaseConfig)
@@ -24,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ManagedUIContext>
           <AppLayout>
             <Component {...pageProps} />
+            <ToastContainer />
           </AppLayout>
         </ManagedUIContext>
       </FuegoProvider>

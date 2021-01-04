@@ -10,6 +10,7 @@ import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'
+import { toast } from 'react-toastify'
 
 export const DashboardQuizFormCreate: React.FunctionComponent = () => {
   const router = useRouter()
@@ -28,19 +29,18 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
         emoji: emoji,
         flow: [],
         currentStatus: 'creating',
-        permission: [
-          { userId: user?.userId, permission: 'owner' },
-          { userId: user?.userId, permission: 'answer' },
-        ],
+        permission: value.permission,
       })
       router.push(`/dashboard/quiz/${addQuiz.id}`)
       setStatus({ success: true })
       setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+      toast('😆クイズを作成できました!')
     } catch (error) {
       console.error(error)
       setStatus({ success: false })
       setSubmitting(false)
       setErrors({ submit: error.message })
+      toast.error('😥クイズの作成に失敗しました...')
     }
   }
   return (
@@ -52,10 +52,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
           description: '',
           flow: [],
           currentStatus: 'creating',
-          permission: [
-            { userId: user?.userId, permission: 'owner' },
-            { userId: user?.userId, permission: 'answer' },
-          ],
+          permission: { [user?.userId]: ['owner', 'answer', 'moderator'] },
         }}
         onSubmit={submitPermission}>
         {({ values }) => (

@@ -34,7 +34,7 @@ export default function Home(props: Props): React.ReactElement {
     'detail' | 'question' | 'permission'
   >('detail')
 
-  const { data: quiz } = useDocument<QuizModel>(
+  const { data: quiz, error: errorQuiz } = useDocument<QuizModel>(
     props.params.quizId ? `quiz/${props.params.quizId}` : null,
     {
       listen: true,
@@ -50,6 +50,7 @@ export default function Home(props: Props): React.ReactElement {
   if (quiz?.exists == false) return <ScreenError code={404} />
 
   if (
+    errorQuiz ||
     quiz?.permission[user?.userId]?.some(
       (data) => data == 'owner' || data == 'answer'
     ) == false

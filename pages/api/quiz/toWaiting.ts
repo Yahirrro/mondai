@@ -33,7 +33,7 @@ export default apiHandler.get(async (req, res) => {
   }
 
   const InviteCode = async () => {
-    const code = Number(Math.random().toString().slice(2, 7))
+    const code = Math.random().toString().slice(2, 7)
     const quizCodeRef = async (): Promise<boolean> => {
       return await admin
         .firestore()

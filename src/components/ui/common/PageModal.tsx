@@ -40,7 +40,7 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
           }
           .ReactModal__Overlay {
             background-color: rgba(0, 0, 0, 0.35) !important;
-            z-index: 100000;
+            z-index: 1000;
             backdrop-filter: blur(10px);
             opacity: 0;
           }

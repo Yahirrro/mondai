@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 export const QuizInviteCodeForm: React.FunctionComponent = () => {
   const router = useRouter()
-  const [inviteCode, setInviteCode] = useState<number>(null)
+  const [inviteCode, setInviteCode] = useState<string>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const submitInviteCode = async (): Promise<{
@@ -15,7 +16,12 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
       const data = await fetch(`/api/quiz/goQuiz?inviteCode=` + inviteCode)
       setIsLoading(false)
 
-      if (data.status == 200) router.push(`/quiz/${(await data.json()).data}`)
+      if (data.status == 200) {
+        toast('😆クイズ大会がみつかりました!')
+        router.push(`/quiz/${(await data.json()).data}`)
+      } else {
+        toast.error('😫クイズ大会がみつかりませんでした...')
+      }
       return
     } catch (error) {
       console.log(error)
@@ -23,7 +29,8 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
   }
 
   useEffect(() => {
-    if (String(inviteCode).length == 5) {
+    console.log(inviteCode)
+    if (inviteCode?.length == 5) {
       setIsLoading(true)
       submitInviteCode()
     }
@@ -48,7 +55,7 @@ export const QuizInviteCodeForm: React.FunctionComponent = () => {
                     object.target.maxLength
                   )
                 }
-                setInviteCode(Number(object.target.value))
+                setInviteCode(object.target.value)
               }}
             />
             {isLoading && (

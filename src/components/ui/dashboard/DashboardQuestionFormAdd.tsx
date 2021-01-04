@@ -4,6 +4,7 @@ import { Form, Formik } from 'formik'
 import React, { useState } from 'react'
 import { QuizNote, PageButton, DashboardQuestionEdit } from '@components/ui'
 import { useDashboardQuizUI } from '@hook/dashboard'
+import { toast } from 'react-toastify'
 
 export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
   const [answer, setAnswer] = useState<number>(null)
@@ -30,12 +31,14 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
           setAnswer(null)
           setStatus({ success: true })
           setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+          toast.success('😆問題を追加できました!')
         })
     } catch (error) {
       console.error(error)
       setStatus({ success: false })
       setSubmitting(false)
       setErrors({ submit: error.message })
+      toast.error('😥問題を追加できませんでした...')
     }
   }
   return (

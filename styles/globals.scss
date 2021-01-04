@@ -41,3 +41,24 @@ a {
     --mainNormalPaddingSize: 20px;
   }
 }
+
+.Toastify__toast {
+  padding: 10px 15px;
+  font-family: var(--mainFontFamily);
+  border-radius: 15px;
+  padding: 10px 15px;
+  background: var(--mainBackgroundPattern);
+  background-size: auto auto;
+  box-shadow: var(--mainBoxShadow);
+  font-weight: bold;
+  &--success {
+    background-color: #21c782;
+  }
+  &--error {
+    background-color: #e74c3c;
+  }
+  &--default {
+    background-color: white;
+    color: black;
+  }
+}

@@ -9,7 +9,7 @@ export default apiHandler.get(async (req, res) => {
   const quizRef = await admin
     .firestore()
     .collection('quiz')
-    .where('inviteCode', '==', Number(req.query.inviteCode))
+    .where('inviteCode', '==', req.query.inviteCode)
     .where('currentStatus', 'in', ['waiting', 'open', 'answer'])
   const quiz = quizRef.get()
 
