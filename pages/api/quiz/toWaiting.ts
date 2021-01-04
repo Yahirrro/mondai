@@ -15,16 +15,13 @@ export default apiHandler.get(async (req, res) => {
   const quizData = (await (await quiz).data()) as QuizModel
 
   if (
-    quizData.permission?.some(
-      (data) =>
-        data.userId == verifyToken.uid &&
-        (data.permission == 'owner' || data.permission == 'moderator')
-    ) == false
+    quizData.permission[verifyToken.uid].includes('owner', 'answer') == false
   ) {
     res.status(401).json({
       status: 'fail',
       message: '権限がありません',
     })
+    return
   }
 
   if (quizData.flow.length == 0) {
@@ -32,6 +29,7 @@ export default apiHandler.get(async (req, res) => {
       status: 'fail',
       message: 'まだ問題が1問もありません',
     })
+    return
   }
 
   const InviteCode = async () => {
@@ -68,4 +66,5 @@ export default apiHandler.get(async (req, res) => {
   res.status(200).json({
     status: 'ok',
   })
+  return
 })

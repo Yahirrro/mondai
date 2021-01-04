@@ -1,24 +1,20 @@
 import { QuizModel } from '@models'
 import { Field, Form, Formik } from 'formik'
-import React, { useEffect, useState } from 'react'
 import { PageButton, PageFormInput, QuizNote } from '@components/ui'
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import firebase from 'firebase/app'
+import { useAuthentication } from '@hook/auth'
 
 export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
-  const [formUserId] = useState<string>(null)
-  const [formPermission] = useState<string>(null)
   const router = useRouter()
+  const user = useAuthentication()
   const { data: quiz } = useDocument<QuizModel>(
     router.query.quizId ? `quiz/${router.query.quizId}` : null,
     {
       listen: true,
     }
   )
-  useEffect(() => {
-    console.log(formPermission, formUserId)
-  }, [formUserId, formPermission])
 
   const submitPermission = async (
     value,
@@ -26,7 +22,7 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
   ) => {
     try {
       await fuego.db.doc(`quiz/${router.query.quizId}`).update({
-        permission: firebase.firestore.FieldValue.arrayUnion(value),
+        permission: { ...quiz.permission, [value.userId]: [] },
       })
       resetForm({})
       setStatus({ success: true })
@@ -41,23 +37,29 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
   return (
     <>
       <QuizNote title="🗝権限を編集する">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            width: '100%',
-          }}>
-          {quiz.permission?.map((data) => {
+        <div className="DashboardQuizFormEditPerm_index">
+          {Object.entries(quiz.permission).map((data, index) => {
             return (
-              <div key={data.userId + data.permission}>
-                {data.userId} / {data.permission}
+              <div className="DashboardQuizFormEditPerm_card" key={data[0]}>
+                <h3>{data[0] == user?.userId ? 'あなた' : data[0]}</h3>
+
+                <div className="DashboardQuizFormEditPerm_cardPerms">
+                  {((data[1] as unknown) as Array<string>).map((data) => {
+                    switch (data) {
+                      case 'owner':
+                        return <p key={data}>管理者</p>
+                      case 'answer':
+                        return <p key={data}>メイン回答者</p>
+                      case 'moderator':
+                        return <p key={data}>問題作成者</p>
+                    }
+                  })}
+                </div>
               </div>
             )
           })}
         </div>
-        <Formik
-          initialValues={{ userId: '', permission: '' }}
-          onSubmit={submitPermission}>
+        <Formik initialValues={{ userId: '' }} onSubmit={submitPermission}>
           {() => (
             <Form style={{ width: '100%' }}>
               <div className="DashboardQuizFormEditPerm_form">
@@ -69,13 +71,6 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
                   placeholder="UserId"
                   required
                 />
-                <Field as="select" name="permission" required>
-                  <option value="" disabled>
-                    選択してください
-                  </option>
-                  <option value="moderator">つくるひと</option>
-                  <option value="answer">メイン回答者</option>
-                </Field>
                 <PageButton type="submit">権限を与える</PageButton>
               </div>
             </Form>
@@ -84,14 +79,37 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
       </QuizNote>
       <style jsx>
         {`
-          .DashboardQuizFormEditPerm_form {
-            margin-top: var(--mainNormalPaddingSize);
-            display: grid;
-            grid-template-columns: 1fr 150px 150px;
-            @media (max-width: 750px) {
-              grid-template-columns: 1fr 1fr;
-              :global(input[type='text']) {
-                grid-column: 1/3;
+          .DashboardQuizFormEditPerm {
+            &_index {
+              display: grid;
+              grid-template-columns: 1fr;
+              width: 100%;
+              gap: 15px;
+            }
+            &_card {
+              h3 {
+                margin-top: 0;
+                margin-bottom: 10px;
+              }
+              &Perms {
+                display: flex;
+                p {
+                  margin-top: 0;
+                  margin-bottom: 0;
+                  font-size: 0.9rem;
+                  opacity: 0.6;
+                }
+                p + p {
+                  margin-left: 10px;
+                }
+              }
+            }
+            &_form {
+              margin-top: var(--mainNormalPaddingSize);
+              display: grid;
+              grid-template-columns: 1fr 150px;
+              @media (max-width: 750px) {
+                grid-template-columns: 1fr;
               }
             }
           }

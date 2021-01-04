@@ -160,9 +160,7 @@ export default function Home(props: Props): React.ReactElement {
   }
 
   const isMainAnswer = () => {
-    return quiz.permission?.some(
-      (data) => data.userId == user?.userId && data.permission == 'answer'
-    )
+    return quiz.permission[user?.userId]?.some((data) => data == 'answer')
   }
 
   const getRemainingQuestionCount = () => {

@@ -17,11 +17,7 @@ export default apiHandler.get(async (req, res) => {
   if (!(await quiz).exists) throw new Error('Unauthorized')
   const quizData = (await (await quiz).data()) as QuizModel
 
-  if (
-    quizData.permission.some(
-      (data) => data.userId == verifyToken.uid && data.permission == 'answer'
-    ) == false
-  ) {
+  if (quizData.permission[verifyToken.uid].includes('answer') == false) {
     res.status(401).json({
       status: 'fail',
       message: '権限がありません',

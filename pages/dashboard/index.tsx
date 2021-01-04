@@ -24,14 +24,10 @@ export default function Home(): React.ReactElement {
   const { data: quizzes } = useCollection<QuizModel>(`quiz`, {
     where: [
       [
-        'permission',
+        `permission.${user?.userId}`,
         'array-contains-any',
-        [
-          { userId: user?.userId, permission: 'owner' },
-          { userId: user?.userId, permission: 'moderator' },
-        ],
+        ['owner', 'moderator'],
       ],
-      ['currentStatus', '!=', 'archive'],
     ],
     listen: true,
   })

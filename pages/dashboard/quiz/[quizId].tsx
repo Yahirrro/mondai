@@ -50,10 +50,8 @@ export default function Home(props: Props): React.ReactElement {
   if (quiz?.exists == false) return <ScreenError code={404} />
 
   if (
-    quiz?.permission.some(
-      (data) =>
-        data.userId == user?.userId &&
-        (data.permission == 'owner' || data.permission == 'moderator')
+    quiz?.permission[user?.userId]?.some(
+      (data) => data == 'owner' || data == 'answer'
     ) == false
   )
     return <ScreenError code={404} />

@@ -6,8 +6,7 @@ export interface QuizModel {
   emoji: string
   inviteCode: null | number
   permission: Array<{
-    userId: string
-    permission: 'owner' | 'moderator' | 'answer'
+    [userId: string]: any
   }>
   allCorrectUser: null | Array<string>
   allUser: null | number

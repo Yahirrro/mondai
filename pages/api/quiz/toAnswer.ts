@@ -15,9 +15,7 @@ export default apiHandler.get(async (req, res) => {
   const quizData = (await (await quiz).data()) as QuizModel
 
   if (
-    quizData.permission.some(
-      (data) => data.userId == verifyToken.uid && data.permission == 'answer'
-    ) == false &&
+    quizData.permission[verifyToken.uid].includes('answer') == false &&
     (quizData.currentStatus !== 'open' || !quizData.currentQuestion)
   )
     throw new Error('Quiz not found')
