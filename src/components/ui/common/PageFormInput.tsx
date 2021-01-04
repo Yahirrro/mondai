@@ -10,6 +10,7 @@ export const PageFormInput: React.FunctionComponent<
       <style jsx>
         {`
           .PageFormInput {
+            appearance: none;
             font-family: var(--mainFontFamily);
             max-width: 100%;
             width: 100%;
