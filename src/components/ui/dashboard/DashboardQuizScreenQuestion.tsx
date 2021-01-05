@@ -3,6 +3,7 @@ import {
   DashboardQuizContext,
   IconAdd,
   PageButton,
+  QuizNote,
 } from '@components/ui'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { useContext } from 'react'
@@ -59,6 +60,14 @@ export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
             />
           )
         })}
+
+        {quiz?.flow.length == 0 && (
+          <QuizNote title="😉問題を追加してみましょう!">
+            <p>
+              右上にある「➕問題をふやす」をおして、問題をふやしてみましょう😆
+            </p>
+          </QuizNote>
+        )}
       </div>
     </>
   )
