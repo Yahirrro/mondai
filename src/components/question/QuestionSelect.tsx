@@ -1,5 +1,5 @@
 import React from 'react'
-import { QuestionSelectCard } from '@components/ui'
+import { QuestionSelectCard } from '@components/question'
 
 type Props = {
   title: string

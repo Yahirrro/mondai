@@ -9,16 +9,16 @@ import { useDashboardQuizUI } from '@hook/dashboard'
 import dynamic from 'next/dynamic'
 
 const DashboardQuestionFormAdd = dynamic(() =>
-  import('@components/ui').then((lib) => lib.DashboardQuestionFormAdd)
+  import('@components/dashboard').then((lib) => lib.DashboardQuestionFormAdd)
 )
 const DashboardQuestionFormEdit = dynamic(() =>
-  import('@components/ui').then((lib) => lib.DashboardQuestionFormEdit)
+  import('@components/dashboard').then((lib) => lib.DashboardQuestionFormEdit)
 )
 const DashboardQuizFormStatus = dynamic(() =>
-  import('@components/ui').then((lib) => lib.DashboardQuizFormStatus)
+  import('@components/dashboard').then((lib) => lib.DashboardQuizFormStatus)
 )
 const DashboardQuizFormCreate = dynamic(() =>
-  import('@components/ui').then((lib) => lib.DashboardQuizFormCreate)
+  import('@components/dashboard').then((lib) => lib.DashboardQuizFormCreate)
 )
 
 type Props = {

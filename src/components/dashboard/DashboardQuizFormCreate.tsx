@@ -1,11 +1,11 @@
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
+import { PageButton } from '@components/ui'
 import {
   DashboardFormikField,
   DashboardQuizEmojiPicker,
-  PageButton,
-  QuizNote,
-} from '@components/ui'
+} from '@components/dashboard'
+import { QuizNote } from '@components/quiz'
 import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'

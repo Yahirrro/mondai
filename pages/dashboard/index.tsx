@@ -1,13 +1,7 @@
-import {
-  DashboardLayout,
-  IconAdd,
-  IconFace,
-  PageButton,
-  PageCard,
-  QuizCard,
-  QuizNote,
-  ScreenLoading,
-} from '@components/ui'
+import { IconAdd, IconFace, PageButton, PageCard } from '@components/ui'
+import { QuizCard, QuizNote } from '@components/quiz'
+import { ScreenLoading } from '@components/screen'
+import { DashboardLayout } from '@components/dashboard'
 import { useAuthentication } from '@hook/auth'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuizModel } from '@models'

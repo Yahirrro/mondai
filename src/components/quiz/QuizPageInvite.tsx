@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { QuizQR, QuizContext } from '@components/ui'
+import { QuizQR, QuizContext } from '@components/quiz'
 
 export const QuizPageInvite: React.FunctionComponent = () => {
   const { quiz } = useContext(QuizContext)

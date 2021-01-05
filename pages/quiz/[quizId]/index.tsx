@@ -12,21 +12,20 @@ import {
   QuizContext,
   QuizPageHeader,
   QuizPageInvite,
-  ScreenError,
-  ScreenLoading,
-} from '@components/ui'
+} from '@components/quiz'
+import { ScreenError, ScreenLoading } from '@components/screen'
 
 const QuizScreenWaiting = dynamic(() =>
-  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenWaiting)
+  import('@components/quiz').then((lib) => lib.QuizScreenWaiting)
 )
 const QuizScreenOpen = dynamic(() =>
-  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenOpen)
+  import('@components/quiz').then((lib) => lib.QuizScreenOpen)
 )
 const QuizScreenAnswer = dynamic(() =>
-  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenAnswer)
+  import('@components/quiz').then((lib) => lib.QuizScreenAnswer)
 )
 const QuizScreenArchive = dynamic(() =>
-  import('@components/ui/quiz/screen').then((lib) => lib.QuizScreenArchive)
+  import('@components/quiz').then((lib) => lib.QuizScreenArchive)
 )
 
 import { useAuthentication } from '@hook/auth'

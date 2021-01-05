@@ -1,4 +1,4 @@
-import { QuizButton, QuizContext } from '@components/ui'
+import { QuizButton, QuizContext } from '@components/quiz'
 import React, { useContext } from 'react'
 
 export const QuizScreenWaiting: React.FunctionComponent = () => {

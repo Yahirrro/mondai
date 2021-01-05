@@ -1,11 +1,11 @@
 import { QuizModel } from '@models'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
+import { PageButton } from '@components/ui'
 import {
   DashboardFormikField,
-  PageButton,
   DashboardQuizEmojiPicker,
-} from '@components/ui'
+} from '@components/dashboard'
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import { toast } from 'react-toastify'
 

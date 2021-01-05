@@ -1,14 +1,8 @@
 import { useContext } from 'react'
-import {
-  PageNumber,
-  QuestionSelectGrid,
-  QuestionAnswerGraph,
-  QuizNote,
-  IconAdd,
-  PageButton,
-} from '@components/ui'
+import { PageNumber, IconAdd, PageButton } from '@components/ui'
+import { QuestionSelectGrid, QuestionAnswerGraph } from '@components/question'
 
-import { QuizContext } from '@components/ui'
+import { QuizContext, QuizNote } from '@components/quiz'
 import Link from 'next/link'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {

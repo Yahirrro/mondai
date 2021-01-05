@@ -10,16 +10,16 @@ import { useUI } from '@components/ui/context'
 import type {
   ModalLogin as ModalLoginType,
   ModalUserName as ModalUserNameType,
-} from '@components/ui/modal'
+} from '@components/modal'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import React from 'react'
 
 const ModalLogin = dynamic(() =>
-  import('@components/ui/modal').then((lib) => lib.ModalLogin)
+  import('@components/modal').then((lib) => lib.ModalLogin)
 ) as typeof ModalLoginType
 const ModalUserName = dynamic(() =>
-  import('@components/ui/modal').then((lib) => lib.ModalUserName)
+  import('@components/modal').then((lib) => lib.ModalUserName)
 ) as typeof ModalUserNameType
 
 type Props = {

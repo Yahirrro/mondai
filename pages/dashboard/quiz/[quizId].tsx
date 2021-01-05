@@ -1,9 +1,8 @@
 import {
-  DashboardQuizContext,
   DashboardQuizLayout,
-  ScreenError,
-  ScreenLoading,
-} from '@components/ui'
+  DashboardQuizContext,
+} from '@components/dashboard'
+import { ScreenError, ScreenLoading } from '@components/screen'
 import { useAuthentication } from '@hook/auth'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuestionModel, QuizModel } from '@models'
@@ -14,13 +13,15 @@ import { ParsedUrlQuery } from 'querystring'
 import { useState } from 'react'
 
 const DashboardQuizScreenDetail = dynamic(() =>
-  import('@components/ui').then((lib) => lib.DashboardQuizScreenDetail)
+  import('@components/dashboard').then((lib) => lib.DashboardQuizScreenDetail)
 )
 const DashboardQuizScreenQuestion = dynamic(() =>
-  import('@components/ui').then((lib) => lib.DashboardQuizScreenQuestion)
+  import('@components/dashboard').then((lib) => lib.DashboardQuizScreenQuestion)
 )
 const DashboardQuizScreenPermission = dynamic(() =>
-  import('@components/ui').then((lib) => lib.DashboardQuizScreenPermission)
+  import('@components/dashboard').then(
+    (lib) => lib.DashboardQuizScreenPermission
+  )
 )
 
 type Props = {

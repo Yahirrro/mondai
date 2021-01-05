@@ -1,5 +1,6 @@
 import { QuestionModel } from '@models'
-import { PageNumber, ScreenLoading } from '@components/ui'
+import { PageNumber } from '@components/ui'
+import { ScreenLoading } from '@components/screen'
 
 type Props = {
   title?: string

@@ -1,11 +1,7 @@
 import { useContext } from 'react'
 
-import {
-  IconCorrect,
-  IconIncorrect,
-  PageCard,
-  QuizContext,
-} from '@components/ui'
+import { IconCorrect, IconIncorrect, PageCard } from '@components/ui'
+import { QuizContext } from '@components/quiz'
 
 export const QuizCorrectCard: React.FunctionComponent = () => {
   const { quiz, correctAnswers } = useContext(QuizContext)

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { QuizIconEmoji } from '@components/ui'
+import { QuizIconEmoji } from '@components/quiz'
 import OutsideClickHandler from 'react-outside-click-handler'
 import 'emoji-mart/css/emoji-mart.css'
 import type { BaseEmoji, Picker as PickerType } from 'emoji-mart'

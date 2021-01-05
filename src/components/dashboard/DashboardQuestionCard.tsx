@@ -1,5 +1,5 @@
 import { QuestionModel, QuizModel } from '@models'
-import { QuestionTitle } from '@components/ui'
+import { QuestionTitle } from '@components/question'
 
 type Props = {
   index: number

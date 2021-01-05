@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { PageButton, QuizNote, IconLoading } from '@components/ui'
+import { QuizNote } from '@components/quiz'
+import { PageButton, IconLoading } from '@components/ui'
 import { getIdToken } from '@lib/api'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { toast } from 'react-toastify'

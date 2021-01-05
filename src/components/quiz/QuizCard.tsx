@@ -1,4 +1,5 @@
-import { QuizIconEmoji, IconLoading } from '@components/ui'
+import { IconLoading } from '@components/ui'
+import { QuizIconEmoji } from '@components/quiz'
 
 type Props = {
   title: string

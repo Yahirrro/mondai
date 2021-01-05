@@ -1,15 +1,12 @@
 import {
-  DashboardLayout,
-  DashboardQuizContext,
   IconAdd,
   IconEmojiPeople,
   IconFace,
   IconPencil,
   PageButton,
-  QuizBadge,
-  QuizCard,
-  QuizQR,
 } from '@components/ui'
+import { DashboardLayout, DashboardQuizContext } from '@components/dashboard'
+import { QuizBadge, QuizCard, QuizQR } from '@components/quiz'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'

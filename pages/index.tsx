@@ -2,11 +2,8 @@ import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import React, { ReactElement } from 'react'
 
-import {
-  PageAccentWave,
-  PageContainer,
-  QuizInviteCodeForm,
-} from '@components/ui'
+import { PageAccentWave, PageContainer } from '@components/ui'
+import { QuizInviteCodeForm } from '@components/quiz'
 
 export default function Home(): ReactElement {
   return (

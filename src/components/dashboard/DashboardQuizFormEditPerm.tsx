@@ -1,6 +1,7 @@
 import { QuizModel } from '@models'
 import { Field, Form, Formik } from 'formik'
-import { PageButton, PageFormInput, QuizNote } from '@components/ui'
+import { PageButton, PageFormInput } from '@components/ui'
+import { QuizNote } from '@components/quiz'
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import { useAuthentication } from '@hook/auth'
@@ -40,7 +41,7 @@ export const DashboardQuizFormEditPerm: React.FunctionComponent = () => {
     <>
       <QuizNote title="🗝権限を編集する">
         <div className="DashboardQuizFormEditPerm_index">
-          {Object.entries(quiz.permission).map((data, index) => {
+          {Object.entries(quiz.permission).map((data) => {
             return (
               <div className="DashboardQuizFormEditPerm_card" key={data[0]}>
                 <h3>{data[0] == user?.userId ? 'あなた' : data[0]}</h3>

@@ -1,11 +1,11 @@
+import { PageButton } from '@components/ui'
 import {
   DashboardQuizContext,
   DashboardQuizFormEditDetail,
-  PageButton,
-  QuestionAnswerGraph,
-  QuizNote,
-  ScreenLoading,
-} from '@components/ui'
+} from '@components/dashboard'
+import { QuestionAnswerGraph } from '@components/question'
+import { QuizNote } from '@components/quiz'
+import { ScreenLoading } from '@components/screen'
 import Link from 'next/link'
 import React, { useContext } from 'react'
 

@@ -1,10 +1,9 @@
 import React from 'react'
+import { IconAdd, PageButton } from '@components/ui'
 import {
   DashboardFormikField,
   DashboardQuestionChoiceEdit,
-  IconAdd,
-  PageButton,
-} from '@components/ui'
+} from '@components/dashboard'
 import { FieldArray, FormikErrors } from 'formik'
 import { QuestionModel } from '@models'
 

@@ -1,10 +1,9 @@
+import { IconAdd, PageButton } from '@components/ui'
 import {
   DashboardQuestionCard,
   DashboardQuizContext,
-  IconAdd,
-  PageButton,
-  QuizNote,
-} from '@components/ui'
+} from '@components/dashboard'
+import { QuizNote } from '@components/quiz'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { useContext } from 'react'
 

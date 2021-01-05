@@ -3,11 +3,8 @@ import {
   QuestionSelect,
   QuestionSelectGrid,
   QuestionTitle,
-  QuizButton,
-  QuizNote,
-} from '@components/ui'
-
-import { QuizContext } from '@components/ui'
+} from '@components/question'
+import { QuizContext, QuizButton, QuizNote } from '@components/quiz'
 
 export const QuizScreenOpen: React.FunctionComponent = () => {
   const {
