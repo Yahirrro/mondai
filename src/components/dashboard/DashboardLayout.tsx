@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { DefaultSeo } from 'next-seo'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import dynamic from 'next/dynamic'
-
 const DashboardQuestionFormAdd = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuestionFormAdd)
 )
@@ -19,6 +18,9 @@ const DashboardQuizFormStatus = dynamic(() =>
 )
 const DashboardQuizFormCreate = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuizFormCreate)
+)
+const DashboardMessageForm = dynamic(() =>
+  import('@components/dashboard').then((lib) => lib.DashboardMessageForm)
 )
 
 type Props = {
@@ -82,6 +84,9 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
         )}
         {dashboardQuizUI.type == 'statusQuiz' && <DashboardQuizFormStatus />}
         {dashboardQuizUI.type == 'createQuiz' && <DashboardQuizFormCreate />}
+        {dashboardQuizUI.type == 'editMessage' && (
+          <DashboardMessageForm style={{ padding: 0, margin: 0 }} />
+        )}
       </PageModal>
 
       <style jsx>

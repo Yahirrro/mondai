@@ -7,8 +7,8 @@ type Context = {
   questions: Array<QuestionModel>
   dashboardQuizUI: any
   setDashboardQuizUI: SetterOrUpdater<any>
-  pageType: 'detail' | 'question' | 'permission'
-  setPageType: SetterOrUpdater<'detail' | 'question' | 'permission'>
+  pageType: 'detail' | 'question' | 'permission' | 'message'
+  setPageType: SetterOrUpdater<'detail' | 'question' | 'permission' | 'message'>
 }
 
 export const DashboardQuizContext: React.Context<Context> = createContext<Context>(

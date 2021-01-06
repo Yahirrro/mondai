@@ -23,6 +23,9 @@ const DashboardQuizScreenPermission = dynamic(() =>
     (lib) => lib.DashboardQuizScreenPermission
   )
 )
+const DashboardQuizScreenMessage = dynamic(() =>
+  import('@components/dashboard').then((lib) => lib.DashboardQuizScreenMessage)
+)
 
 type Props = {
   params: ParsedUrlQuery
@@ -32,7 +35,7 @@ export default function Home(props: Props): React.ReactElement {
   const user = useAuthentication()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
   const [pageType, setPageType] = useState<
-    'detail' | 'question' | 'permission'
+    'detail' | 'question' | 'permission' | 'message'
   >('detail')
 
   const { data: quiz, error: errorQuiz } = useDocument<QuizModel>(
@@ -76,6 +79,7 @@ export default function Home(props: Props): React.ReactElement {
             <>
               {pageType == 'detail' && <DashboardQuizScreenDetail />}
               {pageType == 'question' && <DashboardQuizScreenQuestion />}
+              {pageType == 'message' && <DashboardQuizScreenMessage />}
               {pageType == 'permission' && <DashboardQuizScreenPermission />}
             </>
           )}

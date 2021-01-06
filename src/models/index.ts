@@ -49,3 +49,9 @@ export interface quizJoinModel {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createdAt: any
 }
+
+export interface MessageModel {
+  id: string
+  percent: number
+  message: string
+}

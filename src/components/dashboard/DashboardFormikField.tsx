@@ -6,6 +6,7 @@ type Props = {
   title: string
   description: string
   error?: string
+  style?: React.CSSProperties
 }
 
 export const DashboardFormikField: React.FunctionComponent<
@@ -13,9 +14,9 @@ export const DashboardFormikField: React.FunctionComponent<
   Props & FieldAttributes<any>
 > = (props) => {
   return (
-    <label className="DashboardFormikField">
+    <label className="DashboardFormikField" style={props.style}>
       <h3 className="DashboardFormikField_title">{props.title}</h3>
-      <Field {...props} as={PageFormInput} />
+      <Field {...props} as={PageFormInput} style={{}} />
       <p className="DashboardFormikField_description">{props.description}</p>
 
       {props.error && (

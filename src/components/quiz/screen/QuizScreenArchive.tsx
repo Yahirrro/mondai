@@ -4,10 +4,19 @@ import { QuestionSelectGrid, QuestionAnswerGraph } from '@components/question'
 
 import { QuizContext, QuizNote } from '@components/quiz'
 import Link from 'next/link'
+import { useCollection } from '@nandorojo/swr-firestore'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {
-  const { quiz, allQuestion } = useContext(QuizContext)
-
+  const { quiz, allQuestion, getCorrectRate } = useContext(QuizContext)
+  const { data: message } = useCollection<{
+    percent: number
+    message: string
+  }>(quiz?.exists && `quiz/${quiz.id}/message`, {
+    where: ['percent', '<', getCorrectRate()],
+    limit: 1,
+    orderBy: ['percent', 'desc'],
+    listen: true,
+  })
   return (
     <>
       <h2>全ての問題が終了しました！</h2>
@@ -21,6 +30,14 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
           <h3>ぜんぶ正解した人🎉</h3>
           <PageNumber number={quiz?.allCorrectUser?.length} unit="人" />
         </div>
+        {message?.length > 0 && (
+          <QuizNote
+            title={`💮正答率が${
+              message?.length > 0 && message[0]?.percent * 100
+            }%以上だった皆さんへ!`}>
+            <p>{message?.length > 0 && message[0]?.message}</p>
+          </QuizNote>
+        )}
       </QuestionSelectGrid>
 
       <QuizNote title="😍おつかれさまでした!">
@@ -31,12 +48,16 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
         </p>
         <Link href="/dashboard">
           <a style={{ marginTop: '20px', width: '100%' }}>
-            <PageButton icon={<IconAdd />} style={{ width: '100%' }}>
+            <PageButton
+              buttontype="big"
+              icon={<IconAdd />}
+              style={{ width: '100%' }}>
               いますぐクイズをつくる
             </PageButton>
           </a>
         </Link>
       </QuizNote>
+
       <QuizNote title="😏みんなのこたえ">
         {quiz?.flow?.map((data, index) => {
           if (!allQuestion) return

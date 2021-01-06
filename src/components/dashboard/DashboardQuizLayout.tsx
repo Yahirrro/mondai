@@ -2,6 +2,7 @@ import {
   IconAdd,
   IconEmojiPeople,
   IconFace,
+  IconGift,
   IconPencil,
   PageButton,
 } from '@components/ui'
@@ -61,12 +62,11 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
                 </li>
                 <li
                   className={`DashboardQuizLayout_list ${
-                    pageType == 'permission' &&
-                    'DashboardQuizLayout_link-active'
+                    pageType == 'message' && 'DashboardQuizLayout_link-active'
                   }`}
-                  onClick={() => setPageType('permission')}>
-                  <IconFace />
-                  <p>権限を設定</p>
+                  onClick={() => setPageType('message')}>
+                  <IconGift />
+                  <p>メッセージ</p>
                 </li>
                 {quiz?.flow.length !== 0 && (
                   <li

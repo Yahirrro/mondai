@@ -179,6 +179,12 @@ export default function Home(props: Props): React.ReactElement {
     return userAnswer?.filter((data) => data.isCorrectAnswer == false)?.length
   }
 
+  const getCorrectRate = () => {
+    if (!userAnswer || userAnswer == []) return 0
+    console.log(getCorrectAnswerAmount() / quiz?.flow.length)
+    return getCorrectAnswerAmount() / quiz?.flow.length
+  }
+
   const goNextQuestion = () => {
     if (!isRemainingQuizExists()) return
     updateQuiz({
@@ -253,6 +259,7 @@ export default function Home(props: Props): React.ReactElement {
           getRemainingQuestionCount,
           getCorrectAnswerAmount,
           getIncorrectAnswerAmount,
+          getCorrectRate,
           goNextQuestion,
           goStatusOpenScreen,
           goStatusAnswerScreen,

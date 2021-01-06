@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nandorojo/swr-firestore": "^0.16.0",
+    "@react-hook/window-size": "^3.0.7",
     "@types/emoji-mart": "^3.0.4",
     "@types/react-modal": "^3.10.6",
     "@types/styled-jsx": "^2.2.8",

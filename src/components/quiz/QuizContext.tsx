@@ -15,6 +15,7 @@ type Context = {
   getRemainingQuestionCount: () => number
   getCorrectAnswerAmount: () => number
   getIncorrectAnswerAmount: () => number
+  getCorrectRate: () => number
   goNextQuestion: () => void
   goStatusOpenScreen: () => void
   goStatusAnswerScreen: () => void
