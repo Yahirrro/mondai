@@ -35,15 +35,6 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
 
       <style jsx global>
         {`
-          .ReactModal__Body--open {
-            overflow: hidden;
-          }
-          .ReactModal__Overlay {
-            background-color: rgba(0, 0, 0, 0.35) !important;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            opacity: 0;
-          }
           .PageModal {
             position: absolute;
             width: 100%;
@@ -107,19 +98,30 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
               }
             }
           }
-          .ReactModal__Content--after-open {
-            opacity: 1;
-          }
-          .ReactModal__Content--before-close {
-            opacity: 0;
+          .ReactModal__Body--open {
+            overflow: hidden;
           }
           .ReactModal__Overlay {
+            background-color: rgba(0, 0, 0, 0.35) !important;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            opacity: 0;
             transition: all 0.3s;
           }
           .ReactModal__Overlay--after-open {
             opacity: 1;
           }
           .ReactModal__Overlay--before-close {
+            opacity: 0;
+          }
+          .ReactModal__Content {
+            transition: all 0.3s;
+            opacity: 0;
+          }
+          .ReactModal__Content--after-open {
+            opacity: 1;
+          }
+          .ReactModal__Content--before-close {
             opacity: 0;
           }
           :global(.PageModal_body > .PageModal_info) {
