@@ -236,7 +236,7 @@ export default function Home(props: Props): React.ReactElement {
         openGraph={{
           images: [
             {
-              url: `https://dev.mondai.page/api/quiz/ogp?title=${quiz.title}&description=${quiz.description}&emoji=${quiz.emoji}`,
+              url: `https://dev.mondai.page/api/quiz/ogp?title=${quiz.title}&description=${quiz.description}`,
               width: 1200,
               height: 630,
               alt: quiz.title,

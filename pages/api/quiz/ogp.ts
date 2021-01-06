@@ -15,12 +15,6 @@ export default apiHandler.get(async (req, res) => {
   const test = await loadImage(path.resolve('./src/ogp/ogpBase.jpg'))
   context.drawImage(test, 0, 0, 1200, 630)
 
-  context.font = '130px NotoSansJP-Bold'
-  context.fillStyle = '#000000'
-  context.textAlign = 'center'
-  context.textBaseline = 'middle'
-  await fillTextWithTwemoji(context, req.query.emoji as string, 1200 / 2, 150)
-
   let title = req.query.title as string
   if (req.query.title.length > 17) {
     title = title.substr(0, 16) + '…'
