@@ -63,6 +63,7 @@ export const DashboardMessagePercent: React.FunctionComponent<Props> = (
               }
             }
             &:after {
+              font-family: 'Inter';
               position: absolute;
               top: -45px;
               content: '→';
