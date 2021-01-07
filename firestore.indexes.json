@@ -1,0 +1,33 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "quiz",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "inviteCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "currentStatus",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "quiz",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "permission",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "currentStatus",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
