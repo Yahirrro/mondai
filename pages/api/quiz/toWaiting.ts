@@ -3,6 +3,7 @@ import admin from 'firebase-admin'
 
 import { QuizModel } from '@models'
 import { apiHandler, apiVerifyToken } from '@lib/server'
+import { hasQuizPermission } from '@lib/api'
 
 export default apiHandler.get(async (req, res) => {
   const verifyToken = await apiVerifyToken(req.headers.authorization)
@@ -15,7 +16,8 @@ export default apiHandler.get(async (req, res) => {
   const quizData = (await (await quiz).data()) as QuizModel
 
   if (
-    quizData.permission[verifyToken.uid].includes('owner', 'answer') == false
+    (await hasQuizPermission('owner', quizData, verifyToken.uid)) == false ||
+    (await hasQuizPermission('answer', quizData, verifyToken.uid)) == false
   ) {
     res.status(401).json({
       status: 'fail',

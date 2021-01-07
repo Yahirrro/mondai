@@ -3,32 +3,39 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /quiz/{quizId} {
     	allow read: if resource.data.currentStatus != 'creating'
-      	|| (resource.data.permission.keys().toSet().hasAll([request.auth.uid]) == true
-      		&& resource.data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true);
+      	|| resource.data.permission.owner in request.auth.uid == true;
       allow write: if request.auth != null;
       allow update: if resource.data.permission.keys().toSet().hasAll([request.auth.uid]) == true
-          && resource.data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true
+          && (resource.data.permission.owner in request.auth.uid == true
+              || resource.data.permission.answer in request.auth.uid == true );
           && request.resource.id == resource.id;
       allow delete: if resource.data.permission.keys().toSet().hasAll([request.auth.uid]) == true
-      	&& resource.data.permission[request.auth.uid].hasAny(['owner']) == true;
+      	&& resource.data.permission.owner in request.auth.uid == true;
       
+      function isOwner(userId) {
+        return get(/databases/$(database)/documents/quiz/$(quizId)).data.permission.owner in userId
+      }
+      function isAnswer(userId) {
+        return get(/databases/$(database)/documents/quiz/$(quizId)).data.permission.owner in userId
+      }
+
       match /question/{questionId} {
       	allow read;
-        allow write: if get(/databases/$(database)/documents/quiz/$(quizId)).data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true;
+        allow write: if isOwner(request.auth.uid);
         allow update:
-        	if get(/databases/$(database)/documents/quiz/$(quizId)).data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true
+        	if isOwner(request.auth.uid)
           	&& request.resource.id == resource.id;
         allow delete: 
-        	if get(/databases/$(database)/documents/quiz/$(quizId)).data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true;
+        	if isOwner(request.auth.uid);
       }
       match /message/{messageId} {
       	allow read;
-        allow write: if get(/databases/$(database)/documents/quiz/$(quizId)).data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true;
+        allow write: if isOwner(request.auth.uid);
         allow update:
-        	if get(/databases/$(database)/documents/quiz/$(quizId)).data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true
+        	if isOwner(request.auth.uid)
           	&& request.resource.id == resource.id;
         allow delete: 
-        	if get(/databases/$(database)/documents/quiz/$(quizId)).data.permission[request.auth.uid].hasAny(['owner', 'moderator']) == true;
+        	if isOwner(request.auth.uid);
       }
       match /user/{userId} {
       	allow read;

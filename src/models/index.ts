@@ -5,9 +5,10 @@ export interface QuizModel {
   description: string
   emoji: string
   inviteCode: null | number
-  permission: Array<{
-    [userId: string]: any
-  }>
+  permission: {
+    owner: Array<UserModel['userId']>
+    answer: Array<UserModel['userId']>
+  }
   allCorrectUser: null | Array<string>
   allUser: null | number
   flow: Array<string>

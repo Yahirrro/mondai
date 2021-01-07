@@ -17,14 +17,12 @@ export default function Home(): React.ReactElement {
 
   const { data: quizzes } = useCollection<QuizModel>(user?.userId && `quiz`, {
     where: [
-      [
-        `permission.${user?.userId}`,
-        'array-contains-any',
-        ['owner', 'moderator'],
-      ],
+      ['permission.owner', 'array-contains', user?.userId],
+      ['currentStatus', '!=', 'archive'],
     ],
     listen: true,
   })
+  console.log(quizzes)
   return (
     <>
       <NextSeo title="ダッシュボード" />

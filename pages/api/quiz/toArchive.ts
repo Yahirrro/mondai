@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import { QuestionModel, QuizModel } from '@models'
 import { apiHandler, apiVerifyToken } from '@lib/server'
+import { hasQuizPermission } from '@lib/api'
 
 export default apiHandler.get(async (req, res) => {
   const verifyToken = await apiVerifyToken(req.headers.authorization)
@@ -17,7 +18,10 @@ export default apiHandler.get(async (req, res) => {
   if (!(await quiz).exists) throw new Error('Unauthorized')
   const quizData = (await (await quiz).data()) as QuizModel
 
-  if (quizData.permission[verifyToken.uid].includes('answer') == false) {
+  if (
+    (await hasQuizPermission('owner', quizData, verifyToken.uid)) == false ||
+    (await hasQuizPermission('answer', quizData, verifyToken.uid)) == false
+  ) {
     res.status(401).json({
       status: 'fail',
       message: '権限がありません',

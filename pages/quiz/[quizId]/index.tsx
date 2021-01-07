@@ -29,7 +29,7 @@ const QuizScreenArchive = dynamic(() =>
 )
 
 import { useAuthentication } from '@hook/auth'
-import { getQuiz } from '@lib/api'
+import { getQuiz, hasQuizPermission } from '@lib/api'
 import { useUI } from '@components/ui/context'
 import { getIdToken } from '@lib/api'
 
@@ -161,8 +161,8 @@ export default function Home(props: Props): React.ReactElement {
     else return true
   }
 
-  const isMainAnswer = () => {
-    return quiz.permission[user?.userId]?.some((data) => data == 'answer')
+  const isMainAnswer = async () => {
+    return await hasQuizPermission('answer', quiz, user?.userId)
   }
 
   const getRemainingQuestionCount = () => {
