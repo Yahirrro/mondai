@@ -55,7 +55,7 @@ export default function Home(): React.ReactElement {
           {!quizzes && <ScreenLoading />}
           {quizzes?.map((data) => {
             return (
-              <Link key={data.title} href={`/dashboard/quiz/${data.id}`}>
+              <Link key={data.id} href={`/dashboard/quiz/${data.id}`}>
                 <a>
                   <QuizCard
                     style={{ width: '100%' }}
@@ -67,26 +67,26 @@ export default function Home(): React.ReactElement {
               </Link>
             )
           })}
-          {quizzes?.length == 0 && (
-            <>
-              <QuizNote title="😥クイズがまだありません!">
-                <p>あなたがつくっているクイズがまだあリません😫</p>
-                <p>いますぐクイズをつくってみませんか🤩</p>
-                <PageButton
-                  style={{ width: '100%', marginTop: '20px' }}
-                  icon={<IconAdd />}
-                  onClick={() =>
-                    setDashboardQuizUI({
-                      type: 'createQuiz',
-                      open: true,
-                    })
-                  }>
-                  クイズをつくる
-                </PageButton>
-              </QuizNote>
-            </>
-          )}
         </div>
+        {quizzes?.length == 0 && (
+          <>
+            <QuizNote title="😥クイズがまだありません!">
+              <p>あなたがつくっているクイズがまだあリません😫</p>
+              <p>いますぐクイズをつくってみませんか🤩</p>
+              <PageButton
+                style={{ width: '100%', marginTop: '20px' }}
+                icon={<IconAdd />}
+                onClick={() =>
+                  setDashboardQuizUI({
+                    type: 'createQuiz',
+                    open: true,
+                  })
+                }>
+                クイズをつくる
+              </PageButton>
+            </QuizNote>
+          </>
+        )}
       </DashboardLayout>
       <style jsx>
         {`
@@ -97,8 +97,14 @@ export default function Home(): React.ReactElement {
           }
           .DashboardQuizIndex {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(
+              auto-fit,
+              [col-start] minmax(380px, 1fr) [col-end]
+            );
             gap: 20px;
+            @media (max-width: 750px) {
+              grid-template-columns: 1fr;
+            }
           }
         `}
       </style>

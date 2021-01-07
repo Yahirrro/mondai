@@ -40,7 +40,7 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
           ) : (
             props.data.map((choice, index) => {
               return (
-                <div className="QuestionAnswerGraph_choice" key={choice.title}>
+                <div className="QuestionAnswerGraph_choice" key={index}>
                   <div
                     style={{
                       alignSelf: 'center',

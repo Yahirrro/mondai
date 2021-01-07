@@ -71,7 +71,7 @@ export const DashboardQuizScreenDetail: React.FunctionComponent = () => {
               )
               return (
                 <QuestionAnswerGraph
-                  key={questionData?.title}
+                  key={index}
                   data={questionData?.choice}
                   correctAnswer={questionData?.answer}
                   title={index + 1 + '. ' + questionData?.title}
