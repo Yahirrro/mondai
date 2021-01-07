@@ -1,4 +1,4 @@
-import { fuego } from '@nandorojo/swr-firestore'
+import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import firebase from 'firebase/app'
 import { Form, Formik } from 'formik'
 import React, { useState } from 'react'
@@ -7,10 +7,17 @@ import { QuizNote } from '@components/quiz'
 import { DashboardQuestionEdit } from '@components/dashboard'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { toast } from 'react-toastify'
+import { QuizModel } from '@models'
+import { useRouter } from 'next/router'
 
 export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
+  const router = useRouter()
   const [answer, setAnswer] = useState<number>(null)
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
+  const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
+    router.query.quizId ? `quiz/${router.query.quizId}` : null
+  )
+
   const submitQuestion = async (
     value,
     { setSubmitting, setErrors, setStatus, resetForm }
@@ -25,11 +32,9 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
           commentary: value.commentary,
         })
         .then(async (docRef) => {
-          await fuego.db
-            .doc(`/quiz/${dashboardQuizUI.optional?.quizId}`)
-            .update({
-              flow: firebase.firestore.FieldValue.arrayUnion(docRef.id),
-            })
+          updateQuiz({
+            flow: [...quiz?.flow, docRef.id],
+          })
           resetForm({})
           setAnswer(null)
           setStatus({ success: true })
