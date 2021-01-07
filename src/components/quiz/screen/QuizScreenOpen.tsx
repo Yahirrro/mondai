@@ -28,7 +28,7 @@ export const QuizScreenOpen: React.FunctionComponent = () => {
             {question.choice.map((data, index) => {
               return (
                 <QuestionSelect
-                  key={data.title}
+                  key={index}
                   title={data.title}
                   index={(index + 1).toString()}>
                   <input

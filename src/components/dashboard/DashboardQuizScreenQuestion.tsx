@@ -5,11 +5,17 @@ import {
 } from '@components/dashboard'
 import { QuizNote } from '@components/quiz'
 import { useDashboardQuizUI } from '@hook/dashboard'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
   const { quiz, questions } = useContext(DashboardQuizContext)
-  const { setDashboardQuizUI } = useDashboardQuizUI()
+  const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
+
+  useEffect(() => {
+    console.log(questions)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dashboardQuizUI?.open])
+
   return (
     <>
       <header style={{ marginBottom: '30px' }}>

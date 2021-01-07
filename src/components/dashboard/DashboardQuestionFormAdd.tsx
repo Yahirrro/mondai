@@ -17,7 +17,7 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
   ) => {
     try {
       fuego.db
-        .collection(`/quiz/${dashboardQuizUI.optional?.quizId}/question`)
+        .collection(`quiz/${dashboardQuizUI.optional?.quizId}/question`)
         .add({
           title: value.title,
           choice: value.choice,
