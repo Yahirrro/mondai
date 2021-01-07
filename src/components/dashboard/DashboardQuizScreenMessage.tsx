@@ -10,9 +10,11 @@ import { QuizNote } from '@components/quiz'
 import { useDashboardQuizUI } from '@hook/dashboard'
 
 import { useWindowSize } from '@react-hook/window-size/throttled'
+import { useRouter } from 'next/router'
 
 export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
-  const [width, height] = useWindowSize()
+  const router = useRouter()
+  const [width] = useWindowSize()
   const { quiz } = useContext(DashboardQuizContext)
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
   const { data: message } = useCollection<{
@@ -22,9 +24,26 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
     listen: true,
   })
   useEffect(() => {
+    console.log('updated-new')
+    setDashboardQuizUI({
+      type: dashboardQuizUI.type,
+      open: false,
+      optional: {
+        messagePercent: 0,
+        messageData: message?.find((msg) => msg.percent == 0),
+      },
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.quizId])
+
+  useEffect(() => {
+    console.log('data')
+    console.log(dashboardQuizUI.optional)
     if (
-      dashboardQuizUI.optional?.messageData == null &&
-      !isWindowBreakPoint()
+      message?.some(
+        (data) => data.percent == dashboardQuizUI.optional?.messagePercent
+      ) == false &&
+      isWindowBreakPoint()
     ) {
       setDashboardQuizUI({
         type: dashboardQuizUI.type,
@@ -51,6 +70,16 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
           messageData: message?.find((msg) => msg.percent == 0),
         },
       })
+      if (isWindowBreakPoint()) {
+        setDashboardQuizUI({
+          type: dashboardQuizUI.type,
+          open: false,
+          optional: {
+            messagePercent: null,
+            messageData: null,
+          },
+        })
+      }
     }
     if (
       isWindowBreakPoint() &&
@@ -63,6 +92,10 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width])
+
+  useEffect(() => {
+    console.log(dashboardQuizUI.optional?.messagePercent)
+  }, [dashboardQuizUI.optional?.messagePercent])
 
   const isWindowBreakPoint = () => {
     return width < 900
@@ -82,7 +115,7 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
                 key={data}
                 percent={data * 100}
                 exist={msg}
-                selected={data == dashboardQuizUI.optional?.messagePercent}
+                selected={data === dashboardQuizUI.optional?.messagePercent}
                 onClick={() => {
                   setDashboardQuizUI({
                     type: 'editMessage',

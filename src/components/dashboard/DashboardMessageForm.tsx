@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { useRouter } from 'next/router'
 import { MessageModel } from '@models'
+import { useWindowSize } from '@react-hook/window-size/throttled'
 
 type Props = {
   style?: React.CSSProperties
@@ -17,6 +18,7 @@ type Props = {
 
 export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
   const router = useRouter()
+  const [width] = useWindowSize()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
   const [formData, setFormData] = useState({
     percent: dashboardQuizUI.optional?.messagePercent,
@@ -24,6 +26,7 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
       ? dashboardQuizUI.optional?.messageData?.message
       : '',
   })
+
   useEffect(() => {
     setFormData({
       percent: dashboardQuizUI.optional?.messagePercent,
@@ -36,6 +39,10 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
     dashboardQuizUI.optional?.messagePercent,
   ])
 
+  const isWindowBreakPoint = () => {
+    return width < 900
+  }
+
   const removeMessage = async () => {
     if (window.confirm('このメッセージを本当に削除しますか?')) {
       try {
@@ -47,6 +54,19 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
         setFormData({
           percent: dashboardQuizUI.optional?.messagePercent,
           message: '',
+        })
+        setDashboardQuizUI({
+          type: dashboardQuizUI.type,
+          open: false,
+          optional: {
+            messagePercent: isWindowBreakPoint()
+              ? null
+              : dashboardQuizUI.optional?.messagePercent,
+            messageData: {
+              ...dashboardQuizUI.optional?.messageData,
+              message: null,
+            },
+          },
         })
         toast.success('😃メッセージを削除できました!')
       } catch (error) {
@@ -68,17 +88,39 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
       if (dashboardQuizUI.optional?.messageData?.id) {
         await fuego.db
           .doc(
-            `/quiz/${router.query.quizId}/message/${dashboardQuizUI.optional?.messageData?.id}`
+            `quiz/${router.query.quizId}/message/${dashboardQuizUI.optional?.messageData?.id}`
           )
           .update({
             message: value.message,
           })
+        setDashboardQuizUI({
+          type: dashboardQuizUI.type,
+          open: dashboardQuizUI.open,
+          optional: {
+            messagePercent: dashboardQuizUI.optional?.messagePercent,
+            messageData: {
+              ...dashboardQuizUI.optional?.messageData,
+              message: value.message,
+            },
+          },
+        })
         setStatus({ success: true })
         toast.success('😆メッセージを更新できました!')
       } else {
-        await fuego.db.collection(`/quiz/${router.query.quizId}/message`).add({
+        await fuego.db.collection(`quiz/${router.query.quizId}/message`).add({
           percent: dashboardQuizUI.optional?.messagePercent,
           message: value.message,
+        })
+        setDashboardQuizUI({
+          type: dashboardQuizUI.type,
+          open: dashboardQuizUI.open,
+          optional: {
+            messagePercent: dashboardQuizUI.optional?.messagePercent,
+            messageData: {
+              ...dashboardQuizUI.optional?.messageData,
+              message: value.message,
+            },
+          },
         })
         toast.success('😆メッセージを追加できました!')
       }
@@ -109,7 +151,7 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
           <Form>
             <DashboardFormikField
               title="メッセージ"
-              description="ここにめっせーじいれてみて！"
+              description="ここにメッセージいれてみて！"
               placeholder="たとえば：こんなに正解できたの！？すごい！"
               name="message"
               required
@@ -132,7 +174,7 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
           </Form>
         )}
       </Formik>
-      {dashboardQuizUI.optional?.messageData?.id && (
+      {dashboardQuizUI.optional?.messageData?.message && (
         <div style={{ marginTop: '30px', textAlign: 'right', width: '100%' }}>
           <a
             style={{
@@ -143,7 +185,7 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
               opacity: 0.6,
             }}
             onClick={removeMessage}>
-            このクイズを削除する
+            このメッセージを削除する
           </a>
         </div>
       )}
