@@ -11,6 +11,7 @@ import { fuego } from '@nandorojo/swr-firestore'
 import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { toast } from 'react-toastify'
+import { QuizModel } from '@models'
 
 export const DashboardQuizFormCreate: React.FunctionComponent = () => {
   const router = useRouter()
@@ -52,7 +53,9 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
           description: '',
           flow: [],
           currentStatus: 'creating',
-          permission: { [user?.userId]: ['owner', 'answer', 'moderator'] },
+          permission: {
+            owner: [user?.userId] as QuizModel['permission']['owner'],
+          },
         }}
         onSubmit={submitPermission}>
         {({ values }) => (
