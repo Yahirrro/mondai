@@ -20,9 +20,7 @@ export default function Home(): React.ReactElement {
       ['permission.owner', 'array-contains', user?.userId],
       ['currentStatus', '!=', 'archive'],
     ],
-    listen: true,
   })
-  console.log(quizzes)
   return (
     <>
       <NextSeo title="ダッシュボード" />

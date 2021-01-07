@@ -12,7 +12,7 @@ export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
 
   useEffect(() => {
-    console.log(questions)
+    console.log(quiz, questions)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboardQuizUI?.open])
 

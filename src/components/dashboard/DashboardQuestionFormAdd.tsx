@@ -16,7 +16,7 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
     { setSubmitting, setErrors, setStatus, resetForm }
   ) => {
     try {
-      fuego.db
+      await fuego.db
         .collection(`quiz/${dashboardQuizUI.optional?.quizId}/question`)
         .add({
           title: value.title,
@@ -24,10 +24,12 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
           answer: answer,
           commentary: value.commentary,
         })
-        .then((docRef) => {
-          fuego.db.doc(`/quiz/${dashboardQuizUI.optional?.quizId}`).update({
-            flow: firebase.firestore.FieldValue.arrayUnion(docRef.id),
-          })
+        .then(async (docRef) => {
+          await fuego.db
+            .doc(`/quiz/${dashboardQuizUI.optional?.quizId}`)
+            .update({
+              flow: firebase.firestore.FieldValue.arrayUnion(docRef.id),
+            })
           resetForm({})
           setAnswer(null)
           setStatus({ success: true })

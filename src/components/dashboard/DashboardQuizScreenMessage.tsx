@@ -24,7 +24,6 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
     listen: true,
   })
   useEffect(() => {
-    console.log('updated-new')
     setDashboardQuizUI({
       type: dashboardQuizUI.type,
       open: false,
@@ -37,8 +36,6 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
   }, [router.query.quizId])
 
   useEffect(() => {
-    console.log('data')
-    console.log(dashboardQuizUI.optional)
     if (
       message?.some(
         (data) => data.percent == dashboardQuizUI.optional?.messagePercent
@@ -92,10 +89,6 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width])
-
-  useEffect(() => {
-    console.log(dashboardQuizUI.optional?.messagePercent)
-  }, [dashboardQuizUI.optional?.messagePercent])
 
   const isWindowBreakPoint = () => {
     return width < 900
