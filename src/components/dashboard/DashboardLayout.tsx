@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { DefaultSeo } from 'next-seo'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import dynamic from 'next/dynamic'
+import { useUI } from '@components/ui/context'
 const DashboardQuestionFormAdd = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuestionFormAdd)
 )
@@ -33,12 +34,16 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
   const router = useRouter()
   const user = useAuthentication()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
+  const { openModal, setModalView } = useUI()
   useEffect(() => {
     fuego.auth().onAuthStateChanged(async (firebaseUser) => {
       if (!firebaseUser) {
         router.push('/')
+        setModalView('LOGIN_VIEW')
+        openModal()
       }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, user])
   return (
     <>

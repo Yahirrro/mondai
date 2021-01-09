@@ -2,15 +2,19 @@ import { useAuthentication } from '@hook/auth'
 import { fuego } from '@nandorojo/swr-firestore'
 import { useEffect } from 'react'
 import { useUI } from '@components/ui/context'
+import { useRouter } from 'next/router'
 
 export const ModalLogin: React.FunctionComponent = () => {
+  const router = useRouter()
   const user = useAuthentication()
   const { closeModal } = useUI()
 
   useEffect(() => {
+    if (router.pathname == '/') router.push('/dashboard')
     if (user !== null) {
       closeModal()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [closeModal, user])
 
   return (

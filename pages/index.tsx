@@ -2,8 +2,9 @@ import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import React, { ReactElement } from 'react'
 
-import { PageAccentWave, PageContainer } from '@components/ui'
+import { PageAccentWave, PageButton, PageContainer } from '@components/ui'
 import { QuizInviteCodeForm } from '@components/quiz'
+import Link from 'next/link'
 
 export default function Home(): ReactElement {
   return (
@@ -45,44 +46,211 @@ export default function Home(): ReactElement {
         </header>
 
         <PageContainer>
-          <h2 className="IndexPage_title">
-            クイズをつくって、
-            <br />
-            みんなといっしょにあそぼう!
-          </h2>
-          <div className="IndexPage_cards">
-            <IndexPageCard
-              title="つくる"
-              message="あなただけのクイズをつくってみましょう！"
-              image={<img src="assets/index/create.svg" />}
-            />
-            <IndexPageCard
-              title="共有する"
-              message="クイズができたら、クイズのURLやコードを友達に教えて、準備しましょう！"
-              image={<img src="assets/index/share.svg" />}
-            />
-            <IndexPageCard
-              title="みんなであそぶ"
-              message="クイズであそんでみましょう！"
-              image={<img src="assets/index/playtogether.svg" />}
-            />
-          </div>
+          <section className="IndexPageSection">
+            <h2 className="IndexPage_title IndexPage_title-center">
+              たのしく、かんたんに
+              <br />
+              クイズ大会をひらいてみよう!
+            </h2>
+            <p className="IndexPage_description IndexPage_description-center">
+              ちょっとしたミニゲームみたいに、場を盛り上げたりするのにぴったり！
+            </p>
+            <div className="IndexPage_cardsImage">
+              <div className="IndexPage_cardsImage_wrap">
+                <IndexPageCardImage
+                  title="みんなで"
+                  message="つくったクイズを、ともだちと一緒に解いてみよう！"
+                  image={<img src="assets/index/for-friends.svg" />}
+                />
+              </div>
+              <div className="IndexPage_cardsImage_wrap">
+                <IndexPageCardImage
+                  title="ひとりで"
+                  message="問題をつくったり、だれかが作ったクイズを解いてみよう！"
+                  image={<img src="assets/index/for-one.svg" />}
+                />
+              </div>
+              <div className="IndexPage_cardsImage_wrap">
+                <IndexPageCardImage
+                  title="たくさんで"
+                  message="イベントなどで、QRコードを共有して、クイズ大会を開いてみよう！"
+                  image={<img src="assets/index/for-everyone.svg" />}
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className="IndexPageSection">
+            <h2 className="IndexPage_title">クイズ大会のひらきかた</h2>
+            <p className="IndexPage_description">
+              たのしいクイズ大会をひらくには？
+            </p>
+            <div className="IndexPage_cardsHowTo">
+              <IndexPageCard
+                title="つくる"
+                message="あなただけのクイズをつくってみましょう！"
+                image={<img src="assets/index/create.svg" />}
+              />
+              <IndexPageCard
+                title="共有する"
+                message="クイズができたら、クイズのURLやコードを友達に教えて、準備しましょう！"
+                image={<img src="assets/index/share.svg" />}
+              />
+              <IndexPageCard
+                title="みんなであそぶ"
+                message="クイズであそんでみましょう！"
+                image={<img src="assets/index/playtogether.svg" />}
+              />
+            </div>
+          </section>
+
+          <section className="IndexPageInvite IndexPageSection">
+            <div>
+              <h2 className="IndexPageInvite_title">
+                いますぐクイズを
+                <br />
+                作ってみませんか？
+              </h2>
+              <Link href="/dashboard">
+                <a>
+                  <PageButton style={{ width: '100%' }} buttontype="big">
+                    クイズをつくってみる!
+                  </PageButton>
+                </a>
+              </Link>
+            </div>
+          </section>
         </PageContainer>
 
         <style jsx>
           {`
+            .IndexPageInvite {
+              position: relative;
+              padding: 50px;
+              background-color: #ffffff;
+              border-radius: 40px;
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              z-index: 0;
+              @media (max-width: 650px) {
+                grid-template-columns: 1fr;
+                padding: 80px 20px;
+              }
+              &_title {
+                margin-top: 0;
+                font-size: 28px;
+                line-height: 38px;
+                margin-bottom: 40px;
+              }
+              &:before {
+                z-index: -1;
+                position: absolute;
+                top: 50%;
+                right: 200px;
+                transform: translateY(-50%);
+                content: 'Q';
+                font-size: 290px;
+                font-weight: bold;
+                color: rgba(0, 0, 0, 0.1);
+                opacity: 0.5;
+                @media (max-width: 650px) {
+                  right: 50px;
+                  opacity: 0.3;
+                }
+              }
+              &:after {
+                @extend .IndexPageInvite:before;
+                z-index: -2;
+                content: 'A';
+                right: 50px;
+                color: var(--mainAccentColor);
+                opacity: 0.3;
+                @media (max-width: 650px) {
+                  display: none;
+                }
+              }
+            }
             .IndexPage {
+              &Section {
+                & + & {
+                  margin-top: 150px;
+                  @media (max-width: 750px) {
+                    margin-top: 100px;
+                  }
+                }
+              }
               &_title {
                 font-size: 36px;
                 line-height: 49px;
                 margin-top: 0;
-                margin-bottom: 50px;
+                margin-bottom: 0;
+                &-center {
+                  text-align: center;
+                }
                 @media (max-width: 750px) {
                   font-size: 1.8rem;
                   line-height: 1.5;
                 }
               }
-              &_cards {
+              &_description {
+                font-size: 1rem;
+                margin-top: 0;
+                margin-bottom: 50px;
+                &-center {
+                  text-align: center;
+                }
+              }
+              &_title + &_description {
+                margin-top: 40px;
+                @media (max-width: 750px) {
+                  margin-top: 20px;
+                }
+              }
+              &_cardsImage {
+                display: grid;
+                gap: 100px;
+                grid-template-columns: 1fr 1fr;
+
+                width: calc(100% + 16%);
+                transform: translateX(-8%);
+                @media (max-width: 1600px) {
+                  gap: 70px;
+                  width: 100%;
+                  transform: none;
+                }
+                @media (max-width: 950px) {
+                  grid-template-columns: 1fr;
+                  gap: 30px;
+                }
+                &_wrap {
+                  &:nth-of-type(2) {
+                    grid-row: 1/3;
+                    grid-column: 2;
+                    display: flex;
+                    align-items: center;
+                    :global(.IndexPageCardImage) {
+                      width: 100%;
+                    }
+                    :global(.IndexPageCardImage_body) {
+                      transform: translate(-30px, 30px);
+                    }
+                    @media (max-width: 950px) {
+                      grid-row: initial;
+                      grid-column: initial;
+                      :global(.IndexPageCardImage_body) {
+                        transform: translate(0, 0);
+                      }
+                    }
+                  }
+
+                  @media (max-width: 950px) {
+                    :global(.IndexPageCardImage_body) {
+                      transform: translate(0, 0);
+                    }
+                  }
+                }
+              }
+              &_cardsHowTo {
                 display: grid;
                 gap: 30px;
                 grid-template-columns: repeat(
@@ -209,6 +377,95 @@ export default function Home(): ReactElement {
   )
 }
 
+export const IndexPageCardImage: React.FunctionComponent<{
+  title: string
+  message: string
+  image: React.ReactNode
+}> = (props) => {
+  return (
+    <div className="IndexPageCardImage">
+      {props.image}
+      <div className="IndexPageCardImage_body">
+        <svg
+          width="353"
+          height="40"
+          viewBox="0 0 353 40"
+          fill="none"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M0 25.5856L14.7083 28.424C29.4167 31.3157 58.8333 36.9125 88.25 39.0846C117.667 41.1768 147.083 39.8442 176.5 33.4078C205.917 27.0514 235.333 15.5912 264.75 14.2186C294.167 12.7928 323.583 21.3213 338.292 25.5856L353 29.8498V0H338.292C323.583 0 294.167 0 264.75 0C235.333 0 205.917 0 176.5 0C147.083 0 117.667 0 88.25 0C58.8333 0 29.4167 0 14.7083 0H0V25.5856Z"
+            fill="#FFE600"
+          />
+        </svg>
+        <h3 className="IndexPageCardImage_title">{props.title}</h3>
+        <h3 className="IndexPageCardImage_message">{props.message}</h3>
+      </div>
+      <style jsx>
+        {`
+          .IndexPageCardImage {
+            position: relative;
+            height: 450px;
+            width: 100%;
+            padding-bottom: 50px;
+            background-color: white;
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            @media (max-width: 950px) {
+              height: 400px;
+              padding: 10px 20px 110px;
+            }
+            :global(img) {
+              @media (max-width: 750px) {
+                width: 100%;
+                height: 250px;
+              }
+            }
+            &_body {
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+              background-color: var(--mainAccentColor);
+              border-radius: 0px 0px 30px 30px;
+              padding: 0 30px 30px;
+              transform: translate(30px, 30px);
+              @media (max-width: 750px) {
+                padding: 0 30px 30px;
+              }
+              svg {
+                width: 100%;
+                height: 50px;
+                top: -50px;
+                left: 0;
+                position: absolute;
+                transform: scale(-1);
+              }
+            }
+            &_title {
+              font-size: 28px;
+              line-height: 38px;
+              margin: 0;
+            }
+            &_message {
+              font-size: 1rem;
+              margin: 0;
+              opacity: 0.5;
+            }
+            &_title + &_message {
+              margin-top: 15px;
+              @media (max-width: 750px) {
+                margin-top: 10px;
+              }
+            }
+          }
+        `}
+      </style>
+    </div>
+  )
+}
+
 export const IndexPageCard: React.FunctionComponent<{
   title: string
   message: string
@@ -238,6 +495,7 @@ export const IndexPageCard: React.FunctionComponent<{
       <style jsx>
         {`
           .IndexPageCard {
+            width: 100%;
             height: 500px;
             border-radius: 30px;
             overflow: hidden;
