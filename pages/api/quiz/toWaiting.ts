@@ -16,8 +16,8 @@ export default apiHandler.get(async (req, res) => {
   const quizData = (await (await quiz).data()) as QuizModel
 
   if (
-    (await hasQuizPermission('owner', quizData, verifyToken.uid)) == false ||
-    (await hasQuizPermission('answer', quizData, verifyToken.uid)) == false
+    (hasQuizPermission('owner', quizData, verifyToken.uid) ||
+      hasQuizPermission('answer', quizData, verifyToken.uid)) == false
   ) {
     res.status(401).json({
       status: 'fail',

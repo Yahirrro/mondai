@@ -161,8 +161,14 @@ export default function Home(props: Props): React.ReactElement {
     else return true
   }
 
-  const isMainAnswer = async () => {
-    return await hasQuizPermission('answer', quiz, user?.userId)
+  const isMainAnswer = (): boolean => {
+    if (
+      hasQuizPermission('owner', quiz, user?.userId) ||
+      hasQuizPermission('answer', quiz, user?.userId)
+    ) {
+      return true
+    }
+    return false
   }
 
   const getRemainingQuestionCount = () => {
