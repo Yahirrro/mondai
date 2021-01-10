@@ -59,21 +59,21 @@ export default function Home(): ReactElement {
               <div className="IndexPage_cardsImage_wrap">
                 <IndexPageCardImage
                   title="みんなで"
-                  message="つくったクイズを、ともだちと一緒に解いてみよう！"
+                  message="つくったクイズを、ともだちと一緒に解いてみよう!"
                   image={<img src="assets/index/for-friends.svg" />}
                 />
               </div>
               <div className="IndexPage_cardsImage_wrap">
                 <IndexPageCardImage
                   title="ひとりで"
-                  message="問題をつくったり、だれかが作ったクイズを解いてみよう！"
+                  message="問題をつくったり、だれかが作ったクイズを解いてみよう!"
                   image={<img src="assets/index/for-one.svg" />}
                 />
               </div>
               <div className="IndexPage_cardsImage_wrap">
                 <IndexPageCardImage
                   title="たくさんで"
-                  message="イベントなどで、QRコードを共有して、クイズ大会を開いてみよう！"
+                  message="イベントなどQRコードを共有して、クイズ大会を開いてみよう!"
                   image={<img src="assets/index/for-everyone.svg" />}
                 />
               </div>
