@@ -232,7 +232,9 @@ export default function Home(): ReactElement {
                       width: 100%;
                     }
                     :global(.IndexPageCardImage_body) {
-                      transform: translate(-30px, 30px);
+                      left: initial;
+                      right: 0px;
+                      transform: translate(-30px, 0);
                     }
                     @media (max-width: 950px) {
                       grid-row: initial;
@@ -413,6 +415,7 @@ export const IndexPageCardImage: React.FunctionComponent<{
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-bottom: 50px;
             @media (max-width: 950px) {
               height: 400px;
               padding: 10px 20px 110px;
@@ -426,21 +429,20 @@ export const IndexPageCardImage: React.FunctionComponent<{
             &_body {
               position: absolute;
               bottom: 0;
-              width: 100%;
+              left: 0;
+              width: auto;
               background-color: var(--mainAccentColor);
-              border-radius: 0px 0px 30px 30px;
-              padding: 0 30px 30px;
-              transform: translate(30px, 30px);
+              padding: 30px 30px 0px;
+              transform: translate(30px, 0px);
               @media (max-width: 750px) {
-                padding: 0 30px 30px;
+                padding: 30px 30px 0px;
               }
               svg {
                 width: 100%;
                 height: 50px;
-                top: -50px;
+                bottom: -50px;
                 left: 0;
                 position: absolute;
-                transform: scale(-1);
               }
             }
             &_title {
