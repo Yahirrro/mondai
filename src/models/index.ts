@@ -1,19 +1,29 @@
 export interface QuizModel {
   id: string
   exists: boolean
+
   title: string
   description: string
   emoji: string
-  inviteCode: null | number
   permission: {
+    playagain: boolean
     owner: Array<UserModel['userId']>
     answer: Array<UserModel['userId']>
   }
+  flow: Array<string>
+
+  playagain: {
+    isPlayagain: boolean
+    original: QuizModel['id']
+    creator: UserModel['userId']
+  }
+
+  currentStatus: 'creating' | 'waiting' | 'open' | 'answer' | 'archive'
+
+  currentQuestion: null | string
+  inviteCode: null | string
   allCorrectUser: null | Array<string>
   allUser: null | number
-  flow: Array<string>
-  currentStatus: 'creating' | 'waiting' | 'open' | 'answer' | 'archive'
-  currentQuestion: string | null
 }
 
 export interface QuestionModel {

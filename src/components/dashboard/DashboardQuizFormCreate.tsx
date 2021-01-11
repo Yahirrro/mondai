@@ -54,6 +54,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
           flow: [],
           currentStatus: 'creating',
           permission: {
+            playagain: true,
             owner: [user?.userId] as QuizModel['permission']['owner'],
           },
         }}

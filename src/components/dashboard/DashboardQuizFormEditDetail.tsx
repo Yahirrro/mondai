@@ -1,13 +1,15 @@
 import { QuizModel } from '@models'
-import { Form, Formik } from 'formik'
-import { useState } from 'react'
-import { PageButton } from '@components/ui'
+import { Field, Form, Formik } from 'formik'
+import React, { useState } from 'react'
+import { PageButton, PageFormToggle } from '@components/ui'
 import {
   DashboardFormikField,
+  DashboardFormikToggle,
   DashboardQuizEmojiPicker,
 } from '@components/dashboard'
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 
 type Props = {
   quizId: string
@@ -16,6 +18,7 @@ type Props = {
 export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
   props
 ) => {
+  const router = useRouter()
   const [emoji, setEmoji] = useState<string>(null)
 
   const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
@@ -37,6 +40,7 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
           })
         )
         await fuego.db.doc(`quiz/${quiz.id}`).delete()
+        router.push('/dashboard')
 
         toast.success('😃クイズを削除できました!')
       } catch (error) {
@@ -56,6 +60,7 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
             title: value.title,
             description: value.description,
             emoji: emoji ? emoji : value.emoji,
+            permission: value.permission,
           })
           toast.success('😆クイズを更新できました!')
         }}>
@@ -78,6 +83,12 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
               name="description"
               placeholder="たとえば: わかるひとにはわかる! とくべつな問題をチョイス!"
               required
+            />
+
+            <DashboardFormikToggle
+              title="🔰クイズ終了後に再度プレイ可能にする"
+              name="permission.playagain"
+              defaultChecked={values.permission.playagain}
             />
 
             <PageButton

@@ -5,17 +5,31 @@ import { QuizCard, QuizBadge, QuizContext } from '@components/quiz'
 export const QuizPageHeader: React.FunctionComponent = () => {
   const { quiz } = useContext(QuizContext)
 
+  const status = () => {
+    switch (quiz.currentStatus) {
+      case 'waiting':
+        return '開始を待っています'
+      case 'open':
+        return '問題出題中'
+      case 'answer':
+        return '答え表示中'
+      case 'archive':
+        return '終了しました'
+    }
+  }
+
   return (
     <>
-      <header className="QuizPageHeader">
+      <header className={`QuizPageHeader`}>
         <QuizCard
           title={quiz.title}
           description={quiz.description}
           emoji={quiz.emoji}
+          playagain={quiz.playagain.isPlayagain}
         />
         <div className="QuizPageHeader_badge">
-          <QuizBadge text={quiz.currentStatus}></QuizBadge>
-          <QuizBadge text="○人参加中"></QuizBadge>
+          <QuizBadge text={status()}></QuizBadge>
+          <QuizBadge text={`${quiz.allUser}人参加`}></QuizBadge>
         </div>
         <style jsx>
           {`

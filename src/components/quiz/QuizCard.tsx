@@ -5,13 +5,16 @@ type Props = {
   title: string
   description: string
   emoji: string
+  playagain?: boolean
   style?: React.CSSProperties
 }
 
 export const QuizCard: React.FunctionComponent<Props> = (props) => {
   return (
     <>
-      <div className="QuizCard" style={props.style}>
+      <div
+        className={`QuizCard ${props.playagain ? 'QuizCard-playagain' : ''}`}
+        style={props.style}>
         <div className="QuizCard_emoji">
           <QuizIconEmoji emoji={props.emoji} />
         </div>
@@ -56,6 +59,9 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
               }
               &_button {
                 width: 100%;
+              }
+              &-playagain {
+                border: 2px solid #d4d4d4;
               }
               @media (max-width: 750px) {
                 width: 100%;

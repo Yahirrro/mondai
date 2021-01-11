@@ -9,11 +9,18 @@ export const QuizQR: React.FunctionComponent<Props> = (props) => {
       <div className="QuizQR">
         <h3 className="QuizQR_title">いますぐ参加しよう</h3>
         <div className="QuizQR_qr">
-          <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?data=${props.url}&size=100x100`}
-            alt="Quiz invite qr code"
-          />
-          <p>#{props.code}</p>
+          {props.url && (
+            <img
+              src={
+                props.url &&
+                `https://api.qrserver.com/v1/create-qr-code/?data=${props.url}&size=160x160`
+              }
+              alt="Quiz invite qr code"
+              height="80px"
+              width="80px"
+            />
+          )}
+          <p>{props.code}</p>
         </div>
         <style jsx>
           {`
@@ -46,6 +53,9 @@ export const QuizQR: React.FunctionComponent<Props> = (props) => {
                   font-size: 20px;
                   line-height: 24px;
                   font-weight: bold;
+                  &:before {
+                    content: '#';
+                  }
                 }
               }
             }

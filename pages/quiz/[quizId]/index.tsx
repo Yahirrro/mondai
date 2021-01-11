@@ -2,7 +2,7 @@ import firebase from 'firebase/app'
 import { NextSeo } from 'next-seo'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ParsedUrlQuery } from 'querystring'
 import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 
@@ -12,6 +12,7 @@ import {
   QuizContext,
   QuizPageHeader,
   QuizPageInvite,
+  QuizNote,
 } from '@components/quiz'
 import { ScreenError, ScreenLoading } from '@components/screen'
 
@@ -32,6 +33,8 @@ import { useAuthentication } from '@hook/auth'
 import { getQuiz, hasQuizPermission } from '@lib/api'
 import { useUI } from '@components/ui/context'
 import { getIdToken } from '@lib/api'
+import Link from 'next/link'
+import { IconAdd, PageButton, PageCard } from '@components/ui'
 
 type Props = {
   params: ParsedUrlQuery
@@ -108,6 +111,7 @@ export default function Home(props: Props): React.ReactElement {
         incorrect: userAnswer ? getIncorrectAnswerAmount() : 0,
       })
     }
+    setAnswerValue(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quiz?.currentStatus])
 
@@ -186,9 +190,10 @@ export default function Home(props: Props): React.ReactElement {
   }
 
   const getCorrectRate = () => {
-    if (!userAnswer || userAnswer == []) return 0
-    console.log(getCorrectAnswerAmount() / quiz?.flow.length)
-    return getCorrectAnswerAmount() / quiz?.flow.length
+    if (!userAnswer || userAnswer == [] || getCorrectAnswerAmount() == 0)
+      return 0
+    const correctRate = getCorrectAnswerAmount() / quiz?.flow.length
+    return correctRate
   }
 
   const goNextQuestion = () => {
@@ -239,6 +244,7 @@ export default function Home(props: Props): React.ReactElement {
       <NextSeo
         title={quiz.title}
         description={quiz.description}
+        noindex={true}
         openGraph={{
           images: [
             {
@@ -282,7 +288,7 @@ export default function Home(props: Props): React.ReactElement {
         }}>
         <div className="QuizPage">
           <QuizPageHeader />
-          <QuizPageInvite />
+          {quiz.currentStatus !== 'archive' && <QuizPageInvite />}
 
           <main className="QuizPageContent">
             {!question?.exists ? (
@@ -296,7 +302,36 @@ export default function Home(props: Props): React.ReactElement {
                   {quiz.currentStatus == 'archive' && <QuizScreenArchive />}
                 </div>
                 <aside>
-                  <QuizCorrectCard />
+                  {userAnswer && <QuizCorrectCard />}
+
+                  {quiz.playagain.isPlayagain && (
+                    <PageCard
+                      style={{ marginTop: 'var(--mainNormalPaddingSize)' }}
+                      title="もう一度プレイ中"
+                      description={`公開されているクイズをあそんでいます`}></PageCard>
+                  )}
+
+                  {quiz.currentStatus == 'archive' && (
+                    <QuizNote
+                      title="😍おつかれさまでした!"
+                      style={{ marginTop: 'var(--mainNormalPaddingSize)' }}>
+                      <p>クイズ大会おつかれさまでした👺</p>
+                      <p>mondaiをつかったクイズ大会はいかがでしたか？</p>
+                      <p>
+                        たのしんでもらえたなら、またmondaiをつかってクイズ大会をひらいてみてください😘
+                      </p>
+                      <Link href="/dashboard">
+                        <a style={{ marginTop: '20px', width: '100%' }}>
+                          <PageButton
+                            buttontype="big"
+                            icon={<IconAdd />}
+                            style={{ width: '100%' }}>
+                            クイズをつくる
+                          </PageButton>
+                        </a>
+                      </Link>
+                    </QuizNote>
+                  )}
                 </aside>
               </>
             )}
@@ -313,6 +348,9 @@ export default function Home(props: Props): React.ReactElement {
                 grid-template-columns: 1fr 300px;
                 gap: calc(var(--mainNormalPaddingSize) * 2);
                 padding: var(--mainNormalPaddingSize);
+                @media (min-width: 1500px) {
+                  grid-template-columns: 1fr 350px;
+                }
                 @media (max-width: 1050px) {
                   grid-template-columns: 1fr;
                   padding: calc(var(--mainNormalPaddingSize) * 1.5)

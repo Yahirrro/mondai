@@ -18,11 +18,6 @@ const DashboardQuizScreenDetail = dynamic(() =>
 const DashboardQuizScreenQuestion = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuizScreenQuestion)
 )
-const DashboardQuizScreenPermission = dynamic(() =>
-  import('@components/dashboard').then(
-    (lib) => lib.DashboardQuizScreenPermission
-  )
-)
 const DashboardQuizScreenMessage = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuizScreenMessage)
 )
@@ -80,7 +75,6 @@ export default function Home(props: Props): React.ReactElement {
               {pageType == 'detail' && <DashboardQuizScreenDetail />}
               {pageType == 'question' && <DashboardQuizScreenQuestion />}
               {pageType == 'message' && <DashboardQuizScreenMessage />}
-              {pageType == 'permission' && <DashboardQuizScreenPermission />}
             </>
           )}
         </DashboardQuizLayout>

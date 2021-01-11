@@ -13,6 +13,7 @@ export const QuizNote: React.FunctionComponent<Props> = (props) => {
         <style jsx>
           {`
             .QuizNote {
+              height: fit-content;
               display: flex;
               justify-content: left;
               align-items: center;

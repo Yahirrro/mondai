@@ -1,5 +1,6 @@
 export * from './DashboardQuizContext'
 export * from './DashboardFormikField'
+export * from './DashboardFormikToggle'
 export * from './DashboardQuestionCard'
 export * from './DashboardQuestionChoiceEdit'
 export * from './DashboardQuestionEdit'

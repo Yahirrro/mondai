@@ -10,7 +10,7 @@ type Props = {
 
 export const PageCard: React.FunctionComponent<Props> = (props) => {
   return (
-    <div className="PageCard">
+    <div className="PageCard" style={props.style}>
       {props.icon && <div className="PageCard_icon">{props.icon}</div>}
       <h3 className="PageCard_title">
         {props.title ? props.title : <IconLoading />}

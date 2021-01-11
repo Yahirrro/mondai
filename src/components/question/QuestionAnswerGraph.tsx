@@ -160,7 +160,7 @@ export const QuestionAnswerGraph: React.FunctionComponent<Props> = (props) => {
             }
           }
           .QuestionAnswerGraph + .QuestionAnswerGraph {
-            margin-top: var(--mainNormalPaddingSize);
+            margin-top: calc(var(--mainNormalPaddingSize) * 1.5);
           }
         `}
       </style>
