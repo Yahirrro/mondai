@@ -24,7 +24,7 @@ export const PageFormToggle: React.FunctionComponent<
             user-select: none;
             border-radius: 15px;
             padding: 3px;
-            background-color: var(--mainBackgroundColor);
+            background-color: #d9d9d9;
             transition: all 0.3s;
             &:after {
               position: absolute;
@@ -43,7 +43,7 @@ export const PageFormToggle: React.FunctionComponent<
             }
           }
           .PageFormToggle_input:checked + .PageFormToggle {
-            background-color: var(--mainAccentColor);
+            background-color: var(--mainPrimaryColor);
           }
           .PageFormToggle_input:checked + .PageFormToggle:after {
             left: 23px;

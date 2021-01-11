@@ -25,9 +25,11 @@ export const DashboardFormikToggle: React.FunctionComponent<
       <style jsx>
         {`
           .DashboardFormikToggle {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 50px;
+            gap: 30px;
             margin-top: 30px;
+            align-items: center;
             &_title {
               font-size: 1rem;
               margin: 0;
