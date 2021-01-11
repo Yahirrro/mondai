@@ -1,6 +1,6 @@
 type Props = {
   url: string
-  code: number
+  code: string
 }
 
 export const QuizQR: React.FunctionComponent<Props> = (props) => {
