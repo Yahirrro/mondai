@@ -197,7 +197,7 @@ export default function Home(props: Props): React.ReactElement {
                         </DashboardCardFlow>
                         <DashboardCardFlow>
                           <p className="DashboardCardFlow_description">
-                            ページで「はじめる」をおす！
+                            ページで「このクイズであそぶ!」をおす！
                           </p>
                         </DashboardCardFlow>
                       </DashboardCard>
