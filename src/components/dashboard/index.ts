@@ -1,3 +1,4 @@
+export * from './DashboardCard'
 export * from './DashboardQuizContext'
 export * from './DashboardFormikField'
 export * from './DashboardFormikToggle'

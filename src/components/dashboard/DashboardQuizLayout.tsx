@@ -1,7 +1,6 @@
 import {
   IconAdd,
   IconEmojiPeople,
-  IconFace,
   IconGift,
   IconPencil,
   PageButton,
@@ -15,6 +14,7 @@ import { DefaultSeo } from 'next-seo'
 import React, { useContext } from 'react'
 
 type Props = {
+  disableSidebar?: boolean
   children?: React.ReactNode
 }
 
@@ -27,6 +27,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <DashboardLayout
+        disableSidebar={props.disableSidebar}
         top={
           <div className="DashboardQuizLayout_header">
             <Link href={`/dashboard/quiz/${router.query.quizId}`}>
@@ -105,9 +106,10 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
               </ul>
             )}
             {quiz?.currentStatus == 'archive' && (
-              <div style={{ display: 'flex', width: '100%' }}>
+              <div style={{ display: 'grid', gap: '10px', width: '100%' }}>
                 <QuizBadge text={`${quiz.allUser}人参加`} />
                 <QuizBadge text={`${quiz.allCorrectUser.length}人全問正解`} />
+                <QuizBadge text={`${quiz.playagain.useCount}回使用`} />
               </div>
             )}
           </div>

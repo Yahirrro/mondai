@@ -14,6 +14,7 @@ export interface QuizModel {
 
   playagain: {
     isPlayagain: boolean
+    useCount: number
     original: QuizModel['id']
     creator: UserModel['userId']
   }

@@ -27,6 +27,7 @@ const DashboardMessageForm = dynamic(() =>
 type Props = {
   children?: React.ReactNode
   changeOrder?: boolean
+  disableSidebar?: boolean
   side?: React.ReactNode
   top?: React.ReactNode
 }
@@ -65,13 +66,20 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
           {props.top && (
             <div className="DashboardLayout_header">{props.top}</div>
           )}
-          <aside
-            className={`DashboardLayout_sidebar ${
-              props.changeOrder ? 'DashboardLayout_sidebar-index' : ''
+          {!props.disableSidebar && (
+            <aside
+              className={`DashboardLayout_sidebar ${
+                props.changeOrder ? 'DashboardLayout_sidebar-index' : ''
+              }`}>
+              {props.side}
+            </aside>
+          )}
+          <div
+            className={`DashboardLayout_content ${
+              props.disableSidebar ? 'DashboardLayout_content-full' : ''
             }`}>
-            {props.side}
-          </aside>
-          <div className="DashboardLayout_content">{props.children}</div>
+            {props.children}
+          </div>
         </div>
       </PageContainer>
 
@@ -126,6 +134,13 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
                 margin-bottom: 20px;
                 font-size: 1.5em;
               }
+              &-full {
+                grid-column: 1/3;
+
+                @media (max-width: 900px) {
+                  grid-column: initial;
+                }
+              }
             }
 
             :global(.DashboardQuizIndex) {
@@ -137,6 +152,7 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
               gap: 20px;
               @media (max-width: 750px) {
                 grid-template-columns: 1fr;
+                gap: 15px;
               }
             }
           }

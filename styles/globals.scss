@@ -33,8 +33,10 @@ a {
     rgba(0, 0, 0, 0.02) 32px
   );
   --mainFontFamily: Inter, Arial, Helvetica Neue, Hiragino Kaku Gothic ProN,
-    Noto Sans JP, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Apple Color Emoji', 'Noto Color Emoji',
+    'Noto Emoji', Noto Sans JP, -apple-system, BlinkMacSystemFont, Segoe UI,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+    Noto Color Emoji;
   --mainBoxShadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
   --mainNormalPaddingSize: 50px;
   @media (max-width: 750px) {
