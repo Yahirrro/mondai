@@ -26,6 +26,7 @@ const DashboardMessageForm = dynamic(() =>
 
 type Props = {
   children?: React.ReactNode
+  changeOrder?: boolean
   side?: React.ReactNode
   top?: React.ReactNode
 }
@@ -66,7 +67,7 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
           )}
           <aside
             className={`DashboardLayout_sidebar ${
-              router.pathname == '/dashboard' && 'DashboardLayout_sidebar-index'
+              props.changeOrder ? 'DashboardLayout_sidebar-index' : ''
             }`}>
             {props.side}
           </aside>

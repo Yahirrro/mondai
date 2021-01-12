@@ -24,7 +24,7 @@ export default function Home(): React.ReactElement {
   return (
     <>
       <NextSeo title="ダッシュボード" />
-      <DashboardLayout side={<DashboardSidebar />}>
+      <DashboardLayout side={<DashboardSidebar />} changeOrder={true}>
         <h2 className="DashboardLayout_title">🎈つくっているクイズ</h2>
         <div className="DashboardQuizIndex">
           {!quizzes && <ScreenLoading />}

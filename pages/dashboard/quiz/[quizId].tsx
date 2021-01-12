@@ -27,40 +27,37 @@ type Props = {
 }
 
 export default function Home(props: Props): React.ReactElement {
-  const user = useAuthentication()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
   const [pageType, setPageType] = useState<
     'detail' | 'question' | 'permission' | 'message'
   >('detail')
 
-  const { data: quiz, error: errorQuiz } = useDocument<QuizModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}` : null,
-    {
-      listen: true,
-    }
+  const {
+    data: quiz,
+    update: updateQuiz,
+    error: errorQuiz,
+  } = useDocument<QuizModel>(
+    props.params.quizId ? `quiz/${props.params.quizId}` : null
   )
-  const { data: questions } = useCollection<QuestionModel>(
+  const {
+    data: questions,
+    error: errorQuestions,
+  } = useCollection<QuestionModel>(
     props.params.quizId ? `quiz/${props.params.quizId}/question` : null,
     {
       listen: true,
     }
   )
 
+  if (errorQuiz || errorQuestions) return <ScreenError code={404} />
   if (quiz?.exists == false) return <ScreenError code={404} />
-
-  if (
-    errorQuiz ||
-    quiz?.permission[user?.userId]?.some(
-      (data) => data == 'owner' || data == 'answer'
-    ) == false
-  )
-    return <ScreenError code={404} />
 
   return (
     <>
       <DashboardQuizContext.Provider
         value={{
           quiz,
+          updateQuiz,
           questions,
           dashboardQuizUI,
           setDashboardQuizUI,

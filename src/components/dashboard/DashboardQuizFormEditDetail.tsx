@@ -1,13 +1,14 @@
 import { QuizModel } from '@models'
-import { Field, Form, Formik } from 'formik'
-import React, { useState } from 'react'
-import { PageButton, PageFormToggle } from '@components/ui'
+import { Form, Formik } from 'formik'
+import React, { useContext, useState } from 'react'
+import { PageButton } from '@components/ui'
 import {
   DashboardFormikField,
   DashboardFormikToggle,
+  DashboardQuizContext,
   DashboardQuizEmojiPicker,
 } from '@components/dashboard'
-import { fuego, useDocument } from '@nandorojo/swr-firestore'
+import { fuego } from '@nandorojo/swr-firestore'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 
@@ -20,13 +21,7 @@ export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
 ) => {
   const router = useRouter()
   const [emoji, setEmoji] = useState<string>(null)
-
-  const { data: quiz, update: updateQuiz } = useDocument<QuizModel>(
-    props.quizId ? `quiz/${props.quizId}` : null,
-    {
-      listen: true,
-    }
-  )
+  const { quiz, updateQuiz } = useContext(DashboardQuizContext)
 
   const removeQuestion = async () => {
     if (quiz.currentStatus !== 'creating') {
