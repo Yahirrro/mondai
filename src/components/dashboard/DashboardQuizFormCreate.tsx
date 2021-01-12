@@ -31,6 +31,9 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
         flow: [],
         currentStatus: 'creating',
         permission: value.permission,
+        playagain: {
+          isPlayagain: false,
+        },
       })
       router.push(`/dashboard/quiz/${addQuiz.id}`)
       setStatus({ success: true })
@@ -51,8 +54,6 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
         initialValues={{
           title: '',
           description: '',
-          flow: [],
-          currentStatus: 'creating',
           permission: {
             playagain: true,
             owner: [user?.userId] as QuizModel['permission']['owner'],

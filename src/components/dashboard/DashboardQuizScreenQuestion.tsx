@@ -74,6 +74,28 @@ export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
           </QuizNote>
         )}
       </div>
+
+      {quiz?.flow.length > 2 && (
+        <div
+          style={{
+            marginTop: '30px',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}>
+          <PageButton
+            icon={<IconAdd />}
+            onClick={() =>
+              setDashboardQuizUI({
+                type: 'addQuestion',
+                open: true,
+                optional: { quizId: quiz.id },
+              })
+            }>
+            問題をふやす
+          </PageButton>
+        </div>
+      )}
     </>
   )
 }

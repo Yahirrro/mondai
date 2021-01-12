@@ -1,7 +1,7 @@
-import { IconAdd, IconFace, PageButton, PageCard } from '@components/ui'
+import { IconAdd, PageButton } from '@components/ui'
 import { QuizCard, QuizNote } from '@components/quiz'
 import { ScreenLoading } from '@components/screen'
-import { DashboardLayout } from '@components/dashboard'
+import { DashboardLayout, DashboardSidebar } from '@components/dashboard'
 import { useAuthentication } from '@hook/auth'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuizModel } from '@models'
@@ -24,28 +24,7 @@ export default function Home(): React.ReactElement {
   return (
     <>
       <NextSeo title="ダッシュボード" />
-      <DashboardLayout
-        side={
-          <>
-            <PageCard
-              icon={<IconFace />}
-              title={user?.userName}
-              description="ユーザー"
-            />
-            <PageButton
-              buttontype="big"
-              style={{ width: '100%', marginTop: '20px' }}
-              icon={<IconAdd />}
-              onClick={() =>
-                setDashboardQuizUI({
-                  type: 'createQuiz',
-                  open: true,
-                })
-              }>
-              クイズをつくる
-            </PageButton>
-          </>
-        }>
+      <DashboardLayout side={<DashboardSidebar />}>
         <h2 className="DashboardLayout_title">🎈つくっているクイズ</h2>
         <div className="DashboardQuizIndex">
           {!quizzes && <ScreenLoading />}
@@ -84,26 +63,6 @@ export default function Home(): React.ReactElement {
           </>
         )}
       </DashboardLayout>
-      <style jsx>
-        {`
-          .DashboardFlex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-          .DashboardQuizIndex {
-            display: grid;
-            grid-template-columns: repeat(
-              auto-fit,
-              [col-start] minmax(380px, 1fr) [col-end]
-            );
-            gap: 20px;
-            @media (max-width: 750px) {
-              grid-template-columns: 1fr;
-            }
-          }
-        `}
-      </style>
     </>
   )
 }

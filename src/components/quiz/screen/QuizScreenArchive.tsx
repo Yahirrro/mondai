@@ -1,9 +1,8 @@
 import { useContext, useState } from 'react'
-import { PageNumber, IconAdd, PageButton } from '@components/ui'
-import { QuestionSelectGrid, QuestionAnswerGraph } from '@components/question'
+import { PageNumber, PageButton } from '@components/ui'
+import { QuestionAnswerGraph } from '@components/question'
 
 import { QuizContext, QuizNote } from '@components/quiz'
-import Link from 'next/link'
 import { useCollection } from '@nandorojo/swr-firestore'
 import { getIdToken } from '@lib/api'
 import { useRouter } from 'next/router'
@@ -48,25 +47,6 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
     <>
       <h2>全ての問題が終了しました！</h2>
 
-      {quiz.permission.playagain && (
-        <QuizNote
-          title={`${quiz.title}であそびましょう🙌`}
-          style={{ padding: '40px 30px' }}>
-          <p>
-            いますぐあそんでみよう！
-            <br />
-            ひとりでも、ともだちとでも、いますぐあそべます!
-          </p>
-          <PageButton
-            buttontype="big"
-            onClick={() => deplicate()}
-            style={{ width: '100%', marginTop: '20px' }}
-            disabled={apiLoading}>
-            このクイズであそぶ！
-          </PageButton>
-        </QuizNote>
-      )}
-
       <section className="QuizScreenAnswer_grid">
         <div>
           <h3>すべての参加者数🎉</h3>
@@ -86,6 +66,24 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
           </QuizNote>
         )}
       </section>
+      {quiz.permission.playagain && (
+        <QuizNote
+          title={`もう一度｢${quiz.title}｣であそびましょう🙌`}
+          style={{ padding: '40px 30px' }}>
+          <p>
+            いますぐあそんでみよう！
+            <br />
+            ひとりでも、ともだちとでも、いますぐあそべます!
+          </p>
+          <PageButton
+            buttontype="big"
+            onClick={() => deplicate()}
+            style={{ width: '100%', marginTop: '20px' }}
+            disabled={apiLoading}>
+            このクイズであそぶ！
+          </PageButton>
+        </QuizNote>
+      )}
 
       <QuizNote title="😏みんなのこたえ">
         {quiz?.flow?.map((data, index) => {

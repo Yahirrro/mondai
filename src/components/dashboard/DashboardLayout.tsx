@@ -126,6 +126,18 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
                 font-size: 1.5em;
               }
             }
+
+            :global(.DashboardQuizIndex) {
+              display: grid;
+              grid-template-columns: repeat(
+                auto-fit,
+                [col-start] minmax(380px, 1fr) [col-end]
+              );
+              gap: 20px;
+              @media (max-width: 750px) {
+                grid-template-columns: 1fr;
+              }
+            }
           }
           .DashboardBreadcrumb {
             font-weight: bold;
