@@ -13,7 +13,6 @@ import type {
 } from '@components/modal'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import React from 'react'
 
 const ModalLogin = dynamic(() =>
   import('@components/modal').then((lib) => lib.ModalLogin)
