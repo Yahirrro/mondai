@@ -49,8 +49,6 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
   }, [router, user])
   return (
     <>
-      <DefaultSeo title="ダッシュボード" />
-
       <PageContainer style={{ marginTop: '10px' }}>
         <div className="DashboardLayout">
           <div className="DashboardLayout_header DashboardBreadcrumb">
