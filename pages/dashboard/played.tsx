@@ -41,20 +41,9 @@ export default function Home(): React.ReactElement {
 
           {played?.length == 0 && (
             <>
-              <QuizNote title="😥クイズがまだありません!">
-                <p>あなたがつくっているクイズがまだあリません😫</p>
-                <p>いますぐクイズをつくってみませんか🤩</p>
-                <PageButton
-                  style={{ width: '100%', marginTop: '20px' }}
-                  icon={<IconAdd />}
-                  onClick={() =>
-                    setDashboardQuizUI({
-                      type: 'createQuiz',
-                      open: true,
-                    })
-                  }>
-                  クイズをつくる
-                </PageButton>
+              <QuizNote title="😥あそんだクイズがありません!">
+                <p>あなたがあそんだことのあるクイズがまだあリません😫</p>
+                <p>いろんなクイズであそんでみてください!</p>
               </QuizNote>
             </>
           )}
