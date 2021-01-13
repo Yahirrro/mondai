@@ -82,10 +82,9 @@ export default function Home(props: Props): React.ReactElement {
       : null
   )
   const { data: quizJoin, set: setQuizJoin } = useDocument(
-    user?.userId ? `quiz/${props.params.quizId}/user/${user?.userId}` : null,
-    {
-      listen: true,
-    }
+    user?.userId
+      ? `quiz/${props.params.quizId}/participant/${user?.userId}`
+      : null
   )
   const { data: userAnswer, add: addUserAnswer } = useCollection<AnswerModel>(
     user?.userId ? `quiz/${props.params.quizId}/answer/` : null,
@@ -132,6 +131,7 @@ export default function Home(props: Props): React.ReactElement {
     if (quizJoin.exists == false) {
       setQuizJoin({
         userId: user.userId,
+        quizId: quiz?.id,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
     }

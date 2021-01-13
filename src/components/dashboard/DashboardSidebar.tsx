@@ -38,6 +38,11 @@ export const DashboardSidebar: React.FunctionComponent = () => {
             <a>💨これまでに作ったクイズ</a>
           </Link>
         </li>
+        <li>
+          <Link href="/dashboard/played">
+            <a>✔あそんだクイズ</a>
+          </Link>
+        </li>
       </ul>
 
       <style jsx>

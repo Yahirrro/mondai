@@ -43,7 +43,7 @@ export default apiHandler.get(async (req, res) => {
 
   const userRef = await admin
     .firestore()
-    .collection('quiz/' + req.query.quizId + '/user/')
+    .collection('quiz/' + req.query.quizId + '/participant/')
     .get()
 
   quizRef.update({
