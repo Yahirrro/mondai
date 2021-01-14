@@ -34,7 +34,7 @@ import { getQuiz, hasQuizPermission, sendLogEvent } from '@lib/api'
 import { useUI } from '@components/ui/context'
 import { getIdToken } from '@lib/api'
 import Link from 'next/link'
-import { IconAdd, PageButton, PageCard } from '@components/ui'
+import { IconAdd, PageButton, PageCard, PageShare } from '@components/ui'
 
 type Props = {
   params: ParsedUrlQuery
@@ -342,38 +342,43 @@ export default function Home(props: Props): React.ReactElement {
                   {quiz.currentStatus == 'answer' && <QuizScreenAnswer />}
                   {quiz.currentStatus == 'archive' && <QuizScreenArchive />}
                 </div>
-                <aside>
-                  {userAnswer && <QuizCorrectCard />}
+                <div>
+                  <aside className="QuizPageSidebar">
+                    {userAnswer && <QuizCorrectCard />}
 
-                  {quiz?.playagain?.isPlayagain && (
-                    <PageCard
-                      style={{ marginTop: 'var(--mainNormalPaddingSize)' }}
-                      title="もう一度プレイ中"
-                      description={`公開されているクイズをあそんでいます`}></PageCard>
-                  )}
+                    <PageShare
+                      text={quiz.title}
+                      url={`https://mondai.page/quiz/${quiz?.id}`}
+                    />
 
-                  {quiz.currentStatus == 'archive' && (
-                    <QuizNote
-                      title="😍おつかれさまでした!"
-                      style={{ marginTop: 'var(--mainNormalPaddingSize)' }}>
-                      <p>クイズ大会おつかれさまでした👺</p>
-                      <p>mondaiをつかったクイズ大会はいかがでしたか？</p>
-                      <p>
-                        たのしんでもらえたなら、またmondaiをつかってクイズ大会をひらいてみてください😘
-                      </p>
-                      <Link href="/dashboard">
-                        <a style={{ marginTop: '20px', width: '100%' }}>
-                          <PageButton
-                            buttontype="big"
-                            icon={<IconAdd />}
-                            style={{ width: '100%' }}>
-                            クイズをつくる
-                          </PageButton>
-                        </a>
-                      </Link>
-                    </QuizNote>
-                  )}
-                </aside>
+                    {quiz?.playagain?.isPlayagain && (
+                      <PageCard
+                        style={{ marginTop: 'var(--mainNormalPaddingSize)' }}
+                        title="もう一度プレイ中"
+                        description={`公開されているクイズをあそんでいます`}></PageCard>
+                    )}
+
+                    {quiz.currentStatus == 'archive' && (
+                      <QuizNote title="😍おつかれさまでした!">
+                        <p>クイズ大会おつかれさまでした👺</p>
+                        <p>mondaiをつかったクイズ大会はいかがでしたか？</p>
+                        <p>
+                          たのしんでもらえたなら、またmondaiをつかってクイズ大会をひらいてみてください😘
+                        </p>
+                        <Link href="/dashboard">
+                          <a style={{ marginTop: '20px', width: '100%' }}>
+                            <PageButton
+                              buttontype="big"
+                              icon={<IconAdd />}
+                              style={{ width: '100%' }}>
+                              クイズをつくる
+                            </PageButton>
+                          </a>
+                        </Link>
+                      </QuizNote>
+                    )}
+                  </aside>
+                </div>
               </>
             )}
           </main>
@@ -383,6 +388,10 @@ export default function Home(props: Props): React.ReactElement {
               .QuizPage {
                 position: relative;
                 min-height: calc(100vh - 80px);
+              }
+              .QuizPageSidebar {
+                display: grid;
+                gap: var(--mainNormalPaddingSize);
               }
               .QuizPageContent {
                 display: grid;
