@@ -6,15 +6,13 @@ import {
 } from '@components/dashboard'
 import { ScreenError, ScreenLoading } from '@components/screen'
 import { PageButton, PageNumber, PageShare } from '@components/ui'
-import { useAuthentication } from '@hook/auth'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuestionModel, QuizModel } from '@models'
 import { useCollection, useDocument } from '@nandorojo/swr-firestore'
-import { GetStaticPaths, GetStaticProps } from 'next'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { ParsedUrlQuery } from 'querystring'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 const DashboardQuizScreenDetail = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuizScreenDetail)
@@ -26,28 +24,33 @@ const DashboardQuizScreenMessage = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuizScreenMessage)
 )
 
-type Props = {
-  params: ParsedUrlQuery
-}
-
-export default function Home(props: Props): React.ReactElement {
+export default function Home(): React.ReactElement {
+  const router = useRouter()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
   const [pageType, setPageType] = useState<
     'detail' | 'question' | 'permission' | 'message'
   >('detail')
+
+  useEffect(() => {
+    setDashboardQuizUI({
+      type: dashboardQuizUI.type,
+      open: false,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.quizId])
 
   const {
     data: quiz,
     update: updateQuiz,
     error: errorQuiz,
   } = useDocument<QuizModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}` : null
+    router.query.quizId ? `quiz/${router.query.quizId}` : null
   )
   const {
     data: questions,
     error: errorQuestions,
   } = useCollection<QuestionModel>(
-    props.params.quizId ? `quiz/${props.params.quizId}/question` : null,
+    router.query.quizId ? `quiz/${router.query.quizId}/question` : null,
     {
       listen: true,
     }
@@ -237,20 +240,4 @@ export default function Home(props: Props): React.ReactElement {
       </DashboardQuizContext.Provider>
     </>
   )
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  }
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  return {
-    props: {
-      params: params,
-    },
-    revalidate: 60,
-  }
 }

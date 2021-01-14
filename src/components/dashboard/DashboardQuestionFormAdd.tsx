@@ -1,5 +1,4 @@
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
-import firebase from 'firebase/app'
 import { Form, Formik } from 'formik'
 import React, { useState } from 'react'
 import { PageButton } from '@components/ui'

@@ -18,7 +18,7 @@ export const DashboardQuizScreenDetail: React.FunctionComponent = () => {
           {!quiz ? (
             <ScreenLoading style={{ backgroundColor: 'white' }} />
           ) : (
-            <DashboardQuizFormEditDetail quizId={quiz?.id} />
+            <DashboardQuizFormEditDetail />
           )}
         </QuizNote>
       )}

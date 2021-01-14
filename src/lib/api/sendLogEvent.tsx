@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fuego } from '@lib/fuego'
 import { fuego } from '@nandorojo/swr-firestore'
 

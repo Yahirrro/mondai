@@ -1,9 +1,7 @@
 import { DashboardLayout, DashboardSidebar } from '@components/dashboard'
 import { QuizCard, QuizNote } from '@components/quiz'
 import { ScreenLoading } from '@components/screen'
-import { IconAdd, PageButton } from '@components/ui'
 import { useAuthentication } from '@hook/auth'
-import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuizModel } from '@models'
 import { useCollectionGroup, useDocument } from '@nandorojo/swr-firestore'
 import { NextSeo } from 'next-seo'
@@ -12,7 +10,6 @@ import React from 'react'
 
 export default function Home(): React.ReactElement {
   const user = useAuthentication()
-  const { setDashboardQuizUI } = useDashboardQuizUI()
 
   const { data: played } = useCollectionGroup<{
     id: string
@@ -34,7 +31,7 @@ export default function Home(): React.ReactElement {
         <h2 className="DashboardLayout_title">✔あそんだクイズ</h2>
 
         <div className="DashboardQuizIndex">
-          {!played && <ScreenLoading />}
+          {!played && played?.length !== 0 && <ScreenLoading />}
           {played?.map((data) => {
             return <GetQuizCard key={data.quizId} quizId={data.quizId} />
           })}

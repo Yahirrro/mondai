@@ -12,13 +12,7 @@ import { fuego } from '@nandorojo/swr-firestore'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 
-type Props = {
-  quizId: string
-}
-
-export const DashboardQuizFormEditDetail: React.FunctionComponent<Props> = (
-  props
-) => {
+export const DashboardQuizFormEditDetail: React.FunctionComponent = () => {
   const router = useRouter()
   const [emoji, setEmoji] = useState<string>(null)
   const { quiz, updateQuiz } = useContext(DashboardQuizContext)

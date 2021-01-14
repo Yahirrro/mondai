@@ -1,19 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
   DashboardMessagePercent,
   DashboardQuizContext,
   DashboardMessageForm,
 } from '@components/dashboard'
-import { fuego, useCollection } from '@nandorojo/swr-firestore'
-import { toast } from 'react-toastify'
+import { useCollection } from '@nandorojo/swr-firestore'
 import { QuizNote } from '@components/quiz'
 import { useDashboardQuizUI } from '@hook/dashboard'
 
 import { useWindowSize } from '@react-hook/window-size/throttled'
-import { useRouter } from 'next/router'
 
 export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
-  const router = useRouter()
   const [width] = useWindowSize()
   const { quiz } = useContext(DashboardQuizContext)
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
@@ -23,24 +20,13 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
   }>(`quiz/${quiz.id}/message`, {
     listen: true,
   })
-  useEffect(() => {
-    setDashboardQuizUI({
-      type: dashboardQuizUI.type,
-      open: false,
-      optional: {
-        messagePercent: 0,
-        messageData: message?.find((msg) => msg.percent == 0),
-      },
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.quizId])
 
   useEffect(() => {
     if (
       message?.some(
         (data) => data.percent == dashboardQuizUI.optional?.messagePercent
       ) == false &&
-      isWindowBreakPoint()
+      !isWindowBreakPoint()
     ) {
       setDashboardQuizUI({
         type: dashboardQuizUI.type,
@@ -57,7 +43,8 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
   useEffect(() => {
     if (
       !isWindowBreakPoint() &&
-      dashboardQuizUI.optional?.messageData == null
+      dashboardQuizUI.optional?.messageData == null &&
+      message
     ) {
       setDashboardQuizUI({
         type: dashboardQuizUI.type,

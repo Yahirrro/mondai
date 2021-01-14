@@ -5,11 +5,10 @@ import {
   DashboardMessagePercent,
 } from '@components/dashboard'
 import { PageButton } from '@components/ui'
-import { fuego, useCollection } from '@nandorojo/swr-firestore'
+import { fuego } from '@nandorojo/swr-firestore'
 import { toast } from 'react-toastify'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { useRouter } from 'next/router'
-import { MessageModel } from '@models'
 import { useWindowSize } from '@react-hook/window-size/throttled'
 
 type Props = {
@@ -76,10 +75,7 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
     }
   }
 
-  const submitMessage = async (
-    value,
-    { setSubmitting, setErrors, setStatus, resetForm }
-  ) => {
+  const submitMessage = async (value, { setStatus }) => {
     try {
       if (value.percent == null) {
         toast.error('😥メッセージのパーセント値がありません')
@@ -147,7 +143,7 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
         enableReinitialize
         initialValues={formData}
         onSubmit={submitMessage}>
-        {({ values }) => (
+        {() => (
           <Form>
             <DashboardFormikField
               title="メッセージ"

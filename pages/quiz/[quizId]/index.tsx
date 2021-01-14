@@ -127,6 +127,7 @@ export default function Home(props: Props): React.ReactElement {
         },
       ],
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!quiz?.exists || errorQuiz) return <ScreenError code={404} />
@@ -143,7 +144,7 @@ export default function Home(props: Props): React.ReactElement {
     if (answerValue == null) return
     if (userAnswer?.find((data) => data.questionId == question?.id)) return
 
-    if (quizJoin.exists == false) {
+    if (quizJoin?.exists == false) {
       sendLogEvent('quiz_participate', {
         items: [
           {
@@ -168,7 +169,6 @@ export default function Home(props: Props): React.ReactElement {
       isCorrectAnswer: answerValue == question.answer,
       questionId: question.id,
     })
-    console.log(question.choice.find((data, index) => index == answerValue))
     sendLogEvent('quiz_answer', {
       items: [
         {
@@ -257,7 +257,7 @@ export default function Home(props: Props): React.ReactElement {
     await fetch(`/api/quiz/toAnswer?quizId=` + quiz.id, {
       headers: { authorization: 'Bearer ' + (await getIdToken()) },
     })
-      .then((data) => {
+      .then(() => {
         setIsApiLoading(false)
       })
       .catch((error) => {
@@ -272,7 +272,7 @@ export default function Home(props: Props): React.ReactElement {
     await fetch(`/api/quiz/toArchive?quizId=` + quiz.id, {
       headers: { authorization: 'Bearer ' + (await getIdToken()) },
     })
-      .then((data) => {
+      .then(() => {
         setIsApiLoading(false)
       })
       .catch((error) => {
