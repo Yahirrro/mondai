@@ -9,12 +9,7 @@ import { useContext, useEffect } from 'react'
 
 export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
   const { quiz, questions } = useContext(DashboardQuizContext)
-  const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
-
-  useEffect(() => {
-    console.log(quiz, questions)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dashboardQuizUI?.open])
+  const { setDashboardQuizUI } = useDashboardQuizUI()
 
   return (
     <>

@@ -168,7 +168,6 @@ export default function Home(props: Props): React.ReactElement {
       isCorrectAnswer: answerValue == question.answer,
       questionId: question.id,
     })
-    console.log(question.choice.find((data, index) => index == answerValue))
     sendLogEvent('quiz_answer', {
       items: [
         {

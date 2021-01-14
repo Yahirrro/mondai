@@ -40,7 +40,7 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
       message?.some(
         (data) => data.percent == dashboardQuizUI.optional?.messagePercent
       ) == false &&
-      isWindowBreakPoint()
+      !isWindowBreakPoint()
     ) {
       setDashboardQuizUI({
         type: dashboardQuizUI.type,
@@ -57,7 +57,8 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
   useEffect(() => {
     if (
       !isWindowBreakPoint() &&
-      dashboardQuizUI.optional?.messageData == null
+      dashboardQuizUI.optional?.messageData == null &&
+      message
     ) {
       setDashboardQuizUI({
         type: dashboardQuizUI.type,
