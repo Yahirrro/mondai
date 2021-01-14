@@ -12,7 +12,7 @@ import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const DashboardQuizScreenDetail = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuizScreenDetail)
@@ -30,6 +30,14 @@ export default function Home(): React.ReactElement {
   const [pageType, setPageType] = useState<
     'detail' | 'question' | 'permission' | 'message'
   >('detail')
+
+  useEffect(() => {
+    setDashboardQuizUI({
+      type: dashboardQuizUI.type,
+      open: false,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.quizId])
 
   const {
     data: quiz,

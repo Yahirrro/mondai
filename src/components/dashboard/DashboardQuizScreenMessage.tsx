@@ -9,10 +9,8 @@ import { QuizNote } from '@components/quiz'
 import { useDashboardQuizUI } from '@hook/dashboard'
 
 import { useWindowSize } from '@react-hook/window-size/throttled'
-import { useRouter } from 'next/router'
 
 export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
-  const router = useRouter()
   const [width] = useWindowSize()
   const { quiz } = useContext(DashboardQuizContext)
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
@@ -22,17 +20,6 @@ export const DashboardQuizScreenMessage: React.FunctionComponent = () => {
   }>(`quiz/${quiz.id}/message`, {
     listen: true,
   })
-  useEffect(() => {
-    setDashboardQuizUI({
-      type: dashboardQuizUI.type,
-      open: false,
-      optional: {
-        messagePercent: 0,
-        messageData: message?.find((msg) => msg.percent == 0),
-      },
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.quizId])
 
   useEffect(() => {
     if (
