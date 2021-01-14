@@ -144,7 +144,7 @@ export default function Home(props: Props): React.ReactElement {
     if (answerValue == null) return
     if (userAnswer?.find((data) => data.questionId == question?.id)) return
 
-    if (quizJoin.exists == false) {
+    if (quizJoin?.exists == false) {
       sendLogEvent('quiz_participate', {
         items: [
           {

@@ -31,7 +31,7 @@ export default function Home(): React.ReactElement {
         <h2 className="DashboardLayout_title">✔あそんだクイズ</h2>
 
         <div className="DashboardQuizIndex">
-          {!played && <ScreenLoading />}
+          {!played && played?.length !== 0 && <ScreenLoading />}
           {played?.map((data) => {
             return <GetQuizCard key={data.quizId} quizId={data.quizId} />
           })}
