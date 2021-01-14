@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
   DashboardMessagePercent,
   DashboardQuizContext,
   DashboardMessageForm,
 } from '@components/dashboard'
-import { fuego, useCollection } from '@nandorojo/swr-firestore'
-import { toast } from 'react-toastify'
+import { useCollection } from '@nandorojo/swr-firestore'
 import { QuizNote } from '@components/quiz'
 import { useDashboardQuizUI } from '@hook/dashboard'
 

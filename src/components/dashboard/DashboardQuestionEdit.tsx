@@ -17,8 +17,8 @@ type Props = {
   answer: number
   errors: FormikErrors<{
     title: string
-    choice: any[]
-    answer: any
+    choice: QuestionModel['choice']
+    answer: QuestionModel['answer']
     commentary: string
   }>
 }

@@ -1,5 +1,3 @@
-import { fuego } from '@nandorojo/swr-firestore'
-import { Fuego } from '@lib/fuego'
 import { useRouter } from 'next/router'
 import { sendLogEvent } from '@lib/api'
 

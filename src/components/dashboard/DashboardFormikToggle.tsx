@@ -11,6 +11,7 @@ type Props = {
 }
 
 export const DashboardFormikToggle: React.FunctionComponent<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Props | FieldAttributes<any>
 > = (props) => {
   return (

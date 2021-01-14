@@ -8,7 +8,9 @@ type Context = {
   quiz: QuizModel
   updateQuiz: (data: Partial<AllowType<QuizModel, FieldValue>>) => Promise<void>
   questions: Array<QuestionModel>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dashboardQuizUI: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setDashboardQuizUI: SetterOrUpdater<any>
   pageType: 'detail' | 'question' | 'permission' | 'message'
   setPageType: SetterOrUpdater<'detail' | 'question' | 'permission' | 'message'>

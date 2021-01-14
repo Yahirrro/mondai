@@ -5,7 +5,7 @@ import {
 } from '@components/dashboard'
 import { QuizNote } from '@components/quiz'
 import { useDashboardQuizUI } from '@hook/dashboard'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 
 export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
   const { quiz, questions } = useContext(DashboardQuizContext)

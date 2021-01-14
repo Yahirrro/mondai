@@ -127,6 +127,7 @@ export default function Home(props: Props): React.ReactElement {
         },
       ],
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!quiz?.exists || errorQuiz) return <ScreenError code={404} />
@@ -256,7 +257,7 @@ export default function Home(props: Props): React.ReactElement {
     await fetch(`/api/quiz/toAnswer?quizId=` + quiz.id, {
       headers: { authorization: 'Bearer ' + (await getIdToken()) },
     })
-      .then((data) => {
+      .then(() => {
         setIsApiLoading(false)
       })
       .catch((error) => {
@@ -271,7 +272,7 @@ export default function Home(props: Props): React.ReactElement {
     await fetch(`/api/quiz/toArchive?quizId=` + quiz.id, {
       headers: { authorization: 'Bearer ' + (await getIdToken()) },
     })
-      .then((data) => {
+      .then(() => {
         setIsApiLoading(false)
       })
       .catch((error) => {
