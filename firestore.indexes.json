@@ -1,6 +1,20 @@
 {
   "indexes": [
     {
+      "collectionGroup": "participant",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "quiz",
       "queryScope": "COLLECTION",
       "fields": [
@@ -20,6 +34,20 @@
       "fields": [
         {
           "fieldPath": "permission",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "currentStatus",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "quiz",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "permission.owner",
           "arrayConfig": "CONTAINS"
         },
         {
