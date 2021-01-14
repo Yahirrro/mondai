@@ -33,7 +33,7 @@ export const QuizScreenOpen: React.FunctionComponent = () => {
                   index={(index + 1).toString()}>
                   <input
                     type="radio"
-                    id={data.title}
+                    id={index + 1 + data.title}
                     name={question.title}
                     value={data.title}
                     onChange={() => {

@@ -1,3 +1,8 @@
+import { fuego } from '@nandorojo/swr-firestore'
+import { Fuego } from '@lib/fuego'
+import { useRouter } from 'next/router'
+import { sendLogEvent } from '@lib/api'
+
 type Props = {
   text: string
   url: string
@@ -32,6 +37,7 @@ export const PageShareIcon: React.FunctionComponent<{
   type: 'twitter' | 'line'
   text?: string
 }> = (props) => {
+  const router = useRouter()
   const url = () => {
     switch (props.type) {
       case 'twitter':
@@ -50,12 +56,20 @@ export const PageShareIcon: React.FunctionComponent<{
         }
     }
   }
+  const click = () => {
+    sendLogEvent('share', {
+      content_type: 'quiz',
+      quiz_id: router.query?.quizId,
+      method: props.type,
+    })
+  }
   return (
     <a
       className={`PageShareIcon PageShareIcon-${props.type}`}
       target="_blank"
       rel="noopener noreferrer"
-      {...url()}>
+      {...url()}
+      onClick={click}>
       {props.type == 'twitter' && (
         <>
           <svg

@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { toast } from 'react-toastify'
 import { QuizModel } from '@models'
+import { sendLogEvent } from '@lib/api'
 
 export const DashboardQuizFormCreate: React.FunctionComponent = () => {
   const router = useRouter()
@@ -38,6 +39,18 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
       router.push(`/dashboard/quiz/${addQuiz.id}`)
       setStatus({ success: true })
       setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+      sendLogEvent('quiz_create', {
+        items: [
+          {
+            id: addQuiz.id,
+            title: value.title,
+            description: value.description,
+            emoji: emoji,
+            owner: value.permission.owner[0],
+            isPlayagain: false,
+          },
+        ],
+      })
       toast('😆クイズを作成できました!')
     } catch (error) {
       console.error(error)

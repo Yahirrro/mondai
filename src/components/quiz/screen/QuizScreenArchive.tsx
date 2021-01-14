@@ -23,11 +23,11 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
     listen: true,
   })
 
-  const deplicate = async () => {
+  const deplicate = async (quizId) => {
     const get = async (): Promise<{ quizId: string }> => {
       try {
         setApiLoading(true)
-        const data = await fetch(`/api/quiz/deplicate?quizId=` + quiz.id, {
+        const data = await fetch(`/api/quiz/deplicate?quizId=` + quizId, {
           headers: { authorization: 'Bearer ' + (await getIdToken()) },
         })
         setApiLoading(false)
@@ -66,7 +66,8 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
           </QuizNote>
         )}
       </section>
-      {quiz.permission.playagain && (
+
+      {(quiz.permission.playagain || quiz.playagain?.isPlayagain) && (
         <QuizNote
           title={`もう一度｢${quiz.title}｣であそびましょう🙌`}
           style={{ padding: '40px 30px' }}>
@@ -77,7 +78,11 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
           </p>
           <PageButton
             buttontype="big"
-            onClick={() => deplicate()}
+            onClick={() =>
+              deplicate(
+                quiz.playagain?.isPlayagain ? quiz.playagain.original : quiz.id
+              )
+            }
             style={{ width: '100%', marginTop: '20px' }}
             disabled={apiLoading}>
             このクイズであそぶ！
@@ -93,7 +98,7 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
           )
           return (
             <QuestionAnswerGraph
-              key={questionData.title}
+              key={index + questionData.title}
               data={questionData.choice}
               correctAnswer={questionData.answer}
               title={index + 1 + '. ' + questionData.title}

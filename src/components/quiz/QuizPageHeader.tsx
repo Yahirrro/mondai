@@ -22,10 +22,10 @@ export const QuizPageHeader: React.FunctionComponent = () => {
     <>
       <header className={`QuizPageHeader`}>
         <QuizCard
-          title={quiz.title}
-          description={quiz.description}
-          emoji={quiz.emoji}
-          playagain={quiz.playagain.isPlayagain}
+          title={quiz?.title}
+          description={quiz?.description}
+          emoji={quiz?.emoji}
+          playagain={quiz?.playagain?.isPlayagain}
         />
         <div className="QuizPageHeader_badge">
           <QuizBadge text={status()}></QuizBadge>

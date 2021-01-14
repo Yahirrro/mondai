@@ -13,7 +13,7 @@ export const QuestionSelect: React.FunctionComponent<Props> = (props) => {
     <>
       <div className="QuestionSelect" style={{ counterIncrement: 'item' }}>
         {props.children}
-        <label htmlFor={props.title}>
+        <label htmlFor={props.index + props.title}>
           <QuestionSelectCard title={props.title} index={props.index} />
         </label>
         <style jsx>

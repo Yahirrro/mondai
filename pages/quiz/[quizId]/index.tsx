@@ -30,7 +30,7 @@ const QuizScreenArchive = dynamic(() =>
 )
 
 import { useAuthentication } from '@hook/auth'
-import { getQuiz, hasQuizPermission } from '@lib/api'
+import { getQuiz, hasQuizPermission, sendLogEvent } from '@lib/api'
 import { useUI } from '@components/ui/context'
 import { getIdToken } from '@lib/api'
 import Link from 'next/link'
@@ -114,6 +114,21 @@ export default function Home(props: Props): React.ReactElement {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quiz?.currentStatus])
 
+  useEffect(() => {
+    sendLogEvent('view_item', {
+      items: [
+        {
+          id: quiz.id,
+          title: quiz.title,
+          description: quiz.description,
+          emoji: quiz.emoji,
+          owner: quiz.permission.owner[0],
+          isPlayagain: quiz.playagain.isPlayagain,
+        },
+      ],
+    })
+  }, [])
+
   if (!quiz?.exists || errorQuiz) return <ScreenError code={404} />
   if (quiz?.currentStatus == 'creating') return <ScreenError code={404} />
 
@@ -129,6 +144,18 @@ export default function Home(props: Props): React.ReactElement {
     if (userAnswer?.find((data) => data.questionId == question?.id)) return
 
     if (quizJoin.exists == false) {
+      sendLogEvent('quiz_participate', {
+        items: [
+          {
+            id: quiz.id,
+            title: quiz.title,
+            description: quiz.description,
+            emoji: quiz.emoji,
+            owner: quiz.permission.owner[0],
+            isPlayagain: quiz.playagain.isPlayagain,
+          },
+        ],
+      })
       setQuizJoin({
         userId: user.userId,
         quizId: quiz?.id,
@@ -140,6 +167,20 @@ export default function Home(props: Props): React.ReactElement {
       answer: answerValue,
       isCorrectAnswer: answerValue == question.answer,
       questionId: question.id,
+    })
+    console.log(question.choice.find((data, index) => index == answerValue))
+    sendLogEvent('quiz_answer', {
+      items: [
+        {
+          id: quiz.id,
+          questionId: question.id,
+          questionTitle: question.title,
+          answerValue: answerValue,
+          questionSelectTitle: question.choice.find(
+            (data, index) => index == answerValue
+          )?.title,
+        },
+      ],
     })
     setIsAnswered(true)
   }
@@ -304,7 +345,7 @@ export default function Home(props: Props): React.ReactElement {
                 <aside>
                   {userAnswer && <QuizCorrectCard />}
 
-                  {quiz.playagain.isPlayagain && (
+                  {quiz?.playagain?.isPlayagain && (
                     <PageCard
                       style={{ marginTop: 'var(--mainNormalPaddingSize)' }}
                       title="もう一度プレイ中"
