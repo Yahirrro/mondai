@@ -101,7 +101,7 @@ export default function Home(props: Props): React.ReactElement {
                       <div className="DashboardCardFlow_flex">
                         <img
                           className="DashboardInviteQR"
-                          src={`https://api.qrserver.com/v1/create-qr-code/?data=https://dev.mondai.page/quiz/${quiz?.id}&size=160x160`}
+                          src={`https://api.qrserver.com/v1/create-qr-code/?data=https://mondai.page/quiz/${quiz?.id}&size=160x160`}
                         />
                         <div className="DashboardInviteCode">
                           <h3>参加コード</h3>
@@ -116,7 +116,7 @@ export default function Home(props: Props): React.ReactElement {
                       <PageShare
                         style={{ marginTop: '20px' }}
                         text={quiz?.title}
-                        url={`https://dev.mondai.page/quiz/${quiz?.id}`}
+                        url={`https://mondai.page/quiz/${quiz?.id}`}
                       />
                     </DashboardCardFlow>
                     <DashboardCardFlow>
@@ -181,7 +181,7 @@ export default function Home(props: Props): React.ReactElement {
                             <img
                               style={{ marginRight: '0' }}
                               className="DashboardInviteQR"
-                              src={`https://api.qrserver.com/v1/create-qr-code/?data=https://dev.mondai.page/quiz/${quiz?.id}&size=160x160`}
+                              src={`https://api.qrserver.com/v1/create-qr-code/?data=https://mondai.page/quiz/${quiz?.id}&size=160x160`}
                             />
                           </div>
                           <p className="DashboardCardFlow_description">
@@ -192,7 +192,7 @@ export default function Home(props: Props): React.ReactElement {
                           <PageShare
                             style={{ marginTop: '20px' }}
                             text={quiz?.title}
-                            url={`https://dev.mondai.page/quiz/${quiz?.id}`}
+                            url={`https://mondai.page/quiz/${quiz?.id}`}
                           />
                         </DashboardCardFlow>
                         <DashboardCardFlow>

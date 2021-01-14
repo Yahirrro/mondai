@@ -9,7 +9,7 @@ export const QuizPageInvite: React.FunctionComponent = () => {
     <>
       <aside className="QuizPageInvite">
         <QuizQR
-          url={`https://dev.mondai.page/quiz/${quiz.id}`}
+          url={`https://mondai.page/quiz/${quiz.id}`}
           code={quiz.inviteCode}
         />
         <style jsx>

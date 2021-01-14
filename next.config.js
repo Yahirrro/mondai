@@ -7,7 +7,7 @@ module.exports = {
     defaultLocale: 'ja-JP',
     domains: [
       {
-        domain: 'dev.mondai.page',
+        domain: 'mondai.page',
         defaultLocale: 'ja-JP',
       },
     ],
