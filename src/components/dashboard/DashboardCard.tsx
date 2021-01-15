@@ -25,7 +25,7 @@ export const DashboardCard: React.FunctionComponent<Props> = (props) => {
             margin: auto;
             @media (max-width: 750px) {
               gap: 20px;
-              padding: 30px 20px;
+              padding: 30px var(--mainNormalPaddingSize);
             }
             &_title {
               font-size: 32px;
@@ -49,7 +49,7 @@ export const DashboardCard: React.FunctionComponent<Props> = (props) => {
             & + & {
               margin-top: 50px;
               @media (max-width: 750px) {
-                margin-top: 10px;
+                margin-top: var(--mainNormalPaddingSize);
               }
             }
           }

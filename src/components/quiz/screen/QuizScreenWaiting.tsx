@@ -1,4 +1,7 @@
-import { DashboardCard, DashboardCardFlow } from '@components/dashboard'
+import {
+  DashboardCard,
+  DashboardCardFlow,
+} from '@components/dashboard/DashboardCard'
 import { QuizButton, QuizContext } from '@components/quiz'
 import { PageShare } from '@components/ui'
 import { useContext } from 'react'

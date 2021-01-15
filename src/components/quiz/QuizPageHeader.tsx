@@ -26,6 +26,7 @@ export const QuizPageHeader: React.FunctionComponent = () => {
           description={quiz?.description}
           emoji={quiz?.emoji}
           playagain={quiz?.playagain?.isPlayagain}
+          long={true}
         />
         <div className="QuizPageHeader_badge">
           <QuizBadge text={status()}></QuizBadge>

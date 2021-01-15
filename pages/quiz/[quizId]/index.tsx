@@ -104,12 +104,6 @@ export default function Home(props: Props): React.ReactElement {
 
   useEffect(() => {
     if (quiz?.exists == false) return
-    if (quiz?.currentStatus !== 'open') {
-      setCorrectAnswers({
-        correct: userAnswer ? getCorrectAnswerAmount() : 0,
-        incorrect: userAnswer ? getIncorrectAnswerAmount() : 0,
-      })
-    }
     setAnswerValue(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quiz?.currentStatus])
@@ -353,7 +347,6 @@ export default function Home(props: Props): React.ReactElement {
 
                     {quiz?.playagain?.isPlayagain && (
                       <PageCard
-                        style={{ marginTop: 'var(--mainNormalPaddingSize)' }}
                         title="もう一度プレイ中"
                         description={`公開されているクイズをあそんでいます`}></PageCard>
                     )}
