@@ -6,6 +6,7 @@ type Props = {
   description: string
   emoji: string
   playagain?: boolean
+  long?: boolean
   style?: React.CSSProperties
 }
 
@@ -13,7 +14,9 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <div
-        className={`QuizCard ${props.playagain ? 'QuizCard-playagain' : ''}`}
+        className={`QuizCard ${props.playagain ? 'QuizCard-playagain' : ''} ${
+          props.long ? 'QuizCard-long' : ''
+        }`}
         style={props.style}>
         <div className="QuizCard_emoji">
           <QuizIconEmoji emoji={props.emoji} />
@@ -30,7 +33,9 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
             .QuizCard {
               user-select: none;
               background-color: white;
-              display: inline-flex;
+              display: inline-grid;
+              grid-template-columns: 64px 1fr;
+              gap: 20px;
               flex-direction: row;
               align-items: flex-start;
               border-radius: 20px;
@@ -42,6 +47,9 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
                 margin-right: 20px;
                 border-radius: 50%;
               }
+              &_info {
+                overflow: hidden;
+              }
               &_title,
               &_description {
                 margin-top: 0;
@@ -50,18 +58,32 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
               &_title {
                 font-size: 30px;
                 line-height: 44px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
               &_description {
                 font-size: 1rem;
                 font-weight: bold;
                 opacity: 0.5;
                 line-height: 1.4;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
               &_button {
                 width: 100%;
               }
               &-playagain {
                 border: 2px solid #d4d4d4;
+              }
+              &-long {
+                .QuizCard_title,
+                .QuizCard_description {
+                  white-space: initial;
+                  overflow: initial;
+                  text-overflow: initial;
+                }
               }
               @media (max-width: 750px) {
                 width: 100%;

@@ -1,10 +1,27 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 import { IconCorrect, IconIncorrect, PageCard } from '@components/ui'
 import { QuizContext } from '@components/quiz'
 
 export const QuizCorrectCard: React.FunctionComponent = () => {
-  const { quiz, correctAnswers } = useContext(QuizContext)
+  const {
+    quiz,
+    userAnswer,
+    correctAnswers,
+    setCorrectAnswers,
+    getCorrectAnswerAmount,
+    getIncorrectAnswerAmount,
+  } = useContext(QuizContext)
+
+  useEffect(() => {
+    if (quiz.currentStatus !== 'open') {
+      setCorrectAnswers({
+        correct: userAnswer ? getCorrectAnswerAmount() : 0,
+        incorrect: userAnswer ? getIncorrectAnswerAmount() : 0,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quiz?.currentStatus])
 
   return (
     <>

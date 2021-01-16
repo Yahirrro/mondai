@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router'
 import { sendLogEvent } from '@lib/api'
+import copy from 'copy-to-clipboard'
+import { toast } from 'react-toastify'
 
 type Props = {
   text: string
@@ -12,6 +14,7 @@ export const PageShare: React.FunctionComponent<Props> = (props) => {
     <div className="PageShare" style={props.style}>
       <PageShareIcon url={props.url} text={props.text} type="twitter" />
       <PageShareIcon url={props.url} text={props.text} type="line" />
+      <PageShareIcon url={props.url} text={props.text} type="url" />
       <style jsx>
         {`
           .PageShare {
@@ -21,7 +24,6 @@ export const PageShare: React.FunctionComponent<Props> = (props) => {
             flex-flow: wrap;
             @media (max-width: 750px) {
               display: grid;
-              grid-template-columns: 1fr;
             }
           }
         `}
@@ -32,7 +34,7 @@ export const PageShare: React.FunctionComponent<Props> = (props) => {
 
 export const PageShareIcon: React.FunctionComponent<{
   url: string
-  type: 'twitter' | 'line'
+  type: 'twitter' | 'line' | 'url'
   text?: string
 }> = (props) => {
   const router = useRouter()
@@ -40,6 +42,7 @@ export const PageShareIcon: React.FunctionComponent<{
     switch (props.type) {
       case 'twitter':
         return {
+          onClick: () => click(),
           href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
             props.text
           )}&hashtags=mondai,クイズアプリmondai&url=${encodeURIComponent(
@@ -48,9 +51,20 @@ export const PageShareIcon: React.FunctionComponent<{
         }
       case 'line':
         return {
+          onClick: () => click(),
           href:
             'https://social-plugins.line.me/lineit/share?url=' +
             encodeURIComponent(props.url),
+        }
+      case 'url':
+        return {
+          onClick: () => {
+            click()
+            copy(props.url)
+            toast('😉コピーしました!', {
+              position: 'bottom-right',
+            })
+          },
         }
     }
   }
@@ -66,8 +80,7 @@ export const PageShareIcon: React.FunctionComponent<{
       className={`PageShareIcon PageShareIcon-${props.type}`}
       target="_blank"
       rel="noopener noreferrer"
-      {...url()}
-      onClick={click}>
+      {...url()}>
       {props.type == 'twitter' && (
         <>
           <svg
@@ -100,6 +113,19 @@ export const PageShareIcon: React.FunctionComponent<{
           <p>LINEで送る</p>
         </>
       )}
+      {props.type == 'url' && (
+        <>
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 20 20"
+            fill="black"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.8333 1.66667H12.35C12 0.7 11.0833 0 10 0C8.91667 0 8 0.7 7.65 1.66667H4.16667C3.25 1.66667 2.5 2.41667 2.5 3.33333V16.6667C2.5 17.5833 3.25 18.3333 4.16667 18.3333H15.8333C16.75 18.3333 17.5 17.5833 17.5 16.6667V3.33333C17.5 2.41667 16.75 1.66667 15.8333 1.66667ZM10 1.66667C10.4583 1.66667 10.8333 2.04167 10.8333 2.5C10.8333 2.95833 10.4583 3.33333 10 3.33333C9.54167 3.33333 9.16667 2.95833 9.16667 2.5C9.16667 2.04167 9.54167 1.66667 10 1.66667ZM15.8333 16.6667H4.16667V3.33333H5.83333V5.83333H14.1667V3.33333H15.8333V16.6667Z" />
+          </svg>
+          <p>リンクをコピー</p>
+        </>
+      )}
       <style jsx>
         {`
           .PageShareIcon {
@@ -109,13 +135,13 @@ export const PageShareIcon: React.FunctionComponent<{
             grid-template-columns: 26px 1fr;
             gap: 5px;
             border-radius: 10px;
+            color: white;
             @media (max-width: 750px) {
               display: grid;
-              width: 100%;
             }
             p {
+              margin: 0;
               font-weight: bold;
-              color: white;
               text-align: center;
             }
             &-twitter {
@@ -123,6 +149,11 @@ export const PageShareIcon: React.FunctionComponent<{
             }
             &-line {
               background-color: #00b833;
+            }
+            &-url {
+              color: black;
+              background-color: white;
+              cursor: pointer;
             }
           }
         `}

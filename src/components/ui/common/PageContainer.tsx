@@ -19,6 +19,10 @@ export const PageContainer: React.FunctionComponent<Props> = (props) => {
               padding-bottom: calc(var(--mainNormalPaddingSize) * 2);
               padding-left: 20px;
               padding-right: 20px;
+              @media (max-width: 750px) {
+                padding-left: var(--mainNormalPaddingSize);
+                padding-right: var(--mainNormalPaddingSize);
+              }
             }
           `}
         </style>

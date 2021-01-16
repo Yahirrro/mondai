@@ -15,7 +15,7 @@ export const ModalLogin: React.FunctionComponent = () => {
       closeModal()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [closeModal, user])
+  }, [user])
 
   return (
     <>

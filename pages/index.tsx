@@ -90,6 +90,13 @@ export default function Home(): ReactElement {
                 title="つくる"
                 message="あなただけのクイズをつくってみましょう！"
                 image={<img src="assets/index/create.svg" />}
+                screenshot={
+                  <Image
+                    src="/assets/index/create-screen.png"
+                    width="120px"
+                    height="260px"
+                  />
+                }
               />
               <IndexPageCard
                 title="共有する"
@@ -100,6 +107,13 @@ export default function Home(): ReactElement {
                 title="みんなであそぶ"
                 message="クイズであそんでみましょう！"
                 image={<img src="assets/index/playtogether.svg" />}
+                screenshot={
+                  <Image
+                    src="/assets/index/for-everyone-screen.png"
+                    width="120px"
+                    height="260px"
+                  />
+                }
               />
             </div>
           </section>
@@ -255,55 +269,25 @@ export default function Home(): ReactElement {
               &_cardsHowTo {
                 display: grid;
                 gap: 30px;
-                grid-template-columns: repeat(
-                  auto-fit,
-                  [col-start] minmax(350px, 1fr) [col-end]
-                );
+                grid-template-columns: 1fr 1fr 1fr;
                 :global(.IndexPageCard:nth-of-type(2)) {
                   margin-top: 50px;
                 }
                 :global(.IndexPageCard:nth-of-type(3)) {
                   margin-top: 100px;
                 }
-
-                @media (max-width: 1170px) {
-                  display: flex;
-                  overflow-x: auto;
-                  transform: translateX(-20px);
-                  width: calc(100% + 40px);
-                  padding-left: 30px;
-                  gap: initial;
-
-                  scroll-snap-type: x mandatory;
-                  scroll-behavior: smooth;
-                  :global(.IndexPageCard) {
-                    scroll-snap-align: start;
-                    margin-left: 30px;
-                    width: 350px;
-                    min-width: 350px;
-                    &:first-of-type {
-                      margin-left: 0px;
-                    }
-                  }
-
-                  :global(.IndexPageCard:nth-of-type(2)) {
-                    margin-top: 0px;
-                  }
-                  :global(.IndexPageCard:nth-of-type(3)) {
-                    margin-top: 0px;
-                  }
+                @media (max-width: 1010px) {
+                  grid-template-columns: 1fr;
                 }
                 @media (max-width: 750px) {
-                  display: grid;
-                  grid-template-columns: 1fr;
                   transform: none;
                   width: 100%;
                   padding-left: 0;
-                  gap: 30px;
                   :global(.IndexPageCard) {
                     width: 100%;
                     min-width: initial;
                     margin-left: initial;
+                    margin-top: 0 !important;
                   }
                 }
               }
@@ -472,6 +456,7 @@ export const IndexPageCard: React.FunctionComponent<{
   title: string
   message: string
   image: React.ReactNode
+  screenshot?: React.ReactNode
 }> = (props) => {
   return (
     <div className="IndexPageCard">
@@ -493,6 +478,9 @@ export const IndexPageCard: React.FunctionComponent<{
       <div className="IndexPageCard_body">
         <div className="IndexPageCard_image">{props.image}</div>
         <p className="IndexPageCard_message">{props.message}</p>
+        {props.screenshot && (
+          <div className="IndexPageCard_screenshot">{props.screenshot}</div>
+        )}
       </div>
       <style jsx>
         {`
@@ -500,7 +488,6 @@ export const IndexPageCard: React.FunctionComponent<{
             width: 100%;
             height: 500px;
             border-radius: 30px;
-            overflow: hidden;
             background-color: white;
 
             @media (max-width: 750px) {
@@ -510,6 +497,7 @@ export const IndexPageCard: React.FunctionComponent<{
             &_title {
               position: relative;
               padding-top: 30px;
+              border-radius: 30px 30px 0 0;
               background-color: var(--mainAccentColor);
               height: 70px;
               margin-bottom: 40px;
@@ -553,6 +541,18 @@ export const IndexPageCard: React.FunctionComponent<{
               color: #9e9e9e;
               width: 100%;
               text-align: center;
+              ${props.screenshot && 'width: calc(100% - 100px);'}
+            }
+            &_screenshot {
+              position: absolute;
+              bottom: -20px;
+              right: -20px;
+              box-shadow: var(--mainBoxShadow);
+              border-radius: 15px;
+              @media (max-width: 750px) {
+                bottom: -10px;
+                right: -10px;
+              }
             }
           }
         `}

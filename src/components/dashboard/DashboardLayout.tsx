@@ -108,7 +108,7 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
             grid-template-columns: 280px 1fr;
             @media (max-width: 900px) {
               grid-template-columns: 1fr;
-              gap: calc(var(--mainNormalPaddingSize) / 2);
+              gap: var(--mainNormalPaddingSize);
             }
             &_header {
               @media (min-width: 900px) {

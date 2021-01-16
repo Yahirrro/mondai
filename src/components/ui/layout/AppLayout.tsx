@@ -40,6 +40,10 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
         />
+        <script
+          data-ad-client="ca-pub-6248776021404303"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       </Head>
       <DefaultSeo
         dangerouslySetAllPagesToNoIndex={true}

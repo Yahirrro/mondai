@@ -26,10 +26,14 @@ export const QuizPageHeader: React.FunctionComponent = () => {
           description={quiz?.description}
           emoji={quiz?.emoji}
           playagain={quiz?.playagain?.isPlayagain}
+          long={true}
         />
         <div className="QuizPageHeader_badge">
           <QuizBadge text={status()}></QuizBadge>
-          <QuizBadge text={`${quiz.allUser}人参加`}></QuizBadge>
+          {quiz?.currentStatus !== 'waiting' &&
+            quiz?.currentQuestion !== quiz?.flow[0] && (
+              <QuizBadge text={`${quiz.allUser}人参加`}></QuizBadge>
+            )}
         </div>
         <style jsx>
           {`

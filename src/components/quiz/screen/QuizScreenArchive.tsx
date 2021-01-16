@@ -3,16 +3,21 @@ import { PageNumber, PageButton } from '@components/ui'
 import { QuestionAnswerGraph } from '@components/question'
 
 import { QuizContext, QuizNote } from '@components/quiz'
+import { DashboardCard } from '@components/dashboard/DashboardCard'
 import { useCollection } from '@nandorojo/swr-firestore'
 import { getIdToken } from '@lib/api'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { toast } from 'react-toastify'
+import { QuizCorrectCardBig } from '../QuizCorrectCardBig'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {
   const [apiLoading, setApiLoading] = useState<boolean>(false)
 
   const router = useRouter()
-  const { quiz, allQuestion, getCorrectRate } = useContext(QuizContext)
+  const { quiz, userAnswer, allQuestion, getCorrectRate } = useContext(
+    QuizContext
+  )
   const { data: message } = useCollection<{
     percent: number
     message: string
@@ -46,6 +51,20 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
   return (
     <>
       <h2>全ての問題が終了しました！</h2>
+      {userAnswer && (
+        <DashboardCard title="すべての問題が終わりました😆">
+          <QuizCorrectCardBig />
+          {message?.length > 0 && (
+            <QuizNote
+              title={`💮正答率が${
+                message?.length > 0 && message[0]?.percent * 100
+              }%${message[0]?.percent == 1 ? '' : '以上'}でした!`}
+              style={{ backgroundColor: 'var(--mainAccentColor)' }}>
+              <p>{message?.length > 0 && message[0]?.message}</p>
+            </QuizNote>
+          )}
+        </DashboardCard>
+      )}
 
       <section className="QuizScreenAnswer_grid">
         <div>
@@ -56,15 +75,6 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
           <h3>ぜんぶ正解した人🎉</h3>
           <PageNumber number={quiz?.allCorrectUser?.length} unit="人" />
         </div>
-        {message?.length > 0 && (
-          <QuizNote
-            title={`💮正答率が${
-              message?.length > 0 && message[0]?.percent * 100
-            }%${message[0]?.percent == 1 ? '' : '以上'}でした!`}
-            style={{ backgroundColor: 'var(--mainAccentColor)' }}>
-            <p>{message?.length > 0 && message[0]?.message}</p>
-          </QuizNote>
-        )}
       </section>
 
       {(quiz.permission.playagain || quiz.playagain?.isPlayagain) && (

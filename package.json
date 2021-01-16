@@ -16,6 +16,7 @@
     "@types/emoji-mart": "^3.0.4",
     "@types/react-modal": "^3.10.6",
     "@types/styled-jsx": "^2.2.8",
+    "copy-to-clipboard": "^3.3.1",
     "emoji-mart": "^3.0.0",
     "firebase": "8.2.1",
     "formik": "^2.2.6",

@@ -130,6 +130,30 @@ export default function Home(): React.ReactElement {
                   </DashboardCard>
                 </>
               )}
+
+              {(quiz?.currentStatus == 'open' ||
+                quiz?.currentStatus == 'answer') && (
+                <>
+                  <DashboardCard
+                    title="のりおくれないで😎 もうはじまってるよ!"
+                    button={
+                      <Link href={`/quiz/${quiz.id}`}>
+                        <a>
+                          <PageButton
+                            buttontype="big"
+                            style={{ width: '100%' }}>
+                            クイズページへ
+                          </PageButton>
+                        </a>
+                      </Link>
+                    }>
+                    <p>
+                      もうクイズ大会は開始されています! いますぐ参加しましょう!
+                    </p>
+                  </DashboardCard>
+                </>
+              )}
+
               {quiz?.currentStatus == 'archive' && (
                 <>
                   <DashboardCard

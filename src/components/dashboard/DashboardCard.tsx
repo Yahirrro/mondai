@@ -1,15 +1,18 @@
 type Props = {
   title: string
-  button: React.ReactNode
+  button?: React.ReactNode
   children: React.ReactNode
+  style?: React.CSSProperties
 }
 
 export const DashboardCard: React.FunctionComponent<Props> = (props) => {
   return (
-    <section className="DashboardCard">
+    <section className="DashboardCard" style={props.style}>
       <h2 className="DashboardCard_title">{props.title}</h2>
       <div className="DashboardCard_body">{props.children}</div>
-      <div className="DashboardCard_button">{props.button}</div>
+      {props.button && (
+        <div className="DashboardCard_button">{props.button}</div>
+      )}
       <style jsx>
         {`
           .DashboardCard {
@@ -22,7 +25,7 @@ export const DashboardCard: React.FunctionComponent<Props> = (props) => {
             margin: auto;
             @media (max-width: 750px) {
               gap: 20px;
-              padding: 30px 20px;
+              padding: 30px var(--mainNormalPaddingSize);
             }
             &_title {
               font-size: 32px;
@@ -46,7 +49,7 @@ export const DashboardCard: React.FunctionComponent<Props> = (props) => {
             & + & {
               margin-top: 50px;
               @media (max-width: 750px) {
-                margin-top: 10px;
+                margin-top: var(--mainNormalPaddingSize);
               }
             }
           }
