@@ -66,7 +66,7 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
               max-height: 100vh;
               overflow-y: auto;
               @media (max-width: 750px) {
-                padding: 40px 20px;
+                padding: 40px 20px 150px 20px;
                 height: 100vh;
               }
             }
@@ -99,7 +99,7 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
             }
           }
           .ReactModal__Body--open {
-            overflow: hidden;
+            overflow-y: hidden;
           }
           .ReactModal__Overlay {
             background-color: rgba(0, 0, 0, 0.35) !important;
