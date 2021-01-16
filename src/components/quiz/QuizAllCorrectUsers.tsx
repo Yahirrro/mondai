@@ -3,6 +3,7 @@ import { QuizContext } from '@components/quiz'
 import { useDocument } from '@nandorojo/swr-firestore'
 import { UserModel } from '@models'
 import { IconFace } from '@components/ui'
+import { useAuthentication } from '@hook/auth'
 
 export const QuizAllCorrectUsers: React.FunctionComponent = () => {
   const shuffle = (array) => {
@@ -22,11 +23,19 @@ export const QuizAllCorrectUsers: React.FunctionComponent = () => {
   }
   const { quiz } = useContext(QuizContext)
   const allCorrectUser = shuffle(quiz?.allCorrectUser).slice(0, 5)
+  const user = useAuthentication()
 
   return (
     <div className="QuizAllCorrectUsers">
-      {quiz?.allCorrectUser.length == 0 && <div>いませんでした...</div>}
-      {quiz?.allCorrectUser.length > 0 && (
+      {quiz?.allCorrectUser.length == 0 && (
+        <div className="QuizAllCorrectUsers_info">いませんでした...</div>
+      )}
+      {quiz?.allCorrectUser.length > 0 && !user?.userId && (
+        <div className="QuizAllCorrectUsers_info">
+          ログインすると確認できます!
+        </div>
+      )}
+      {quiz?.allCorrectUser.length > 0 && user?.userId && (
         <div className="QuizAllCorrectUsers_flex">
           {allCorrectUser.map((data) => {
             return <QuizAllCorrectUserName key={data} userId={data} />
@@ -35,7 +44,9 @@ export const QuizAllCorrectUsers: React.FunctionComponent = () => {
       )}
 
       {quiz?.allCorrectUser.length > 5 && (
-        <div className="QuizAllCorrectUsers_info">
+        <div
+          className="QuizAllCorrectUsers_info"
+          style={{ textAlign: 'right' }}>
           さんなど{quiz?.allCorrectUser.length}人
         </div>
       )}
@@ -50,7 +61,6 @@ export const QuizAllCorrectUsers: React.FunctionComponent = () => {
               width: calc(100% + 12px);
             }
             &_info {
-              text-align: right;
               font-weight: bold;
               opacity: 0.5;
             }
@@ -64,9 +74,11 @@ export const QuizAllCorrectUsers: React.FunctionComponent = () => {
 const QuizAllCorrectUserName: React.FunctionComponent<{
   userId: string
 }> = (props) => {
-  const { data: userData } = useDocument<UserModel>(
+  const { data: userData, error: ErrorUserData } = useDocument<UserModel>(
     props.userId ? `user/${props.userId}` : null
   )
+
+  ErrorUserData && console.error(ErrorUserData)
 
   return (
     <div className="QuizAllCorrectUserName">

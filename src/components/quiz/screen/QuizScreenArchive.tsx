@@ -135,10 +135,17 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
             @media (max-width: 1400px) {
               grid-template-columns: 1fr 1fr;
             }
+            @media (max-width: 750px) {
+              margin-top: calc(var(--mainNormalPaddingSize) * 2.5);
+              margin-bottom: calc(var(--mainNormalPaddingSize) * 2.5);
+            }
             &-full {
               @media (max-width: 1400px) {
                 grid-column: 1/3;
               }
+            }
+            h3 {
+              margin-top: 0;
             }
           }
         `}
