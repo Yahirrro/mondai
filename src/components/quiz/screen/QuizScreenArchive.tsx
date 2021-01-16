@@ -53,9 +53,7 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
       <h2>全ての問題が終了しました！</h2>
       {userAnswer && (
         <DashboardCard title="すべての問題が終わりました😆">
-          <QuizCorrectCardBig
-            percent={message?.length > 0 && message[0]?.percent * 100}
-          />
+          <QuizCorrectCardBig />
           {message?.length > 0 && (
             <QuizNote
               title={`💮正答率が${

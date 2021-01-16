@@ -3,12 +3,8 @@ import { useContext } from 'react'
 import { IconCorrect, IconIncorrect, PageShare } from '@components/ui'
 import { QuizContext } from '@components/quiz'
 
-type Props = {
-  percent: number
-}
-
-export const QuizCorrectCardBig: React.FunctionComponent<Props> = (props) => {
-  const { quiz, correctAnswers } = useContext(QuizContext)
+export const QuizCorrectCardBig: React.FunctionComponent = () => {
+  const { quiz, correctAnswers, getCorrectRate } = useContext(QuizContext)
 
   return (
     <>
@@ -26,7 +22,8 @@ export const QuizCorrectCardBig: React.FunctionComponent<Props> = (props) => {
             </div>
           </div>
           <p className="QuizCorrectCardBig_description">
-            全{quiz?.flow.length}問, 正答率 {props.percent}%
+            全{quiz?.flow.length}問, 正答率{' '}
+            {Math.round(getCorrectRate() * 1000) / 10}%
           </p>
         </div>
 
