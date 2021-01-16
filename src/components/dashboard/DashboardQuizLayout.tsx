@@ -36,6 +36,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
                   title={quiz?.title}
                   description={quiz?.description}
                   emoji={quiz?.emoji}
+                  long={true}
                 />
               </a>
             </Link>

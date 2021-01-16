@@ -3,7 +3,11 @@ import { QuizCard, QuizNote } from '@components/quiz'
 import { ScreenLoading } from '@components/screen'
 import { useAuthentication } from '@hook/auth'
 import { QuizModel } from '@models'
-import { useCollectionGroup, useDocument } from '@nandorojo/swr-firestore'
+import {
+  fuego,
+  useCollectionGroup,
+  useDocument,
+} from '@nandorojo/swr-firestore'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import React from 'react'
@@ -11,7 +15,7 @@ import React from 'react'
 export default function Home(): React.ReactElement {
   const user = useAuthentication()
 
-  const { data: played } = useCollectionGroup<{
+  const { data: played, mutate: mutatePlayed } = useCollectionGroup<{
     id: string
     userId: string
     quizId: string
@@ -20,15 +24,21 @@ export default function Home(): React.ReactElement {
     {
       where: ['userId', '==', user?.userId],
       orderBy: ['createdAt', 'desc'],
+      limit: 6,
     },
-    {}
+    {
+      revalidateOnFocus: false,
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+      refreshInterval: 0,
+    }
   )
-
   return (
     <>
       <NextSeo title="あそんだクイズ" />
       <DashboardLayout side={<DashboardSidebar />} changeOrder={true}>
         <h2 className="DashboardLayout_title">✔あそんだクイズ</h2>
+        <p>上位6つを表示しています</p>
 
         <div className="DashboardQuizIndex">
           {!played && played?.length !== 0 && <ScreenLoading />}
