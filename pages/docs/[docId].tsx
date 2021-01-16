@@ -44,6 +44,16 @@ export default function Home(props: Props): React.ReactElement {
             &_title {
               margin-top: 0;
               font-size: 3rem;
+              @media (max-width: 750px) {
+                font-size: 2.5rem;
+              }
+            }
+            :global(a) {
+              color: var(--mainPrimaryColor);
+              font-weight: bold;
+            }
+            :global(h2) {
+              margin-top: 2.5rem;
             }
           }
         `}

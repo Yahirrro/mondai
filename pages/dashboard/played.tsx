@@ -3,11 +3,7 @@ import { QuizCard, QuizNote } from '@components/quiz'
 import { ScreenLoading } from '@components/screen'
 import { useAuthentication } from '@hook/auth'
 import { QuizModel } from '@models'
-import {
-  fuego,
-  useCollectionGroup,
-  useDocument,
-} from '@nandorojo/swr-firestore'
+import { useCollectionGroup, useDocument } from '@nandorojo/swr-firestore'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import React from 'react'
@@ -15,7 +11,7 @@ import React from 'react'
 export default function Home(): React.ReactElement {
   const user = useAuthentication()
 
-  const { data: played, mutate: mutatePlayed } = useCollectionGroup<{
+  const { data: played } = useCollectionGroup<{
     id: string
     userId: string
     quizId: string
