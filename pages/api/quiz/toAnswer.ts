@@ -34,6 +34,7 @@ export default apiHandler.get(async (req, res) => {
   } as QuestionModel
 
   const choice = []
+  let allUser = 0
 
   await Promise.all(
     await questionData.choice.map(async (data, index) => {
@@ -56,11 +57,12 @@ export default apiHandler.get(async (req, res) => {
         answerAmount: answerRef.size,
         answerUser: answerUser,
       }
+      allUser = allUser + answerRef.size
     })
   )
 
   questionRef.update({ choice: choice })
-  quizRef.update({ currentStatus: 'answer' })
+  quizRef.update({ currentStatus: 'answer', allUser: allUser })
 
   res.status(200).json({
     status: 'ok',

@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { DefaultSeo } from 'next-seo'
 import React, { useContext } from 'react'
+import { getDomain } from '@lib/api'
 
 type Props = {
   disableSidebar?: boolean

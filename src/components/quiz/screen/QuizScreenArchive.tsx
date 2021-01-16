@@ -2,14 +2,17 @@ import { useContext, useState } from 'react'
 import { PageNumber, PageButton } from '@components/ui'
 import { QuestionAnswerGraph } from '@components/question'
 
-import { QuizContext, QuizNote } from '@components/quiz'
+import {
+  QuizContext,
+  QuizNote,
+  QuizAllCorrectUsers,
+  QuizCorrectCardBig,
+} from '@components/quiz'
 import { DashboardCard } from '@components/dashboard/DashboardCard'
 import { useCollection } from '@nandorojo/swr-firestore'
 import { getIdToken } from '@lib/api'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { toast } from 'react-toastify'
-import { QuizCorrectCardBig } from '../QuizCorrectCardBig'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {
   const [apiLoading, setApiLoading] = useState<boolean>(false)
@@ -68,12 +71,16 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
 
       <section className="QuizScreenAnswer_grid">
         <div>
-          <h3>すべての参加者数🎉</h3>
+          <h3>🎉すべての参加者数</h3>
           <PageNumber number={quiz?.allUser} unit="人" />
         </div>
         <div>
-          <h3>ぜんぶ正解した人🎉</h3>
+          <h3>🤩すべて正解した人数</h3>
           <PageNumber number={quiz?.allCorrectUser?.length} unit="人" />
+        </div>
+        <div className="QuizScreenAnswer_grid-full">
+          <h3>💮すべて正解した人</h3>
+          <QuizAllCorrectUsers />
         </div>
       </section>
 
@@ -127,7 +134,9 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
             margin-bottom: var(--mainNormalPaddingSize);
             @media (max-width: 1400px) {
               grid-template-columns: 1fr 1fr;
-              :global(.QuizNote) {
+            }
+            &-full {
+              @media (max-width: 1400px) {
                 grid-column: 1/3;
               }
             }
