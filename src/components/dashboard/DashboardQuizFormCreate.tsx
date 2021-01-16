@@ -93,6 +93,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
                 description="このクイズをひとことであらわすなら?"
                 name="title"
                 placeholder="たとえば: わかるかな? VTuberクイズ!"
+                maxLength="30"
                 required
               />
               <DashboardFormikField
@@ -100,6 +101,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
                 description="説明文だよ！ちょっとだけかいてね！"
                 name="description"
                 placeholder="たとえば: わかるひとにはわかる! とくべつな問題をチョイス!"
+                maxLength="50"
                 required
               />
               <PageButton

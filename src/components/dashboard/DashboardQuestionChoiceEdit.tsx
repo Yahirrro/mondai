@@ -23,6 +23,7 @@ export const DashboardQuestionChoiceEdit: React.FunctionComponent<Props> = (
             as={PageFormInput}
             name={`choice[${props.index}].title`}
             type="text"
+            maxLength="40"
             required
           />
         </h3>

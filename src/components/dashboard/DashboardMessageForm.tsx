@@ -150,6 +150,7 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
               description="ここにメッセージいれてみて！"
               placeholder="たとえば：こんなに正解できたの！？すごい！"
               name="message"
+              maxLength="120"
               required
               style={{
                 marginTop: '30px',
