@@ -100,7 +100,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
                 </li>
                 <li className="DashboardQuizLayout_sideFull">
                   <QuizQR
-                    url={`https://mondai.page/quiz/${router.query.quizId}`}
+                    url={`${getDomain()}/quiz/${router.query.quizId}`}
                     code={quiz?.inviteCode}
                   />
                 </li>

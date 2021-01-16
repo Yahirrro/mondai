@@ -4,6 +4,7 @@ import {
 } from '@components/dashboard/DashboardCard'
 import { QuizButton, QuizContext } from '@components/quiz'
 import { PageShare } from '@components/ui'
+import { getDomain } from '@lib/api'
 import { useContext } from 'react'
 
 export const QuizScreenWaiting: React.FunctionComponent = () => {
@@ -37,7 +38,9 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
             <div className="DashboardCardFlow_flex">
               <img
                 className="DashboardInviteQR"
-                src={`https://api.qrserver.com/v1/create-qr-code/?data=https://mondai.page/quiz/${quiz?.id}&size=160x160`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?data=${getDomain()}/quiz/${
+                  quiz?.id
+                }&size=160x160`}
               />
               <div className="DashboardInviteCode">
                 <h3>参加コード</h3>
@@ -52,7 +55,7 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
             <PageShare
               style={{ marginTop: '20px' }}
               text={quiz?.title}
-              url={`https://mondai.page/quiz/${quiz?.id}`}
+              url={`${getDomain()}/quiz/${quiz?.id}`}
             />
           </DashboardCardFlow>
           <DashboardCardFlow>

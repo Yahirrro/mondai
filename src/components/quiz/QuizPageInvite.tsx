@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 
 import { QuizQR, QuizContext } from '@components/quiz'
+import { getDomain } from '@lib/api'
 
 export const QuizPageInvite: React.FunctionComponent = () => {
   const { quiz } = useContext(QuizContext)
@@ -8,10 +9,7 @@ export const QuizPageInvite: React.FunctionComponent = () => {
   return (
     <>
       <aside className="QuizPageInvite">
-        <QuizQR
-          url={`https://mondai.page/quiz/${quiz.id}`}
-          code={quiz.inviteCode}
-        />
+        <QuizQR url={`${getDomain()}/quiz/${quiz.id}`} code={quiz.inviteCode} />
         <style jsx>
           {`
             .QuizPageInvite {

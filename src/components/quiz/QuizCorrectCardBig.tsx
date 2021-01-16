@@ -2,6 +2,7 @@ import { useContext } from 'react'
 
 import { IconCorrect, IconIncorrect, PageShare } from '@components/ui'
 import { QuizContext } from '@components/quiz'
+import { getDomain } from '@lib/api'
 
 export const QuizCorrectCardBig: React.FunctionComponent = () => {
   const { quiz, correctAnswers, getCorrectRate } = useContext(QuizContext)
@@ -32,7 +33,7 @@ export const QuizCorrectCardBig: React.FunctionComponent = () => {
         </p>
         <PageShare
           style={{ marginTop: '20px' }}
-          url={`https://mondai.page/quiz/${quiz?.id}`}
+          url={`${getDomain()}/quiz/${quiz?.id}`}
           text={`${quiz?.flow.length}問中、💮${correctAnswers.correct}問正解でした!!\n\n${quiz?.title}`}
         />
       </div>
