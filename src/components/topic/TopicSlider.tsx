@@ -11,23 +11,40 @@ export const TopicSlider: React.FunctionComponent<Props> = (props) => {
     <div className="TopicSlider">
       <div className="TopicSlider_slider">
         {props.topics?.map((data) => {
-          return <TopicCard key={data.id} topic={data} />
+          return (
+            <div className="TopicSlider_card" key={data.id}>
+              <TopicCard topic={data} />
+            </div>
+          )
         })}
       </div>
       <style jsx>
         {`
           .TopicSlider {
+            position: relative;
+            height: 84px;
             &_slider {
+              position: absolute;
+              width: calc(100% + 30px);
+              transform: translateX(-15px);
+
               overflow-x: auto;
-              display: grid;
-              grid-auto-flow: column;
-              grid-auto-columns: 380px;
-              gap: 20px;
               scroll-snap-type: x mandatory;
               scroll-behavior: smooth;
-              @media (max-width: 750px) {
-                grid-auto-columns: 300px;
-                gap: 15px;
+
+              display: fixed;
+            }
+            &_card {
+              scroll-snap-align: start;
+              padding-left: 15px;
+              &:last-of-type {
+                padding-right: 15px;
+              }
+            }
+            :global(.TopicCard) {
+              width: 350px;
+              @media (max-width: 550px) {
+                width: 80vw;
               }
             }
           }

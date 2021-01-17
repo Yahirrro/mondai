@@ -29,7 +29,7 @@ export const TopicCard: React.FunctionComponent<Props> = (props) => {
     backgroundColor[0] * 0.299 +
       backgroundColor[1] * 0.587 +
       backgroundColor[2] * 0.114 >
-    186
+    150
       ? 'black'
       : 'white'
 
@@ -42,7 +42,7 @@ export const TopicCard: React.FunctionComponent<Props> = (props) => {
         style={{ color: props.topic.color }}></div>
       <div className="TopicCard_info">
         <h3>{props.topic.title}</h3>
-        <p>クイズをつくってみませんか?</p>
+        <p>{props.topic.description}</p>
       </div>
       <style jsx>
         {`
@@ -55,7 +55,6 @@ export const TopicCard: React.FunctionComponent<Props> = (props) => {
             background: var(--mainBackgroundPattern);
             background-size: auto auto;
             overflow: hidden;
-            scroll-snap-align: start;
             &_icon {
               margin: 10px 0;
               width: 44px;
@@ -70,6 +69,8 @@ export const TopicCard: React.FunctionComponent<Props> = (props) => {
               font-weight: bold;
               &:before {
                 content: '#';
+                ${props.topic.isCampaign &&
+                'content: "PR" !important; font-size: 90%;'}
               }
             }
             &_info {

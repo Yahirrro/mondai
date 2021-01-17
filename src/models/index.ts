@@ -72,6 +72,7 @@ export interface TopicModel {
   id: string
   title: string
   color: string
+  description: string
   content: string
 
   isCampaign: boolean

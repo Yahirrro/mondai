@@ -32,13 +32,16 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <NextSeo title="つくっているクイズ" />
-      <DashboardLayout side={<DashboardSidebar />} changeOrder={true}>
-        <section className="DashboardLayout_section">
-          <h2 className="DashboardLayout_title">
-            👶つくるのにおすすめなクイズ
-          </h2>
-          <TopicSlider topics={props.topics} />
-        </section>
+      <DashboardLayout
+        side={<DashboardSidebar />}
+        changeOrder={true}
+        disableOverflow>
+        {props.topics !== null && (
+          <section className="DashboardLayout_section">
+            <h2 className="DashboardLayout_title">👶つくるのにおすすめ</h2>
+            <TopicSlider topics={props.topics} />
+          </section>
+        )}
 
         <section className="DashboardLayout_section">
           <h2 className="DashboardLayout_title">🎈つくっているクイズ</h2>
@@ -87,7 +90,7 @@ export default function Home(props: Props): React.ReactElement {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   }
 }
 
@@ -96,6 +99,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       topics: JSON.parse(JSON.stringify(await getTopics())),
     },
-    revalidate: 60,
+    revalidate: 3600,
   }
 }
