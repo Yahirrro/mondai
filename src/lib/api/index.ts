@@ -1,5 +1,6 @@
 export * from './getDomain'
 export * from './getIdToken'
 export * from './getQuiz'
+export * from './getTopics'
 export * from './hasQuizPermission'
 export * from './sendLogEvent'

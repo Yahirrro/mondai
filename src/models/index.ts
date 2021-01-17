@@ -67,3 +67,17 @@ export interface MessageModel {
   percent: number
   message: string
 }
+
+export interface TopicModel {
+  id: string
+  title: string
+  color: string
+  content: string
+
+  isCampaign: boolean
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  startAt: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  endAt: any
+}

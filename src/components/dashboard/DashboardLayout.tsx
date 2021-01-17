@@ -139,6 +139,12 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
                 }
               }
             }
+            :global(.DashboardLayout_section + .DashboardLayout_section) {
+              margin-top: var(--mainNormalPaddingSize);
+              @media (max-width: 750px) {
+                margin-top: calc(var(--mainNormalPaddingSize) * 2);
+              }
+            }
 
             :global(.DashboardQuizIndex) {
               display: grid;
