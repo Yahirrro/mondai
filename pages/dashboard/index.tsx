@@ -50,7 +50,7 @@ export default function Home(props: Props): React.ReactElement {
         disableOverflow>
         {props.topics !== null && (
           <section className="DashboardLayout_section">
-            <h2 className="DashboardLayout_title">👶つくるのにおすすめ</h2>
+            <h2 className="DashboardLayout_title">🐤つくるのにおすすめ</h2>
             <TopicSlider topics={props.topics} />
           </section>
         )}
