@@ -20,7 +20,6 @@ export const getTopics = async (): Promise<Array<TopicModel>> => {
       })
       .catch((error) => console.error(error))
     if (topics) {
-      console.log(topics)
       const topicsData = topics
         .sort((a, b) => {
           return b.isCampaign - a.isCampaign

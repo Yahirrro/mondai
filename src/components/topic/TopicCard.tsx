@@ -1,7 +1,10 @@
 import { TopicModel } from '@models'
+import Link from 'next/link'
 
 type Props = {
   topic: TopicModel
+  isBig?: boolean
+  style?: React.CSSProperties
 }
 
 export const TopicCard: React.FunctionComponent<Props> = (props) => {
@@ -34,68 +37,113 @@ export const TopicCard: React.FunctionComponent<Props> = (props) => {
       : 'white'
 
   return (
-    <div
-      className="TopicCard"
-      style={{ color: textColor, backgroundColor: props.topic.color }}>
+    <Link href={`/topic/${props.topic.id}`}>
       <div
-        className="TopicCard_icon"
-        style={{ color: props.topic.color }}></div>
-      <div className="TopicCard_info">
-        <h3>{props.topic.title}</h3>
-        <p>{props.topic.description}</p>
-      </div>
-      <style jsx>
-        {`
-          .TopicCard {
-            display: grid;
-            grid-template-columns: 44px 1fr;
-            gap: 15px;
-            padding: 10px 15px;
-            border-radius: 20px;
-            background: var(--mainBackgroundPattern);
-            background-size: auto auto;
-            overflow: hidden;
-            &_icon {
-              margin: 10px 0;
-              width: 44px;
-              height: 44px;
-              background-color: white;
-              border-radius: 50%;
-
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 35px;
-              font-weight: bold;
-              &:before {
-                content: '#';
-                ${props.topic.isCampaign &&
-                'content: "PR" !important; font-size: 90%;'}
-              }
-            }
-            &_info {
+        className={`TopicCard ${props.isBig ? 'TopicCard-big' : ''}`}
+        style={{
+          color: textColor,
+          backgroundColor: props.topic.color,
+          ...props.style,
+        }}>
+        <div
+          className="TopicCard_icon"
+          style={{ color: props.topic.color }}></div>
+        <div className="TopicCard_info">
+          <a>
+            <h1>{props.topic.title}</h1>
+          </a>
+          <p>{props.topic.description}</p>
+        </div>
+        <style jsx>
+          {`
+            .TopicCard {
+              display: grid;
+              grid-template-columns: 44px 1fr;
+              gap: 15px;
+              padding: 10px 15px;
+              border-radius: 20px;
+              background: var(--mainBackgroundPattern);
+              background-size: auto auto;
               overflow: hidden;
-              align-self: center;
-              h3,
-              p {
-                margin: 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+              cursor: pointer;
+              a {
+                color: unset;
               }
-              h3 {
-                font-size: 1.6rem;
-                line-height: 1.4;
-              }
-              p {
-                font-size: 0.9rem;
+              &_icon {
+                margin: 10px 0;
+                width: 44px;
+                height: 44px;
+                background-color: white;
+                border-radius: 50%;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 35px;
                 font-weight: bold;
-                opacity: 0.8;
+                &:before {
+                  content: '#';
+                  ${props.topic.isCampaign &&
+                  'content: "PR" !important; font-size: 90%;'}
+                }
+              }
+              &_info {
+                overflow: hidden;
+                align-self: center;
+                h1,
+                p {
+                  margin: 0;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+                h1 {
+                  font-size: 1.6rem;
+                  line-height: 1.4;
+                  &:before {
+                    content: '#';
+                  }
+                }
+                p {
+                  font-size: 0.9rem;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              }
+
+              &-big {
+                padding: 20px;
+                grid-template-columns: 64px 1fr;
+                @media (max-width: 750px) {
+                  padding: 15px;
+                }
+                .TopicCard_icon {
+                  width: 64px;
+                  height: 64px;
+                  margin: 0;
+                }
+                .TopicCard_info {
+                  h1,
+                  p {
+                    white-space: unset;
+                    overflow: unset;
+                    text-overflow: initial;
+                  }
+                  h1 {
+                    font-size: 2rem;
+                    @media (max-width: 750px) {
+                      font-size: 1.6rem;
+                    }
+                  }
+                  p {
+                    font-size: 1rem;
+                  }
+                }
               }
             }
-          }
-        `}
-      </style>
-    </div>
+          `}
+        </style>
+      </div>
+    </Link>
   )
 }

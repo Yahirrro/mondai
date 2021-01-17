@@ -25,6 +25,8 @@ export interface QuizModel {
   inviteCode: null | string
   allCorrectUser: null | Array<string>
   allUser: null | number
+
+  topicId: TopicModel['id']
 }
 
 export interface QuestionModel {

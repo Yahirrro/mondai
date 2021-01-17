@@ -8,11 +8,12 @@ import { QuizModel, TopicModel } from '@models'
 import { fuego, useCollection } from '@nandorojo/swr-firestore'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TopicCard } from '@components/topic'
 import { TopicSlider } from '@components/topic/TopicSlider'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { getTopics } from '@lib/api'
+import { useRouter } from 'next/router'
 
 type Props = {
   topics: Array<TopicModel>
@@ -20,6 +21,7 @@ type Props = {
 
 export default function Home(props: Props): React.ReactElement {
   const user = useAuthentication()
+  const router = useRouter()
   const { setDashboardQuizUI } = useDashboardQuizUI()
 
   const { data: quizzes } = useCollection<QuizModel>(user?.userId && `quiz`, {
@@ -28,6 +30,16 @@ export default function Home(props: Props): React.ReactElement {
       ['currentStatus', '!=', 'archive'],
     ],
   })
+
+  useEffect(() => {
+    if (router.query.create == '1') {
+      setDashboardQuizUI({
+        type: 'createQuiz',
+        open: true,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.create])
 
   return (
     <>
@@ -85,13 +97,6 @@ export default function Home(props: Props): React.ReactElement {
       </DashboardLayout>
     </>
   )
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: true,
-  }
 }
 
 export const getStaticProps: GetStaticProps = async () => {
