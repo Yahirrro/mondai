@@ -10,10 +10,8 @@ export const ModalLogin: React.FunctionComponent = () => {
   const { closeModal } = useUI()
 
   useEffect(() => {
-    if (router.pathname == '/') router.push('/dashboard')
-    if (user !== null) {
-      closeModal()
-    }
+    if (user?.userId && router.pathname == '/')
+      router.push('/dashboard').then(() => closeModal())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 

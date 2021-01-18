@@ -47,9 +47,9 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         ...topicValue,
       })
-      router.push(`/dashboard/quiz/${addQuiz.id}`)
       setStatus({ success: true })
       setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+      toast('😆クイズを作成できました!')
       sendLogEvent('quiz_create', {
         items: [
           {
@@ -62,7 +62,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
           },
         ],
       })
-      toast('😆クイズを作成できました!')
+      router.push(`/dashboard/quiz/${await addQuiz.id}`)
     } catch (error) {
       console.error(error)
       setStatus({ success: false })
