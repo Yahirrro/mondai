@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Image from 'next/image'
-import { IconDone } from '@components/ui'
+import { IconArrowForward, IconDone } from '@components/ui'
 type Props = {
   show?: boolean
 }
@@ -77,7 +77,9 @@ export const TutorialCreateQuiz: React.FunctionComponent<Props> = (props) => {
                 <IconDone style={{ fill: 'white' }} />
               </button>
             ) : (
-              <button onClick={() => setPageNum(pageNum + 1)}>→</button>
+              <button onClick={() => setPageNum(pageNum + 1)}>
+                <IconArrowForward style={{ fill: 'white' }} />
+              </button>
             )}
           </div>
         </div>
@@ -153,14 +155,25 @@ export const TutorialCreateQuiz: React.FunctionComponent<Props> = (props) => {
                 background: #00b2ff;
                 height: 60px;
                 width: 60px;
+                max-height: 60px;
+                max-width: 60px;
+                padding: 0;
                 border: none;
                 border-radius: 50%;
+                display: flex;
+                align-items: center;
                 align-self: center;
+                justify-content: center;
                 color: white;
                 font-size: 30px;
+                cursor: pointer;
                 @media (max-width: 750px) {
                   height: 50px;
                   width: 50px;
+                }
+                :global(svg) {
+                  width: 32px;
+                  height: 32px;
                 }
               }
             }
