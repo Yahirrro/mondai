@@ -360,7 +360,7 @@ export default function Home(props: Props): React.ReactElement {
                         <p>
                           たのしんでもらえたなら、またmondaiをつかってクイズ大会をひらいてみてください😘
                         </p>
-                        <Link href="/dashboard">
+                        <Link href="/dashboard?create=1">
                           <a style={{ marginTop: '20px', width: '100%' }}>
                             <PageButton
                               buttontype="big"

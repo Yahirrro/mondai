@@ -140,7 +140,7 @@ export default function Home(props: Props): ReactElement {
                 <br />
                 作ってみませんか？
               </h2>
-              <Link href="/dashboard">
+              <Link href="/dashboard?create=1">
                 <a>
                   <PageButton style={{ width: '100%' }} buttontype="big">
                     クイズをつくってみる!
