@@ -48,6 +48,9 @@ export const QuizPageHeader: React.FunctionComponent = () => {
               display: grid;
               gap: 15px;
               grid-template-rows: 1fr 30px;
+              @media (max-width: 750px) {
+                width: 100%;
+              }
               &_badge {
                 display: flex;
                 flex-flow: wrap;

@@ -6,7 +6,6 @@ export const getQuizByTopic = async (
   topicId: string
 ): Promise<Array<QuizModel>> => {
   try {
-    console.log(topicId)
     const quizzez = []
     await firebase
       .firestore()

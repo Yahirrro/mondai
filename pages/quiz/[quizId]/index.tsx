@@ -35,6 +35,7 @@ import { useUI } from '@components/ui/context'
 import { getIdToken } from '@lib/api'
 import Link from 'next/link'
 import { IconAdd, PageButton, PageCard, PageShare } from '@components/ui'
+import { TopicCardGet } from '@components/topic'
 
 type Props = {
   params: ParsedUrlQuery
@@ -341,6 +342,13 @@ export default function Home(props: Props): React.ReactElement {
                 <div>
                   <aside className="QuizPageSidebar">
                     {userAnswer && <QuizCorrectCard />}
+
+                    {quiz?.topicId && (
+                      <TopicCardGet
+                        style={{ marginBottom: 0 }}
+                        topicId={quiz?.topicId}
+                      />
+                    )}
 
                     <PageShare
                       text={quiz.title}
