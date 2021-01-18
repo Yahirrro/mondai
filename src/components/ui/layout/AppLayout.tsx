@@ -13,6 +13,7 @@ import type {
 } from '@components/modal'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { getDomain } from '@lib/api'
 
 const ModalLogin = dynamic(() =>
   import('@components/modal').then((lib) => lib.ModalLogin)
@@ -55,8 +56,9 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
         />
       </Head>
       <DefaultSeo
-        dangerouslySetAllPagesToNoIndex={true}
-        dangerouslySetAllPagesToNoFollow={true}
+        dangerouslySetAllPagesToNoIndex={
+          getDomain() == 'https://dev.mondai.page' && true
+        }
         openGraph={{
           type: 'website',
           locale: 'ja_JP',
