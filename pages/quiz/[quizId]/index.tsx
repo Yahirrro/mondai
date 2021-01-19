@@ -30,11 +30,12 @@ const QuizScreenArchive = dynamic(() =>
 )
 
 import { useAuthentication } from '@hook/auth'
-import { getQuiz, hasQuizPermission, sendLogEvent } from '@lib/api'
+import { getDomain, getQuiz, hasQuizPermission, sendLogEvent } from '@lib/api'
 import { useUI } from '@components/ui/context'
 import { getIdToken } from '@lib/api'
 import Link from 'next/link'
 import { IconAdd, PageButton, PageCard, PageShare } from '@components/ui'
+import { TopicCardGet } from '@components/topic'
 
 type Props = {
   params: ParsedUrlQuery
@@ -283,7 +284,9 @@ export default function Home(props: Props): React.ReactElement {
         openGraph={{
           images: [
             {
-              url: `https://mondai.page/api/quiz/ogp?title=${quiz.title}&description=${quiz.description}`,
+              url: `${getDomain()}/api/quiz/ogp?title=${
+                quiz.title
+              }&description=${quiz.description}`,
               width: 1200,
               height: 630,
               alt: quiz.title,
@@ -340,9 +343,16 @@ export default function Home(props: Props): React.ReactElement {
                   <aside className="QuizPageSidebar">
                     {userAnswer && <QuizCorrectCard />}
 
+                    {quiz?.topicId && (
+                      <TopicCardGet
+                        style={{ marginBottom: 0 }}
+                        topicId={quiz?.topicId}
+                      />
+                    )}
+
                     <PageShare
                       text={quiz.title}
-                      url={`https://mondai.page/quiz/${quiz?.id}`}
+                      url={`${getDomain()}/quiz/${quiz?.id}`}
                     />
 
                     {quiz?.playagain?.isPlayagain && (
@@ -358,7 +368,7 @@ export default function Home(props: Props): React.ReactElement {
                         <p>
                           たのしんでもらえたなら、またmondaiをつかってクイズ大会をひらいてみてください😘
                         </p>
-                        <Link href="/dashboard">
+                        <Link href="/dashboard?create=1">
                           <a style={{ marginTop: '20px', width: '100%' }}>
                             <PageButton
                               buttontype="big"

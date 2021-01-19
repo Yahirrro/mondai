@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { DefaultSeo } from 'next-seo'
 import React, { useContext } from 'react'
+import { getDomain } from '@lib/api'
 
 type Props = {
   disableSidebar?: boolean
@@ -36,6 +37,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
                   title={quiz?.title}
                   description={quiz?.description}
                   emoji={quiz?.emoji}
+                  long={true}
                 />
               </a>
             </Link>
@@ -99,7 +101,7 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
                 </li>
                 <li className="DashboardQuizLayout_sideFull">
                   <QuizQR
-                    url={`https://mondai.page/quiz/${router.query.quizId}`}
+                    url={`${getDomain()}/quiz/${router.query.quizId}`}
                     code={quiz?.inviteCode}
                   />
                 </li>

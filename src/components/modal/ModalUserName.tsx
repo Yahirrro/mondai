@@ -10,10 +10,7 @@ export const ModalUserName: React.FunctionComponent = () => {
   const user = useAuthentication()
   const [value, setValue] = useState(user.userName)
   const { update: updateUser } = useDocument<UserModel>(
-    user.userId ? `user/${user.userId}` : null,
-    {
-      listen: false,
-    }
+    user.userId ? `user/${user.userId}` : null
   )
   const { closeModal } = useUI()
 
@@ -27,9 +24,9 @@ export const ModalUserName: React.FunctionComponent = () => {
   return (
     <>
       <div className="PageModal_info">
-        <h1 className="PageModal_title">😗ユーザー名を登録しよう!</h1>
+        <h1 className="PageModal_title">😗ユーザー名を決めよう!</h1>
         <p className="PageModal_description">
-          ここで決めた名前がmondaiのいろんなところでつかわれるようになります!
+          ここで入力した名前がmondaiのクイズ大会などでつかわれるようになります!
         </p>
       </div>
       <form
@@ -39,9 +36,11 @@ export const ModalUserName: React.FunctionComponent = () => {
         <PageFormInput
           type="text"
           placeholder="あなたの表示名を入力..."
+          maxLength={20}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setValue(event.target.value)
           }}
+          required
         />
         <PageButton type="submit">決定</PageButton>
       </form>

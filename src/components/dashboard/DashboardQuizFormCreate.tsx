@@ -1,5 +1,5 @@
 import { Form, Formik } from 'formik'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PageButton } from '@components/ui'
 import {
   DashboardFormikField,
@@ -13,12 +13,21 @@ import { useDashboardQuizUI } from '@hook/dashboard'
 import { toast } from 'react-toastify'
 import { QuizModel } from '@models'
 import { sendLogEvent } from '@lib/api'
+import { TopicCardGet } from '@components/topic'
+import firebase from 'firebase/app'
 
 export const DashboardQuizFormCreate: React.FunctionComponent = () => {
   const router = useRouter()
   const user = useAuthentication()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
   const [emoji, setEmoji] = useState<string>('🍜')
+  const topic = router.query.topicId
+  const topicValue = topic ? { topicId: topic } : null
+
+  useEffect(() => {
+    if (dashboardQuizUI.open == false) router.push('/dashboard')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dashboardQuizUI.open])
 
   const submitPermission = async (
     value,
@@ -35,10 +44,12 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
         playagain: {
           isPlayagain: false,
         },
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        ...topicValue,
       })
-      router.push(`/dashboard/quiz/${addQuiz.id}`)
       setStatus({ success: true })
       setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+      toast('😆クイズを作成できました!')
       sendLogEvent('quiz_create', {
         items: [
           {
@@ -51,7 +62,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
           },
         ],
       })
-      toast('😆クイズを作成できました!')
+      router.push(`/dashboard/quiz/${await addQuiz.id}`)
     } catch (error) {
       console.error(error)
       setStatus({ success: false })
@@ -84,6 +95,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
                 さあ、クイズをつくってみましょう!
                 項目はすべてあとから編集できます!
               </p>
+              {topic && <TopicCardGet topicId={topic as string} />}
               <DashboardQuizEmojiPicker
                 emoji={emoji ? emoji : values.emoji}
                 setEmoji={setEmoji}
@@ -93,6 +105,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
                 description="このクイズをひとことであらわすなら?"
                 name="title"
                 placeholder="たとえば: わかるかな? VTuberクイズ!"
+                maxLength="30"
                 required
               />
               <DashboardFormikField
@@ -100,6 +113,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
                 description="説明文だよ！ちょっとだけかいてね！"
                 name="description"
                 placeholder="たとえば: わかるひとにはわかる! とくべつな問題をチョイス!"
+                maxLength="50"
                 required
               />
               <PageButton

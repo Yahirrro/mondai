@@ -1,4 +1,5 @@
 export * from './screen'
+export * from './QuizAllCorrectUsers'
 export * from './QuizAnswer'
 export * from './QuizBadge'
 export * from './QuizButton'

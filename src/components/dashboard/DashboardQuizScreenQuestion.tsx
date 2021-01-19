@@ -22,17 +22,19 @@ export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
           }}>
           <div>問題数： {quiz?.flow.length}</div>
           <div>
-            <PageButton
-              icon={<IconAdd />}
-              onClick={() =>
-                setDashboardQuizUI({
-                  type: 'addQuestion',
-                  open: true,
-                  optional: { quizId: quiz.id },
-                })
-              }>
-              問題をふやす
-            </PageButton>
+            {quiz?.flow.length < 100 && (
+              <PageButton
+                icon={<IconAdd />}
+                onClick={() =>
+                  setDashboardQuizUI({
+                    type: 'addQuestion',
+                    open: true,
+                    optional: { quizId: quiz.id },
+                  })
+                }>
+                問題をふやす
+              </PageButton>
+            )}
           </div>
         </div>
       </header>
@@ -61,7 +63,7 @@ export const DashboardQuizScreenQuestion: React.FunctionComponent = () => {
           )
         })}
 
-        {quiz?.flow.length == 0 && (
+        {quiz?.flow.length == 0 && quiz?.flow.length < 100 && (
           <QuizNote title="😉問題を追加してみましょう!">
             <p>
               右上にある「➕問題をふやす」をおして、問題をふやしてみましょう😆

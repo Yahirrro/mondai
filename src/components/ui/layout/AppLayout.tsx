@@ -13,6 +13,7 @@ import type {
 } from '@components/modal'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { getDomain } from '@lib/api'
 
 const ModalLogin = dynamic(() =>
   import('@components/modal').then((lib) => lib.ModalLogin)
@@ -41,17 +42,35 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
         />
         <script
-          data-ad-client="ca-pub-6248776021404303"
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+               (adsbygoogle = window.adsbygoogle || []).push({
+                   google_ad_client: "ca-pub-6248776021404303",
+                   enable_page_level_ads: true
+              });
+                `,
+          }}
+        />
       </Head>
       <DefaultSeo
-        dangerouslySetAllPagesToNoIndex={true}
-        dangerouslySetAllPagesToNoFollow={true}
+        dangerouslySetAllPagesToNoIndex={
+          getDomain() == 'https://dev.mondai.page' && true
+        }
         openGraph={{
           type: 'website',
           locale: 'ja_JP',
           site_name: 'mondai',
+          images: [
+            {
+              url: `${getDomain()}/ogp/main.jpg`,
+              width: 1200,
+              height: 630,
+              alt: 'mondai | みんなでリアルタイムクイズ',
+            },
+          ],
         }}
         twitter={{
           handle: '@Yahimotto',
@@ -59,7 +78,10 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
         }}
       />
 
-      <PageModal open={displayModal} onRequestClose={closeModal}>
+      <PageModal
+        open={displayModal}
+        onRequestClose={closeModal}
+        isNotClose={modalView === 'USERNAME_VIEW'}>
         {modalView === 'LOGIN_VIEW' && <ModalLogin />}
         {modalView === 'USERNAME_VIEW' && <ModalUserName />}
       </PageModal>

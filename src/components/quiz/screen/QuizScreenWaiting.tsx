@@ -3,8 +3,10 @@ import {
   DashboardCardFlow,
 } from '@components/dashboard/DashboardCard'
 import { QuizButton, QuizContext } from '@components/quiz'
+import { TutorialQuizMainAnswer } from '@components/tutorial'
 import { PageShare } from '@components/ui'
-import { useContext } from 'react'
+import { getDomain } from '@lib/api'
+import React, { useContext } from 'react'
 
 export const QuizScreenWaiting: React.FunctionComponent = () => {
   const { quiz, goStatusOpenScreen, isApiLoading, isMainAnswer } = useContext(
@@ -12,6 +14,7 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
   )
   return (
     <>
+      {isMainAnswer() && <TutorialQuizMainAnswer />}
       <div>
         <h2>開始を待っています</h2>
 
@@ -20,11 +23,20 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
           style={{ marginTop: 'var(--mainNormalPaddingSize)' }}
           button={
             <div>
-              {isMainAnswer() && (
+              {isMainAnswer() ? (
                 <QuizButton
                   text="はじめる"
                   isLoading={isApiLoading}
                   onClick={() => goStatusOpenScreen()}
+                  style={{
+                    width: '100%',
+                    minWidth: '100%',
+                  }}
+                />
+              ) : (
+                <QuizButton
+                  text="はじめる"
+                  disabled
                   style={{
                     width: '100%',
                     minWidth: '100%',
@@ -37,7 +49,9 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
             <div className="DashboardCardFlow_flex">
               <img
                 className="DashboardInviteQR"
-                src={`https://api.qrserver.com/v1/create-qr-code/?data=https://mondai.page/quiz/${quiz?.id}&size=160x160`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?data=${getDomain()}/quiz/${
+                  quiz?.id
+                }&size=160x160`}
               />
               <div className="DashboardInviteCode">
                 <h3>参加コード</h3>
@@ -52,7 +66,7 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
             <PageShare
               style={{ marginTop: '20px' }}
               text={quiz?.title}
-              url={`https://mondai.page/quiz/${quiz?.id}`}
+              url={`${getDomain()}/quiz/${quiz?.id}`}
             />
           </DashboardCardFlow>
           <DashboardCardFlow>

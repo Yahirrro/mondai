@@ -49,6 +49,7 @@ export const DashboardQuizEmojiPicker: React.FunctionComponent<Props> = (
       <style jsx>
         {`
           .DashboardQuizEmojiPicker {
+            width: 100%;
             cursor: pointer;
             position: relative;
             display: grid;

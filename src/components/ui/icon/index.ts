@@ -1,5 +1,7 @@
 export * from './IconAdd'
+export * from './IconArrowForward'
 export * from './IconCorrect'
+export * from './IconDone'
 export * from './IconEmojiPeople'
 export * from './IconFace'
 export * from './IconGift'

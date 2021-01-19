@@ -38,6 +38,9 @@ export const PageCard: React.FunctionComponent<Props> = (props) => {
               margin-bottom: 10px;
               font-size: 24px;
               line-height: 33px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
             &_description {
               font-weight: bold;

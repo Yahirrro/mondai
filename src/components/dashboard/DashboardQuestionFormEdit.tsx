@@ -20,7 +20,6 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
       : null,
     {
       initialData: dashboardQuizUI.optional?.questionData,
-      listen: true,
     }
   )
 

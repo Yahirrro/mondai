@@ -25,7 +25,7 @@ export const DashboardQuestionCard: React.FunctionComponent<Props> = (
           <p>{props.index + 1}問目</p>
           <p>
             <strong>答え: </strong>
-            {props.question.choice[props.question.answer].title}
+            {props.question.choice[props.question.answer]?.title}
           </p>
         </div>
         <style jsx>

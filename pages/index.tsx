@@ -5,8 +5,16 @@ import React, { ReactElement } from 'react'
 import { PageAccentWave, PageButton, PageContainer } from '@components/ui'
 import { QuizInviteCodeForm } from '@components/quiz'
 import Link from 'next/link'
+import { GetStaticProps } from 'next'
+import { getTopics } from '@lib/api'
+import { TopicModel } from '@models'
+import { TopicSlider } from '@components/topic'
 
-export default function Home(): ReactElement {
+type Props = {
+  topics: Array<TopicModel>
+}
+
+export default function Home(props: Props): ReactElement {
   return (
     <>
       <NextSeo
@@ -118,6 +126,13 @@ export default function Home(): ReactElement {
             </div>
           </section>
 
+          <section className="IndexPageSection">
+            <h2 className="IndexPage_title IndexPage_title-small">
+              🐤おすすめのクイズトピックス
+            </h2>
+            <TopicSlider topics={props.topics} />
+          </section>
+
           <section className="IndexPageInvite IndexPageSection">
             <div>
               <h2 className="IndexPageInvite_title">
@@ -125,7 +140,7 @@ export default function Home(): ReactElement {
                 <br />
                 作ってみませんか？
               </h2>
-              <Link href="/dashboard">
+              <Link href="/dashboard?create=1">
                 <a>
                   <PageButton style={{ width: '100%' }} buttontype="big">
                     クイズをつくってみる!
@@ -200,6 +215,11 @@ export default function Home(): ReactElement {
                 margin-bottom: 0;
                 &-center {
                   text-align: center;
+                }
+                &-small {
+                  font-size: 2rem;
+                  line-height: 1.4;
+                  margin-bottom: 30px;
                 }
                 @media (max-width: 750px) {
                   font-size: 1.8rem;
@@ -559,4 +579,13 @@ export const IndexPageCard: React.FunctionComponent<{
       </style>
     </div>
   )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      topics: JSON.parse(JSON.stringify(await getTopics())),
+    },
+    revalidate: 3600,
+  }
 }

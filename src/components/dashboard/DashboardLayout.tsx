@@ -29,6 +29,7 @@ type Props = {
   disableSidebar?: boolean
   side?: React.ReactNode
   top?: React.ReactNode
+  disableOverflow?: boolean
 }
 
 export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
@@ -117,7 +118,7 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
             }
             &_sidebar,
             &_content {
-              overflow: hidden;
+              ${!props.disableOverflow && 'overflow: hidden;'}
             }
             &_sidebar-index {
               @media (max-width: 900px) {
@@ -137,6 +138,12 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
                 @media (max-width: 900px) {
                   grid-column: initial;
                 }
+              }
+            }
+            :global(.DashboardLayout_section + .DashboardLayout_section) {
+              margin-top: calc(var(--mainNormalPaddingSize) * 1.5);
+              @media (max-width: 750px) {
+                margin-top: 50px;
               }
             }
 

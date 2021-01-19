@@ -5,8 +5,10 @@ import {
   DashboardCardFlow,
 } from '@components/dashboard'
 import { ScreenError, ScreenLoading } from '@components/screen'
+import { TutorialQuizEdit } from '@components/tutorial'
 import { PageButton, PageNumber, PageShare } from '@components/ui'
 import { useDashboardQuizUI } from '@hook/dashboard'
+import { getDomain } from '@lib/api'
 import { QuestionModel, QuizModel } from '@models'
 import { useCollection, useDocument } from '@nandorojo/swr-firestore'
 import dynamic from 'next/dynamic'
@@ -61,6 +63,7 @@ export default function Home(): React.ReactElement {
 
   return (
     <>
+      <TutorialQuizEdit />
       <DashboardQuizContext.Provider
         value={{
           quiz,
@@ -104,7 +107,9 @@ export default function Home(): React.ReactElement {
                       <div className="DashboardCardFlow_flex">
                         <img
                           className="DashboardInviteQR"
-                          src={`https://api.qrserver.com/v1/create-qr-code/?data=https://mondai.page/quiz/${quiz?.id}&size=160x160`}
+                          src={`https://api.qrserver.com/v1/create-qr-code/?data=${getDomain()}/quiz/${
+                            quiz?.id
+                          }&size=160x160`}
                         />
                         <div className="DashboardInviteCode">
                           <h3>参加コード</h3>
@@ -119,7 +124,7 @@ export default function Home(): React.ReactElement {
                       <PageShare
                         style={{ marginTop: '20px' }}
                         text={quiz?.title}
-                        url={`https://mondai.page/quiz/${quiz?.id}`}
+                        url={`${getDomain()}/quiz/${quiz?.id}`}
                       />
                     </DashboardCardFlow>
                     <DashboardCardFlow>
@@ -208,7 +213,9 @@ export default function Home(): React.ReactElement {
                             <img
                               style={{ marginRight: '0' }}
                               className="DashboardInviteQR"
-                              src={`https://api.qrserver.com/v1/create-qr-code/?data=https://mondai.page/quiz/${quiz?.id}&size=160x160`}
+                              src={`https://api.qrserver.com/v1/create-qr-code/?data=${getDomain()}/quiz/${
+                                quiz?.id
+                              }&size=160x160`}
                             />
                           </div>
                           <p className="DashboardCardFlow_description">
@@ -219,7 +226,7 @@ export default function Home(): React.ReactElement {
                           <PageShare
                             style={{ marginTop: '20px' }}
                             text={quiz?.title}
-                            url={`https://mondai.page/quiz/${quiz?.id}`}
+                            url={`${getDomain()}/quiz/${quiz?.id}`}
                           />
                         </DashboardCardFlow>
                         <DashboardCardFlow>

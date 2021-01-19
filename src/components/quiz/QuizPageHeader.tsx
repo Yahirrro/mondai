@@ -30,10 +30,13 @@ export const QuizPageHeader: React.FunctionComponent = () => {
         />
         <div className="QuizPageHeader_badge">
           <QuizBadge text={status()}></QuizBadge>
-          {quiz?.currentStatus !== 'waiting' &&
-            quiz?.currentQuestion !== quiz?.flow[0] && (
-              <QuizBadge text={`${quiz.allUser}人参加`}></QuizBadge>
-            )}
+          {(quiz?.currentQuestion !== quiz?.flow[0] ||
+            quiz?.currentStatus == 'answer') && (
+            <QuizBadge
+              text={`${quiz.allUser.toLocaleString()}人参加${
+                quiz?.currentStatus == 'archive' ? '' : '中'
+              }`}></QuizBadge>
+          )}
         </div>
         <style jsx>
           {`
@@ -45,6 +48,9 @@ export const QuizPageHeader: React.FunctionComponent = () => {
               display: grid;
               gap: 15px;
               grid-template-rows: 1fr 30px;
+              @media (max-width: 750px) {
+                width: 100%;
+              }
               &_badge {
                 display: flex;
                 flex-flow: wrap;
@@ -63,7 +69,7 @@ export const QuizPageHeader: React.FunctionComponent = () => {
                 background-image: var(--mainBackgroundPattern);
                 border-bottom-right-radius: 124px;
                 @media (max-width: 750px) {
-                  height: 189px;
+                  height: 171px;
                 }
               }
             }

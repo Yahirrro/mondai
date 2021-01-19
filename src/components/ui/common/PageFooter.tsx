@@ -42,6 +42,11 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
               <a>利用規約</a>
             </Link>
           </li>
+          <li>
+            <Link href="/docs/site">
+              <a>このサイトについて</a>
+            </Link>
+          </li>
           <li>@Yahimotto</li>
         </ul>
         <style jsx>
@@ -56,10 +61,11 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
               padding-bottom: var(--mainNormalPaddingSize);
               width: 100%;
               color: #7d7d7d;
-              @media (max-width: 550px) {
+              @media (max-width: 600px) {
                 height: initial;
-                gap: 15px;
+                gap: 20px;
                 grid-template-columns: 1fr;
+                padding-bottom: calc(var(--mainNormalPaddingSize) * 2);
               }
               &_list {
                 display: flex;
@@ -68,11 +74,16 @@ export const PageFooter: React.FunctionComponent<Props> = (props) => {
                 padding: 0;
                 margin: 0;
                 list-style-type: none;
-                @media (max-width: 550px) {
-                  justify-content: end;
+                @media (max-width: 600px) {
+                  justify-content: initial;
+                  display: grid;
+                  gap: 10px;
                 }
                 li + li {
                   margin-left: 1rem;
+                  @media (max-width: 600px) {
+                    margin-left: 0;
+                  }
                 }
                 li {
                   a {

@@ -25,6 +25,8 @@ export interface QuizModel {
   inviteCode: null | string
   allCorrectUser: null | Array<string>
   allUser: null | number
+
+  topicId: TopicModel['id']
 }
 
 export interface QuestionModel {
@@ -66,4 +68,20 @@ export interface MessageModel {
   id: string
   percent: number
   message: string
+}
+
+export interface TopicModel {
+  id: string
+  title: string
+  color: string
+  description: string
+  content: string
+
+  isCampaign: boolean
+  priority: number
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  startAt: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  endAt: any
 }

@@ -11,7 +11,7 @@ import React from 'react'
 export default function Home(): React.ReactElement {
   const user = useAuthentication()
 
-  const { data: played } = useCollectionGroup<{
+  const { data: played, error: errorPlayed } = useCollectionGroup<{
     id: string
     userId: string
     quizId: string
@@ -20,15 +20,18 @@ export default function Home(): React.ReactElement {
     {
       where: ['userId', '==', user?.userId],
       orderBy: ['createdAt', 'desc'],
+      limit: 6,
     },
     {}
   )
-
+  errorPlayed && console.error(errorPlayed)
+  played && console.log(played)
   return (
     <>
       <NextSeo title="あそんだクイズ" />
       <DashboardLayout side={<DashboardSidebar />} changeOrder={true}>
         <h2 className="DashboardLayout_title">✔あそんだクイズ</h2>
+        <p>上位6つを表示しています</p>
 
         <div className="DashboardQuizIndex">
           {!played && played?.length !== 0 && <ScreenLoading />}
