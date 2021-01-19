@@ -65,6 +65,7 @@ export default function Home(props: Props): React.ReactElement {
                         title={data.title}
                         description={data.description}
                         emoji={data.emoji}
+                        style={{ width: '100%' }}
                       />
                     </a>
                   </Link>

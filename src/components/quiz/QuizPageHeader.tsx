@@ -69,7 +69,7 @@ export const QuizPageHeader: React.FunctionComponent = () => {
                 background-image: var(--mainBackgroundPattern);
                 border-bottom-right-radius: 124px;
                 @media (max-width: 750px) {
-                  height: 189px;
+                  height: 171px;
                 }
               }
             }

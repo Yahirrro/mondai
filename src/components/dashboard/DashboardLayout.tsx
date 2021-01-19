@@ -143,7 +143,7 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
             :global(.DashboardLayout_section + .DashboardLayout_section) {
               margin-top: calc(var(--mainNormalPaddingSize) * 1.5);
               @media (max-width: 750px) {
-                margin-top: calc(var(--mainNormalPaddingSize) * 2);
+                margin-top: 50px;
               }
             }
 

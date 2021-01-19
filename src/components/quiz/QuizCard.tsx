@@ -36,16 +36,17 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
               display: inline-grid;
               grid-template-columns: 64px 1fr;
               gap: 20px;
-              flex-direction: row;
-              align-items: flex-start;
               border-radius: 20px;
               padding: 20px;
+              align-items: center;
               &_emoji {
                 width: 64px;
                 min-width: 64px;
                 height: 64px;
-                margin-right: 20px;
                 border-radius: 50%;
+                :global(.QuizIconEmoji) {
+                  margin-right: 0;
+                }
               }
               &_info {
                 overflow: hidden;
@@ -86,10 +87,21 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
                 }
               }
               @media (max-width: 750px) {
+                grid-template-columns: 50px 1fr;
                 width: 100%;
+                gap: var(--mainNormalPaddingSize);
+                padding: var(--mainNormalPaddingSize);
+                &_emoji {
+                  height: 52px;
+                  width: 52px;
+                  :global(.QuizIconEmoji) {
+                    height: 52px;
+                    width: 52px;
+                  }
+                }
                 &_info {
                   display: grid;
-                  gap: 8px;
+                  gap: 5px;
                 }
                 &_title {
                   font-size: 1.6rem;
