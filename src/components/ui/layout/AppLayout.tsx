@@ -70,7 +70,10 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
         }}
       />
 
-      <PageModal open={displayModal} onRequestClose={closeModal}>
+      <PageModal
+        open={displayModal}
+        onRequestClose={closeModal}
+        isNotClose={modalView === 'USERNAME_VIEW'}>
         {modalView === 'LOGIN_VIEW' && <ModalLogin />}
         {modalView === 'USERNAME_VIEW' && <ModalUserName />}
       </PageModal>
