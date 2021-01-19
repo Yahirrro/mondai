@@ -49,7 +49,7 @@ export default function Home(props: Props): React.ReactElement {
         side={<DashboardSidebar />}
         changeOrder={true}
         disableOverflow>
-        {props.topics !== null && (
+        {(props.topics !== null || props.topics !== []) && (
           <section className="DashboardLayout_section">
             <h2 className="DashboardLayout_title">🐤つくるのにおすすめ</h2>
             <TopicSlider topics={props.topics} />
