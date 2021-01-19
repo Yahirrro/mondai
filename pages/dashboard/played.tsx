@@ -11,7 +11,7 @@ import React from 'react'
 export default function Home(): React.ReactElement {
   const user = useAuthentication()
 
-  const { data: played } = useCollectionGroup<{
+  const { data: played, error: errorPlayed } = useCollectionGroup<{
     id: string
     userId: string
     quizId: string
@@ -22,13 +22,10 @@ export default function Home(): React.ReactElement {
       orderBy: ['createdAt', 'desc'],
       limit: 6,
     },
-    {
-      revalidateOnFocus: false,
-      refreshWhenHidden: false,
-      refreshWhenOffline: false,
-      refreshInterval: 0,
-    }
+    {}
   )
+  errorPlayed && console.error(errorPlayed)
+  played && console.log(played)
   return (
     <>
       <NextSeo title="あそんだクイズ" />

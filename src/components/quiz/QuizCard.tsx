@@ -37,6 +37,7 @@ export const QuizCard: React.FunctionComponent<Props> = (props) => {
               grid-template-columns: 64px 1fr;
               gap: 20px;
               border-radius: 20px;
+              min-width: 300px;
               padding: 20px;
               align-items: center;
               &_emoji {

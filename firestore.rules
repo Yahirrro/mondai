@@ -1,18 +1,30 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /{path=**}/participant/{userId} {
+      allow read: if request.auth.uid != null
+      	&& (request.auth.uid == resource.data.userId || request.auth.uid == userId);
+    }
     match /quiz/{quizId} {
-    	allow list;
     	allow read:
-      	if resource.data.currentStatus != 'creating'
-      		|| request.auth.uid in resource.data.permission.owner;
+      	if (resource.data.currentStatus != 'creating'
+      		|| request.auth.uid in resource.data.permission.owner);
 			allow create:
       	if request.auth != null
-        	&& request.auth.uid in request.resource.data.permission.owner;
+        	&& request.auth.uid in request.resource.data.permission.owner
+          && validateString(incomingData().emoji, 1, 30)
+          && validateString(incomingData().title, 1, 20)
+          && validateString(incomingData().description, 1, 20);
       allow update: 
       	if (request.auth.uid in resource.data.permission.owner
         	|| request.auth.uid in resource.data.permission.answer)
           	&& request.resource.id == resource.id
+            && resource.data.currentStatus != 'archive'
+            && validateString(incomingData().emoji, 1, 30)
+            && validateString(incomingData().title, 1, 20)
+            && validateString(incomingData().description, 1, 20)
+            && incomingData().createdAt == existingData().createdAt
+            && isUndefined(incomingData(), 'allUser') ? true : incomingData().allUser == existingData().allUser;
       allow delete:
       	if request.auth.uid in resource.data.permission.owner;
       
@@ -32,24 +44,25 @@ service cloud.firestore {
         allow update:
         	if isOwner(request.auth.uid)
           	&& request.resource.id == resource.id;
-        allow delete: 
+        allow delete:
         	if isOwner(request.auth.uid);
       }
       match /message/{messageId} {
-      	allow read;
+      	allow read: if isOwner(request.auth.uid) || existsAnswerUser(request.auth.uid);
         allow create: if isOwner(request.auth.uid);
         allow update:
         	if isOwner(request.auth.uid)
           	&& request.resource.id == resource.id;
-        allow delete: 
+        allow delete:
         	if isOwner(request.auth.uid);
       }
       match /participant/{userId} {
-      	allow read: if request.resource.id == request.auth.uid;
+      	allow read: if request.auth.uid == resource.id
+      		&& request.auth.uid == resource.data.userId;
         allow create: if getCurrentStatus() == 'open'
         	&& request.auth != null
-        	&& request.resource.id == request.auth.uid
-        	&& request.resource.data.userId == request.auth.uid;
+        	&& request.auth.uid == userId
+        	&& request.auth.uid == request.resource.data.userId;
         allow update, delete: if false;
       }
       match /answer/{answerId} {
@@ -61,15 +74,32 @@ service cloud.firestore {
         allow update, delete: if false;
       }
     }
+    
     match /user/{userId} {
     	allow read: if request.auth != null;
-      allow create, update: if request.auth != null
-      	&& request.resource.data.userId == request.auth.uid
-        && request.resource.id == request.auth.uid;
+      allow create: if true
+      	&& request.auth.uid == incomingData().userId
+        && request.auth.uid == request.resource.id;
+      allow update: if true
+      	&& request.auth.uid == incomingData().userId
+        && request.auth.uid == request.resource.id
+        && validateString(incomingData().userName, 1, 20);
       allow delete: if false;
     }
-    match /{path=**}/participant/{userId} {
-      allow read: if request.resource.id == request.auth.uid;
+    match /topic/{topicId} {
+    	allow read: if resource.data.isPublished == true;
     }
   }
+}
+function isUndefined(data, field) {
+  return !data.keys().hasAll([field]);
+}
+function incomingData() {
+  return request.resource.data;
+}
+function existingData() {
+  return resource.data;
+}
+function validateString(text, min, max) {
+  return text is string && min <= text.size() && text.size() <= max;
 }

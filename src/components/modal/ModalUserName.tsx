@@ -36,6 +36,7 @@ export const ModalUserName: React.FunctionComponent = () => {
         <PageFormInput
           type="text"
           placeholder="あなたの表示名を入力..."
+          maxLength={20}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setValue(event.target.value)
           }}

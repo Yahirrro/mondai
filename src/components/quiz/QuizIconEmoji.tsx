@@ -6,6 +6,8 @@ type Props = {
 }
 
 export const QuizIconEmoji: React.FunctionComponent<Props> = (props) => {
+  // console.log(props.emoji && Array.from(props.emoji)[0])
+  // console.log(props.emoji && [...props.emoji])
   return (
     <>
       <div className="QuizIconEmoji" style={props.style}>
@@ -29,6 +31,11 @@ export const QuizIconEmoji: React.FunctionComponent<Props> = (props) => {
               display: flex;
               justify-content: center;
               align-items: center;
+              font-size: 0%;
+              &::first-letter {
+                background-color: white;
+                font-size: 100%;
+              }
               :global(.twemoji) {
                 height: 32px;
                 width: 32px;

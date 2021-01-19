@@ -20,7 +20,6 @@ export const TutorialModal: React.FunctionComponent<Props> = (props) => {
   const [hasTutorialDone, setTutorialStatus] = useState<boolean>(false)
 
   useEffect(() => {
-    console.log(window.localStorage[props.localStorageKey] == 'true')
     if (window.localStorage[props.localStorageKey] == 'true')
       setTutorialStatus(true)
   }, [])
