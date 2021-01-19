@@ -33,11 +33,11 @@ export const TutorialModal: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <Modal
-        className="TutorialCreateQuiz"
+        className="TutorialModal"
         isOpen={hasTutorialDone == false}
         onRequestClose={closeTutorial}
         ariaHideApp={false}>
-        <div className="TutorialCreateQuiz_body">
+        <div className="TutorialModal_body">
           <Image
             className={
               props.pageProps[pageNum]?.className &&
@@ -47,17 +47,21 @@ export const TutorialModal: React.FunctionComponent<Props> = (props) => {
             width="600px"
             height="690px"
           />
-          <div className="TutorialCreateQuiz_info">
-            <div className="TutorialCreateQuiz_content">
+          <div className="TutorialModal_info">
+            <div className="TutorialModal_content">
               <h2>{props.pageProps[pageNum].title}</h2>
               <p>{props.pageProps[pageNum].description}</p>
             </div>
             {pageNum + 1 === props.pageProps.length ? (
-              <button onClick={() => closeTutorial()}>
+              <button
+                className="TutorialModal_button"
+                onClick={() => closeTutorial()}>
                 <IconDone style={{ fill: 'white' }} />
               </button>
             ) : (
-              <button onClick={() => setPageNum(pageNum + 1)}>
+              <button
+                className="TutorialModal_button"
+                onClick={() => setPageNum(pageNum + 1)}>
                 <IconArrowForward style={{ fill: 'white' }} />
               </button>
             )}
@@ -66,7 +70,7 @@ export const TutorialModal: React.FunctionComponent<Props> = (props) => {
       </Modal>
       <style jsx global>
         {`
-          .TutorialCreateQuiz {
+          .TutorialModal {
             position: absolute;
             width: 100%;
             max-width: 500px;
@@ -96,7 +100,7 @@ export const TutorialModal: React.FunctionComponent<Props> = (props) => {
               :global(img) {
                 object-fit: cover;
               }
-              :global(.TutorialCreateQuiz_image-top) {
+              :global(.TutorialModal_image-top) {
                 object-position: top;
               }
             }
@@ -131,31 +135,31 @@ export const TutorialModal: React.FunctionComponent<Props> = (props) => {
                 margin-bottom: 0;
                 opacity: 0.7;
               }
-              button {
-                font-family: 'Inter';
-                background: #00b2ff;
-                height: 60px;
-                width: 60px;
-                max-height: 60px;
-                max-width: 60px;
-                padding: 0;
-                border: none;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                align-self: center;
-                justify-content: center;
-                color: white;
-                font-size: 30px;
-                cursor: pointer;
-                @media (max-width: 750px) {
-                  height: 50px;
-                  width: 50px;
-                }
-                :global(svg) {
-                  width: 32px;
-                  height: 32px;
-                }
+            }
+            &_button {
+              font-family: 'Inter';
+              background-color: var(--mainPrimaryColor);
+              height: 60px;
+              width: 60px;
+              max-height: 60px;
+              max-width: 60px;
+              padding: 0;
+              border: none;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              align-self: center;
+              justify-content: center;
+              color: white;
+              font-size: 30px;
+              cursor: pointer;
+              @media (max-width: 750px) {
+                height: 50px;
+                width: 50px;
+              }
+              :global(svg) {
+                width: 32px;
+                height: 32px;
               }
             }
           }

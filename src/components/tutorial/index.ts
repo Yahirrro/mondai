@@ -1,3 +1,4 @@
-export * from './TutorialCreateQuiz'
 export * from './TutorialModal'
-export * from './TutorialOwnerQuiz'
+export * from './TutorialQuizCreate'
+export * from './TutorialQuizEdit'
+export * from './TutorialQuizMainAnswer'

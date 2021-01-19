@@ -5,15 +5,15 @@ import { DashboardLayout, DashboardSidebar } from '@components/dashboard'
 import { useAuthentication } from '@hook/auth'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { QuizModel, TopicModel } from '@models'
-import { fuego, useCollection } from '@nandorojo/swr-firestore'
+import { useCollection } from '@nandorojo/swr-firestore'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
-import { TopicCard } from '@components/topic'
 import { TopicSlider } from '@components/topic/TopicSlider'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticProps } from 'next'
 import { getTopics } from '@lib/api'
 import { useRouter } from 'next/router'
+import { TutorialQuizCreate } from '@components/tutorial'
 
 type Props = {
   topics: Array<TopicModel>
@@ -43,6 +43,7 @@ export default function Home(props: Props): React.ReactElement {
 
   return (
     <>
+      <TutorialQuizCreate />
       <NextSeo title="つくっているクイズ" />
       <DashboardLayout
         side={<DashboardSidebar />}

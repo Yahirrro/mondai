@@ -5,7 +5,7 @@ import {
   DashboardCardFlow,
 } from '@components/dashboard'
 import { ScreenError, ScreenLoading } from '@components/screen'
-import { TutorialCreateQuiz } from '@components/tutorial'
+import { TutorialQuizEdit } from '@components/tutorial'
 import { PageButton, PageNumber, PageShare } from '@components/ui'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import { getDomain } from '@lib/api'
@@ -63,7 +63,7 @@ export default function Home(): React.ReactElement {
 
   return (
     <>
-      <TutorialCreateQuiz />
+      <TutorialQuizEdit />
       <DashboardQuizContext.Provider
         value={{
           quiz,

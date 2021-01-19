@@ -3,7 +3,7 @@ import {
   DashboardCardFlow,
 } from '@components/dashboard/DashboardCard'
 import { QuizButton, QuizContext } from '@components/quiz'
-import { TutorialOwnerQuiz } from '@components/tutorial'
+import { TutorialQuizMainAnswer } from '@components/tutorial'
 import { PageShare } from '@components/ui'
 import { getDomain } from '@lib/api'
 import React, { useContext } from 'react'
@@ -14,7 +14,7 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
   )
   return (
     <>
-      {isMainAnswer() && <TutorialOwnerQuiz />}
+      {isMainAnswer() && <TutorialQuizMainAnswer />}
       <div>
         <h2>開始を待っています</h2>
 
@@ -23,11 +23,20 @@ export const QuizScreenWaiting: React.FunctionComponent = () => {
           style={{ marginTop: 'var(--mainNormalPaddingSize)' }}
           button={
             <div>
-              {isMainAnswer() && (
+              {isMainAnswer() ? (
                 <QuizButton
                   text="はじめる"
                   isLoading={isApiLoading}
                   onClick={() => goStatusOpenScreen()}
+                  style={{
+                    width: '100%',
+                    minWidth: '100%',
+                  }}
+                />
+              ) : (
+                <QuizButton
+                  text="はじめる"
+                  disabled
                   style={{
                     width: '100%',
                     minWidth: '100%',
