@@ -78,6 +78,7 @@ export interface TopicModel {
   content: string
 
   isCampaign: boolean
+  priority: number
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   startAt: any

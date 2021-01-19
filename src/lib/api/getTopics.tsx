@@ -25,6 +25,9 @@ export const getTopics = async (): Promise<Array<TopicModel>> => {
           return b.isCampaign - a.isCampaign
         })
         .sort((a, b) => {
+          return a.priority - b.priority
+        })
+        .sort((a, b) => {
           return a.startAt - b.startAt
         })
       return JSON.parse(JSON.stringify(topicsData)) as Array<TopicModel>
