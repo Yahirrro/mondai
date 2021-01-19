@@ -13,11 +13,10 @@ import { useCollection } from '@nandorojo/swr-firestore'
 import { getIdToken } from '@lib/api'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
+import { useAuthentication } from '@hook/auth'
+import { useUI } from '@components/ui/context'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {
-  const [apiLoading, setApiLoading] = useState<boolean>(false)
-
-  const router = useRouter()
   const { quiz, userAnswer, getCorrectRate } = useContext(QuizContext)
   const { data: message } = useCollection<{
     percent: number
@@ -28,27 +27,6 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
     orderBy: ['percent', 'desc'],
     listen: true,
   })
-
-  const deplicate = async (quizId) => {
-    const get = async (): Promise<{ quizId: string }> => {
-      try {
-        setApiLoading(true)
-        const data = await fetch(`/api/quiz/deplicate?quizId=` + quizId, {
-          headers: { authorization: 'Bearer ' + (await getIdToken()) },
-        })
-        setApiLoading(false)
-        toast('😆あそぶ準備ができました!')
-        return data.json()
-      } catch (error) {
-        setApiLoading(false)
-        toast('😥処理にしっぱいしました')
-        console.error(error)
-      }
-    }
-    router.push(`/quiz/${(await get()).quizId}`)
-    return
-  }
-
   return (
     <>
       <h2>全ての問題が終了しました！</h2>
@@ -83,26 +61,7 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
       </section>
 
       {(quiz.permission.playagain || quiz.playagain?.isPlayagain) && (
-        <QuizNote
-          title={`もう一度｢${quiz.title}｣であそびましょう🙌`}
-          style={{ padding: '40px 30px' }}>
-          <p>
-            いますぐあそんでみよう！
-            <br />
-            ひとりでも、ともだちとでも、いますぐあそべます!
-          </p>
-          <PageButton
-            buttontype="big"
-            onClick={() =>
-              deplicate(
-                quiz.playagain?.isPlayagain ? quiz.playagain.original : quiz.id
-              )
-            }
-            style={{ width: '100%', marginTop: '20px' }}
-            disabled={apiLoading}>
-            このクイズであそぶ！
-          </PageButton>
-        </QuizNote>
+        <QuizScreenArchivePlayagain />
       )}
 
       <QuizNote title="😏みんなのこたえ">
@@ -139,7 +98,97 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
   )
 }
 
-export const QuizScreenArchiveGraph: React.FunctionComponent = () => {
+const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
+  const router = useRouter()
+  const user = useAuthentication()
+  const { openModal, setModalView } = useUI()
+  const [apiLoading, setApiLoading] = useState<boolean>(false)
+  const { quiz, userAnswer } = useContext(QuizContext)
+
+  const deplicate = async (quizId) => {
+    if (!user?.userId) {
+      setModalView('LOGIN_VIEW')
+      openModal()
+      return
+    }
+
+    const get = async (): Promise<{ quizId: string }> => {
+      try {
+        setApiLoading(true)
+        const data = await fetch(`/api/quiz/deplicate?quizId=` + quizId, {
+          headers: { authorization: 'Bearer ' + (await getIdToken()) },
+        })
+        setApiLoading(false)
+        toast('😆あそぶ準備ができました!')
+        return data.json()
+      } catch (error) {
+        setApiLoading(false)
+        toast('😥処理にしっぱいしました')
+        console.error(error)
+      }
+    }
+    router.push(`/quiz/${(await get()).quizId}`)
+    return
+  }
+
+  return (
+    <>
+      <section className="QuizScreenArchivePlayagain">
+        <div className="QuizScreenArchivePlayagain_card">
+          <QuizNote
+            title={`${userAnswer?.length ? 'もう一度' : ''}「${
+              quiz.title
+            }」であそびませんか🙌`}>
+            <p>
+              いますぐあそんでみよう！
+              <br />
+              ひとりでも、ともだちとでも、いますぐあそべます!
+            </p>
+            <PageButton
+              buttontype="big"
+              onClick={() =>
+                deplicate(
+                  quiz.playagain?.isPlayagain
+                    ? quiz.playagain.original
+                    : quiz.id
+                )
+              }
+              style={{ width: '100%', marginTop: '20px' }}
+              disabled={apiLoading}>
+              このクイズであそぶ！
+            </PageButton>
+          </QuizNote>
+        </div>
+      </section>
+      <style jsx>
+        {`
+          .QuizScreenArchivePlayagain {
+            border-radius: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffe600' fill-opacity='0.5'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            margin-top: var(--mainNormalPaddingSize);
+            margin-right: initial;
+            margin-bottom: calc(var(--mainNormalPaddingSize) + 25px);
+            @media (max-width: 750px) {
+              margin-right: 25px;
+            }
+            &_card {
+              margin-left: auto;
+              margin-right: auto;
+              max-width: 500px;
+              transform: translateY(25px);
+              @media (max-width: 750px) {
+                margin-right: initial;
+                transform: translateX(25px) translateY(25px);
+              }
+            }
+          }
+        `}
+      </style>
+    </>
+  )
+}
+
+const QuizScreenArchiveGraph: React.FunctionComponent = () => {
   const { quiz, userAnswer, allQuestion } = useContext(QuizContext)
   const [isSpoiler, setIsSpoiler] = useState<boolean>(
     userAnswer?.length == undefined
