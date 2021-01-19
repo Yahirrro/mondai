@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { PageNumber, PageButton } from '@components/ui'
 import { QuestionAnswerGraph } from '@components/question'
 
@@ -18,9 +18,7 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
   const [apiLoading, setApiLoading] = useState<boolean>(false)
 
   const router = useRouter()
-  const { quiz, userAnswer, allQuestion, getCorrectRate } = useContext(
-    QuizContext
-  )
+  const { quiz, userAnswer, getCorrectRate } = useContext(QuizContext)
   const { data: message } = useCollection<{
     percent: number
     message: string
@@ -108,20 +106,7 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
       )}
 
       <QuizNote title="😏みんなのこたえ">
-        {quiz?.flow?.map((data, index) => {
-          if (!allQuestion) return
-          const questionData = allQuestion?.find(
-            (element) => element.id == data
-          )
-          return (
-            <QuestionAnswerGraph
-              key={index + questionData.title}
-              data={questionData.choice}
-              correctAnswer={questionData.answer}
-              title={index + 1 + '. ' + questionData.title}
-            />
-          )
-        })}
+        <QuizScreenArchiveGraph />
       </QuizNote>
 
       <style jsx>
@@ -147,6 +132,102 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
             h3 {
               margin-top: 0;
             }
+          }
+        `}
+      </style>
+    </>
+  )
+}
+
+export const QuizScreenArchiveGraph: React.FunctionComponent = () => {
+  const { quiz, userAnswer, allQuestion } = useContext(QuizContext)
+  const [isSpoiler, setIsSpoiler] = useState<boolean>(
+    userAnswer?.length == undefined
+  )
+
+  useEffect(() => {
+    if (userAnswer?.length > 0) setIsSpoiler(false)
+  }, [userAnswer?.length])
+  return (
+    <>
+      <div
+        onClick={() => {
+          setIsSpoiler(false)
+        }}
+        className={
+          isSpoiler
+            ? 'QuizScreenAnswer_answers QuizScreenAnswer_answers-spoiler'
+            : 'QuizScreenAnswer_answers'
+        }>
+        {quiz?.flow?.map((data, index) => {
+          if (!allQuestion) return
+          const questionData = allQuestion?.find(
+            (element) => element.id == data
+          )
+          return (
+            <QuestionAnswerGraph
+              key={index + questionData.title}
+              data={questionData.choice}
+              correctAnswer={questionData.answer}
+              title={index + 1 + '. ' + questionData.title}
+            />
+          )
+        })}
+        {isSpoiler && (
+          <figure className="QuizScreenAnswer_answersDescription">
+            ネタバレ注意のため、非表示にしています🤔
+          </figure>
+        )}
+      </div>
+      <style jsx>
+        {`
+          .QuizScreenAnswer_answers {
+            width: 100%;
+            height: auto;
+          }
+          .QuizScreenAnswer_answers-spoiler {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+            width: 100%;
+            border-radius: 20px;
+            cursor: pointer;
+            &:before {
+              content: '';
+              position: absolute;
+              z-index: 1;
+              top: 0;
+              width: 100%;
+              height: 300px;
+              backdrop-filter: blur(30px);
+              border-radius: 20px;
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+            &:after {
+              white-space: pre;
+              text-align: center;
+              content: 'タップで表示!';
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translateY(-50%) translateX(-50%);
+              z-index: 2;
+              background-color: white;
+              padding: 10px 20px;
+              border-radius: 40px;
+              font-weight: bold;
+            }
+          }
+          .QuizScreenAnswer_answersDescription {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 30px;
+            z-index: 1;
+            margin: 0;
+            width: 250px;
+            text-align: center;
+            font-weight: bold;
           }
         `}
       </style>
