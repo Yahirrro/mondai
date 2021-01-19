@@ -63,6 +63,14 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
           type: 'website',
           locale: 'ja_JP',
           site_name: 'mondai',
+          images: [
+            {
+              url: `${getDomain()}/ogp/main.jpg`,
+              width: 1200,
+              height: 630,
+              alt: 'mondai | みんなでリアルタイムクイズ',
+            },
+          ],
         }}
         twitter={{
           handle: '@Yahimotto',
