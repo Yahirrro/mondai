@@ -81,6 +81,7 @@ export default function Home(props: Props): React.ReactElement {
                 <p>あなたがつくっているクイズがまだあリません😫</p>
                 <p>いますぐクイズをつくってみませんか🤩</p>
                 <PageButton
+                  buttontype="big"
                   style={{ width: '100%', marginTop: '20px' }}
                   icon={<IconAdd />}
                   onClick={() =>

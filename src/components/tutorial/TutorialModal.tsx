@@ -98,6 +98,7 @@ export const TutorialModal: React.FunctionComponent<Props> = (props) => {
               }
 
               :global(img) {
+                background-color: rgba(0, 0, 0, 0.02);
                 object-fit: cover;
               }
               :global(.TutorialModal_image-top) {

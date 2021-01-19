@@ -12,14 +12,13 @@ export const userState = atom<UserModel>({
 })
 
 export function useAuthentication(): UserModel {
-  const { openModal, setModalView } = useUI()
+  const { openModal, setModalView, modalView, displayModal } = useUI()
   const [user, setUser] = useRecoilState<UserModel | null>(userState)
   const [isLogEvent, setIsLogEvent] = useState(true)
   useEffect(() => {
     if (user !== null) {
       return
     }
-
     fuego.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
         const loginUser = await getUserData(firebaseUser.uid)
@@ -47,6 +46,15 @@ export function useAuthentication(): UserModel {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
+
+  useEffect(() => {
+    const f = async () => {
+      const loginUser = await getUserData(user?.userId)
+      setUser(loginUser)
+    }
+    if (displayModal == false && modalView == 'USERNAME_VIEW') f()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayModal])
 
   return user
 }
