@@ -1,7 +1,7 @@
 import { fuego, useDocument } from '@nandorojo/swr-firestore'
 import firebase from 'firebase/app'
 import { Form, Formik } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PageButton } from '@components/ui'
 import { QuizNote } from '@components/quiz'
 import { DashboardQuestionEdit } from '@components/dashboard'
@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
   const router = useRouter()
   const { dashboardQuizUI, setDashboardQuizUI } = useDashboardQuizUI()
-  const [answer, setAnswer] = useState<number>(null)
+  const [answer, setAnswer] = useState<number | null>(null)
   const { data: question, update: updateQuestion } = useDocument<QuestionModel>(
     router.query.quizId && dashboardQuizUI.optional?.questionId
       ? `quiz/${router.query.quizId}/question/${dashboardQuizUI.optional?.questionId}`
@@ -22,6 +22,10 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
       initialData: dashboardQuizUI.optional?.questionData,
     }
   )
+
+  useEffect(() => {
+    if (question?.answer) setAnswer(question?.answer)
+  }, [question])
 
   const removeQuestion = () => {
     if (window.confirm('この問題を削除しますか?')) {
@@ -47,10 +51,18 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
     { setSubmitting, setErrors, setStatus }
   ) => {
     try {
+      if (value.choice.length >= answer + 1 == false) return
+      if (answer == null) return
+      console.log({
+        title: value.title,
+        commentary: value.commentary,
+        answer: answer,
+        choice: value.choice,
+      })
       updateQuestion({
         title: value.title,
         commentary: value.commentary,
-        answer: answer == undefined ? value.answer : answer,
+        answer: answer,
         choice: value.choice,
       })
       toast.success('😆問題を編集できました!')
@@ -73,7 +85,10 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
         if (values.choice.length == 0) {
           errors.choice =
             '選択肢がありません。「選択肢を追加する」を押して、追加しましょう!'
-        } else if ((answer == undefined ? values.answer : answer) == null) {
+        } else if (
+          answer == null ||
+          values.choice.length >= answer + 1 == false
+        ) {
           errors.choice =
             '正解がありません。「正解に」を押して、正解を作りましょう!'
         }
