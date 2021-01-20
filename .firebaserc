@@ -1,6 +1,6 @@
 {
   "projects": {
     "default": "realtimequiz-app",
-    "prod": "mondai-page"
+    "production": "mondai-page"
   }
 }
