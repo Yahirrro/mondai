@@ -120,6 +120,9 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
             &_content {
               ${!props.disableOverflow && 'overflow: hidden;'}
             }
+            &_sidebar {
+              overflow: hidden;
+            }
             &_sidebar-index {
               @media (max-width: 900px) {
                 margin-top: 50px;

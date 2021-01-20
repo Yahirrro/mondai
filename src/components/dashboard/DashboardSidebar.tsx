@@ -13,6 +13,7 @@ export const DashboardSidebar: React.FunctionComponent = () => {
         icon={<IconFace />}
         title={user?.userName}
         description="ユーザー"
+        style={{ maxWidth: 'calc(100vw - var(--mainNormalPaddingSize) * 2)' }}
       />
       <PageButton
         buttontype="big"
