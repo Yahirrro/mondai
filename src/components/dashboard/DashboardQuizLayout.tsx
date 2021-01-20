@@ -10,7 +10,6 @@ import { QuizBadge, QuizCard, QuizQR } from '@components/quiz'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useDashboardQuizUI } from '@hook/dashboard'
-import { DefaultSeo } from 'next-seo'
 import React, { useContext } from 'react'
 import { getDomain } from '@lib/api'
 
@@ -116,8 +115,6 @@ export const DashboardQuizLayout: React.FunctionComponent<Props> = (props) => {
             )}
           </div>
         }>
-        {quiz?.title && <DefaultSeo title={`${quiz?.title}の編集`} />}
-
         {props.children}
       </DashboardLayout>
 

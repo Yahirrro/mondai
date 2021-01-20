@@ -11,6 +11,7 @@ import { useDashboardQuizUI } from '@hook/dashboard'
 import { getDomain } from '@lib/api'
 import { QuestionModel, QuizModel } from '@models'
 import { useCollection, useDocument } from '@nandorojo/swr-firestore'
+import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -64,6 +65,14 @@ export default function Home(): React.ReactElement {
   return (
     <>
       <TutorialQuizEdit />
+
+      {quiz?.title && (
+        <NextSeo
+          title={`${quiz?.title}の編集`}
+          noindex={true}
+          nofollow={true}
+        />
+      )}
       <DashboardQuizContext.Provider
         value={{
           quiz,

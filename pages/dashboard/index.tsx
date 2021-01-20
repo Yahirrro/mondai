@@ -43,8 +43,8 @@ export default function Home(props: Props): React.ReactElement {
 
   return (
     <>
+      <NextSeo title="つくっているクイズ" noindex={true} nofollow={true} />
       <TutorialQuizCreate />
-      <NextSeo title="つくっているクイズ" />
       <DashboardLayout
         side={<DashboardSidebar />}
         changeOrder={true}
