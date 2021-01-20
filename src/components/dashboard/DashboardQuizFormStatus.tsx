@@ -33,7 +33,7 @@ export const DashboardQuizFormStatus: React.FunctionComponent = () => {
     setErrorMsg((await data()).message as string)
     setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
     toast('😆クイズ大会を始める準備ができました!')
-    window.location.reload()
+    router.push(`/quiz/${router.query.quizId}`)
     return
   }
 
