@@ -28,6 +28,7 @@ export default function Home(props: Props): React.ReactElement {
     where: [
       ['permission.owner', 'array-contains', user?.userId],
       ['currentStatus', '!=', 'archive'],
+      ['playagain.isPlayagain', '==', false],
     ],
   })
 
