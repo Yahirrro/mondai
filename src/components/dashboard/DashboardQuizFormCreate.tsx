@@ -49,6 +49,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
       })
       setStatus({ success: true })
       setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
+      await router.push(`/dashboard/quiz/${addQuiz.id}`)
       toast('😆クイズを作成できました!')
       sendLogEvent('quiz_create', {
         items: [
@@ -62,7 +63,6 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
           },
         ],
       })
-      router.push(`/dashboard/quiz/${await addQuiz.id}`)
     } catch (error) {
       console.error(error)
       setStatus({ success: false })

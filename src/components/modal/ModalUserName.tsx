@@ -1,13 +1,15 @@
 import { useDocument } from '@nandorojo/swr-firestore'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAuthentication } from '@hook/auth'
 import { UserModel } from '@models'
 import { useUI } from '@components/ui/context'
 import { PageFormInput, PageButton } from '@components/ui'
+import { useRouter } from 'next/router'
 
 export const ModalUserName: React.FunctionComponent = () => {
   const user = useAuthentication()
+  const router = useRouter()
   const [value, setValue] = useState(user.userName)
   const { update: updateUser } = useDocument<UserModel>(
     user.userId ? `user/${user.userId}` : null
@@ -18,7 +20,11 @@ export const ModalUserName: React.FunctionComponent = () => {
     if (!value) return
     if (!value.replace(/\s+/g, '')) return
     updateUser({ userName: value.replace(/\s+/g, '') })
+    if (router.pathname == '/') {
+      router.push('/dashboard').then(() => closeModal())
+    }
     closeModal()
+    return
   }
 
   return (

@@ -53,7 +53,6 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "firebase-admin": "^9.4.2",
     "lodash": "^4.17.20",
-    "next-connect": "^0.9.1",
     "node-canvas-with-twemoji": "^0.1.5",
     "prettier": "^2.2.1",
     "sharp": "^0.27.0",

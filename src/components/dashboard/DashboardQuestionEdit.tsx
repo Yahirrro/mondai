@@ -43,13 +43,12 @@ export const DashboardQuestionEdit: React.FunctionComponent<Props> = (
           render={(arrayHelpers) => (
             <div>
               {props.values?.choice?.map((choice, index) => {
-                const answerData =
-                  props.answer == undefined ? props.values.answer : props.answer
                 return (
                   <DashboardQuestionChoiceEdit
                     key={index}
                     index={index}
-                    isCorrectAnswer={answerData == index}
+                    isCorrectAnswer={props.answer == index}
+                    answer={props.answer}
                     setAnswer={props.setAnswer}
                     arrayHelpers={arrayHelpers}
                   />

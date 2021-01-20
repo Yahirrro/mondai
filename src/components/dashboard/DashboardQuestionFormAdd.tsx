@@ -22,6 +22,7 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
     { setSubmitting, setErrors, setStatus, resetForm }
   ) => {
     try {
+      if (value.choice.length >= answer + 1 == false) return
       await fuego.db
         .collection(`quiz/${dashboardQuizUI.optional?.quizId}/question`)
         .add({
@@ -62,7 +63,10 @@ export const DashboardQuestionFormAdd: React.FunctionComponent = () => {
         if (values.choice.length == 0) {
           errors.choice =
             '選択肢がありません。「選択肢を追加する」を押して、追加しましょう!'
-        } else if (answer == null) {
+        } else if (
+          answer == null ||
+          values.choice.length >= answer + 1 == false
+        ) {
           errors.choice =
             '正解がありません。「正解に」を押して、正解を作りましょう!'
         }

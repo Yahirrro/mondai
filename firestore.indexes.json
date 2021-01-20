@@ -73,6 +73,10 @@
           "arrayConfig": "CONTAINS"
         },
         {
+          "fieldPath": "playagain.isPlayagain",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "currentStatus",
           "order": "ASCENDING"
         }

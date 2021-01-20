@@ -23,7 +23,7 @@ export default function Home(): React.ReactElement {
   })
   return (
     <>
-      <NextSeo title="これまでに作ったクイズ" />
+      <NextSeo title="これまでに作ったクイズ" noindex={true} nofollow={true} />
       <DashboardLayout side={<DashboardSidebar />} changeOrder={true}>
         <h2 className="DashboardLayout_title">💨これまでに作ったクイズ</h2>
 

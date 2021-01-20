@@ -25,10 +25,9 @@ export default function Home(): React.ReactElement {
     {}
   )
   errorPlayed && console.error(errorPlayed)
-  played && console.log(played)
   return (
     <>
-      <NextSeo title="あそんだクイズ" />
+      <NextSeo title="あそんだクイズ" noindex={true} nofollow={true} />
       <DashboardLayout side={<DashboardSidebar />} changeOrder={true}>
         <h2 className="DashboardLayout_title">✔あそんだクイズ</h2>
         <p>上位6つを表示しています</p>

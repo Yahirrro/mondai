@@ -95,10 +95,14 @@ const QuizAllCorrectUserName: React.FunctionComponent<{
             padding: 5px 15px;
             border-radius: 20px;
             margin: 12px 0 0 12px;
+            max-width: 200px;
             p {
               font-weight: bold;
               margin: 0;
               align-self: center;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
         `}

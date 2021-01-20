@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
-import { PageNumber, PageButton } from '@components/ui'
+import React, { useContext, useEffect, useState } from 'react'
+import { PageNumber, PageButton, IconLoading } from '@components/ui'
 import { QuestionAnswerGraph } from '@components/question'
 
 import {
@@ -113,6 +113,7 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
     }
 
     const get = async (): Promise<{ quizId: string }> => {
+      if (quizId == undefined) return
       try {
         setApiLoading(true)
         const data = await fetch(`/api/quiz/deplicate?quizId=` + quizId, {
@@ -127,7 +128,12 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
         console.error(error)
       }
     }
-    router.push(`/quiz/${(await get()).quizId}`)
+    const data = await get()
+    if (data.quizId) {
+      router.push(`/quiz/${data.quizId}`)
+    } else {
+      toast('😥処理にしっぱいしました')
+    }
     return
   }
 
@@ -152,6 +158,9 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
                     ? quiz.playagain.original
                     : quiz.id
                 )
+              }
+              icon={
+                apiLoading ? <IconLoading style={{ stroke: 'black' }} /> : null
               }
               style={{ width: '100%', marginTop: '20px' }}
               disabled={apiLoading}>

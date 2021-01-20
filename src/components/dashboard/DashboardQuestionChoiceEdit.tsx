@@ -5,6 +5,7 @@ import { IconIncorrect, PageFormInput } from '@components/ui'
 type Props = {
   index: number
   isCorrectAnswer: boolean
+  answer: number
   setAnswer: (value: React.SetStateAction<number>) => void
   arrayHelpers: FieldArrayRenderProps
 }
@@ -59,6 +60,8 @@ export const DashboardQuestionChoiceEdit: React.FunctionComponent<Props> = (
             className="DashboardQuestionSelect_button-remove"
             title="削除する"
             onClick={() => {
+              if (props.isCorrectAnswer) props.setAnswer(null)
+              if (props.index < props.answer) props.setAnswer(props.answer - 1)
               props.arrayHelpers.remove(props.index)
             }}>
             <IconIncorrect />
