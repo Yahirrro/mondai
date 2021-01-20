@@ -53,12 +53,6 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
     try {
       if (value.choice.length >= answer + 1 == false) return
       if (answer == null) return
-      console.log({
-        title: value.title,
-        commentary: value.commentary,
-        answer: answer,
-        choice: value.choice,
-      })
       updateQuestion({
         title: value.title,
         commentary: value.commentary,

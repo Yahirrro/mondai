@@ -20,7 +20,6 @@ export const ModalUserName: React.FunctionComponent = () => {
     if (!value) return
     if (!value.replace(/\s+/g, '')) return
     updateUser({ userName: value.replace(/\s+/g, '') })
-    console.log(router.pathname)
     if (router.pathname == '/') {
       router.push('/dashboard').then(() => closeModal())
     }

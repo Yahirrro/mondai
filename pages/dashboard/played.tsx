@@ -25,7 +25,6 @@ export default function Home(): React.ReactElement {
     {}
   )
   errorPlayed && console.error(errorPlayed)
-  played && console.log(played)
   return (
     <>
       <NextSeo title="あそんだクイズ" noindex={true} nofollow={true} />

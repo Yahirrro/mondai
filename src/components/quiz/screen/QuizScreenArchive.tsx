@@ -121,7 +121,6 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
         })
         setApiLoading(false)
         toast('😆あそぶ準備ができました!')
-        console.log('😆あそぶ準備ができました!' + data)
         return data.json()
       } catch (error) {
         setApiLoading(false)
