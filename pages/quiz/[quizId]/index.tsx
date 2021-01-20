@@ -280,7 +280,6 @@ export default function Home(props: Props): React.ReactElement {
       <NextSeo
         title={quiz.title}
         description={quiz.description}
-        noindex={true}
         openGraph={{
           images: [
             {

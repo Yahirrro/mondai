@@ -22,6 +22,11 @@ export default function Home(props: Props): ReactElement {
         description={
           'mondaiはみんなでクイズをリアルタイムにワイワイ解けるアプリです。mondaiをつかえば、友達同士やイベントでリアルタイムにクイズを出題することが出来ます。'
         }
+        openGraph={{
+          title: 'mondai | みんなでリアルタイムクイズ大会!',
+          description:
+            'mondaiはみんなでクイズをリアルタイムにワイワイ解けるアプリです。mondaiをつかえば、友達同士やイベントでリアルタイムにクイズを出題することが出来ます。',
+        }}
       />
 
       <div>
