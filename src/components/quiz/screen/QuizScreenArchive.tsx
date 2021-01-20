@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
-import { PageNumber, PageButton } from '@components/ui'
+import React, { useContext, useEffect, useState } from 'react'
+import { PageNumber, PageButton, IconLoading } from '@components/ui'
 import { QuestionAnswerGraph } from '@components/question'
 
 import {
@@ -152,6 +152,9 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
                     ? quiz.playagain.original
                     : quiz.id
                 )
+              }
+              icon={
+                apiLoading ? <IconLoading style={{ stroke: 'black' }} /> : null
               }
               style={{ width: '100%', marginTop: '20px' }}
               disabled={apiLoading}>

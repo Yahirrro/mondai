@@ -99,6 +99,9 @@ const QuizAllCorrectUserName: React.FunctionComponent<{
               font-weight: bold;
               margin: 0;
               align-self: center;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
         `}
