@@ -1,4 +1,7 @@
 module.exports = {
+  images: {
+    domains: ['api.qrserver.com'],
+  },
   experimental: {
     optimizeFonts: true,
   },

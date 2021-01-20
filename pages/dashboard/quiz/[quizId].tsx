@@ -115,6 +115,9 @@ export default function Home(): React.ReactElement {
                     <DashboardCardFlow>
                       <div className="DashboardCardFlow_flex">
                         <img
+                          width="80px"
+                          height="80px"
+                          loading="lazy"
                           className="DashboardInviteQR"
                           src={`https://api.qrserver.com/v1/create-qr-code/?data=${getDomain()}/quiz/${
                             quiz?.id
@@ -220,6 +223,9 @@ export default function Home(): React.ReactElement {
                         <DashboardCardFlow>
                           <div className="DashboardCardFlow_flex">
                             <img
+                              width="80px"
+                              height="80px"
+                              loading="lazy"
                               style={{ marginRight: '0' }}
                               className="DashboardInviteQR"
                               src={`https://api.qrserver.com/v1/create-qr-code/?data=${getDomain()}/quiz/${

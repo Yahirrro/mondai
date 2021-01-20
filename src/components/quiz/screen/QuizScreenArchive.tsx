@@ -113,6 +113,7 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
     }
 
     const get = async (): Promise<{ quizId: string }> => {
+      if (quizId == undefined) return
       try {
         setApiLoading(true)
         const data = await fetch(`/api/quiz/deplicate?quizId=` + quizId, {
@@ -120,6 +121,7 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
         })
         setApiLoading(false)
         toast('😆あそぶ準備ができました!')
+        console.log('😆あそぶ準備ができました!' + data)
         return data.json()
       } catch (error) {
         setApiLoading(false)
@@ -127,7 +129,12 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
         console.error(error)
       }
     }
-    router.push(`/quiz/${(await get()).quizId}`)
+    const data = await get()
+    if (data.quizId) {
+      router.push(`/quiz/${data.quizId}`)
+    } else {
+      toast('😥処理にしっぱいしました')
+    }
     return
   }
 
