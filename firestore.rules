@@ -26,7 +26,8 @@ service cloud.firestore {
             && incomingData().createdAt == existingData().createdAt
             && isUndefined(incomingData(), 'allUser') ? true : incomingData().allUser == existingData().allUser;
       allow delete:
-      	if request.auth.uid in resource.data.permission.owner;
+      	if request.auth.uid in resource.data.permission.owner
+        	&& resource.data.currentStatus == 'creating';
       
       function isOwner(userId) {
         return userId in get(/databases/$(database)/documents/quiz/$(quizId)).data.permission.owner
