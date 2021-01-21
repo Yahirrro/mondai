@@ -45,7 +45,7 @@ export default function Home(props: Props): React.ReactElement {
   return (
     <>
       <NextSeo title="つくっているクイズ" noindex={true} nofollow={true} />
-      <TutorialQuizCreate />
+      {user?.userName && <TutorialQuizCreate />}
       <DashboardLayout
         side={<DashboardSidebar />}
         changeOrder={true}
