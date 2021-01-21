@@ -24,7 +24,7 @@ export const DashboardQuestionFormEdit: React.FunctionComponent = () => {
   )
 
   useEffect(() => {
-    if (question?.answer) setAnswer(question?.answer)
+    if (question?.answer !== null) setAnswer(question?.answer)
   }, [question])
 
   const removeQuestion = () => {
