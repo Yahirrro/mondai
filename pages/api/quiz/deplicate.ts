@@ -76,6 +76,8 @@ const handler: NextApiHandler = async (req, res) => {
           original: quizDataId,
           creator: quizData.permission.owner[0],
         },
+
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
       } as QuizModel)
       .catch((error) => {
         throw new Error('cant deplicate quiz: ' + error)
