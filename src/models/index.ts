@@ -27,6 +27,8 @@ export interface QuizModel {
   allUser: null | number
 
   topicId: TopicModel['id']
+
+  createdAt: any
 }
 
 export interface QuestionModel {
