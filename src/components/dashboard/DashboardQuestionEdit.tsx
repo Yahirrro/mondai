@@ -47,7 +47,7 @@ export const DashboardQuestionEdit: React.FunctionComponent<Props> = (
                   <DashboardQuestionChoiceEdit
                     key={index}
                     index={index}
-                    isCorrectAnswer={props.answer == index}
+                    isCorrectAnswer={props.answer === index}
                     answer={props.answer}
                     setAnswer={props.setAnswer}
                     arrayHelpers={arrayHelpers}
