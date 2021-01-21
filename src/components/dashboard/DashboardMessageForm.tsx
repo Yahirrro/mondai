@@ -101,7 +101,9 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
           },
         })
         setStatus({ success: true })
-        toast.success('😆メッセージを更新できました!')
+        toast.success('😆メッセージを更新できました!', {
+          position: isWindowBreakPoint() ? 'bottom-center' : 'top-right',
+        })
       } else {
         await fuego.db.collection(`quiz/${router.query.quizId}/message`).add({
           percent: dashboardQuizUI.optional?.messagePercent,
@@ -118,7 +120,10 @@ export const DashboardMessageForm: React.FunctionComponent<Props> = (props) => {
             },
           },
         })
-        toast.success('😆メッセージを追加できました!')
+        console.log(isWindowBreakPoint())
+        toast.success('😆メッセージを追加できました!', {
+          position: isWindowBreakPoint() ? 'bottom-center' : 'top-right',
+        })
       }
     } catch (error) {
       console.error(error)

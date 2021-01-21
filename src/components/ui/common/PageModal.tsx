@@ -105,7 +105,7 @@ export const PageModal: React.FunctionComponent<Props> = (props) => {
             }
           }
           .ReactModal__Body--open {
-            overflow-y: hidden;
+            overflow: hidden;
           }
           .ReactModal__Overlay {
             background-color: rgba(0, 0, 0, 0.35) !important;
