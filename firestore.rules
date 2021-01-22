@@ -77,14 +77,16 @@ service cloud.firestore {
     }
     
     match /user/{userId} {
-    	allow read: if request.auth != null;
+    	allow read;
       allow create: if true
+      	&& request.auth != null
+      	&& request.auth.uid == userId
+      	&& request.auth.uid == incomingData().userId;
+      allow update: if true
+      	&& request.auth != null
+      	&& request.auth.uid == userId
       	&& request.auth.uid == incomingData().userId
         && request.auth.uid == request.resource.id;
-      allow update: if true
-      	&& request.auth.uid == incomingData().userId
-        && request.auth.uid == request.resource.id
-        && validateString(incomingData().userName, 1, 20);
       allow delete: if false;
     }
     match /topic/{topicId} {
