@@ -49,7 +49,7 @@ export const DashboardQuizFormCreate: React.FunctionComponent = () => {
       })
       setStatus({ success: true })
       setDashboardQuizUI({ type: dashboardQuizUI.type, open: false })
-      await router.push(`/dashboard/quiz/${addQuiz.id}`)
+      window.location.href = `/dashboard/quiz/${addQuiz.id}`
       toast('😆クイズを作成できました!')
       sendLogEvent('quiz_create', {
         items: [
