@@ -36,6 +36,7 @@ import { getIdToken } from '@lib/api'
 import Link from 'next/link'
 import { IconAdd, PageButton, PageCard, PageShare } from '@components/ui'
 import { TopicCardGet } from '@components/topic'
+import { PageAd } from '@components/ad'
 
 type Props = {
   params: ParsedUrlQuery
@@ -359,6 +360,8 @@ export default function Home(props: Props): React.ReactElement {
                       text={quiz.title}
                       url={`${getDomain()}/quiz/${quiz?.id}`}
                     />
+
+                    <PageAd type="quiz" style={{ margin: 0 }} />
 
                     {quiz?.playagain?.isPlayagain && (
                       <PageCard

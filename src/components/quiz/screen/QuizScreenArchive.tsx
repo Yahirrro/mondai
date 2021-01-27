@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { useAuthentication } from '@hook/auth'
 import { useUI } from '@components/ui/context'
+import { PageAd } from '@components/ad'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {
   const { quiz, isQuizParticipant, getCorrectRate } = useContext(QuizContext)
@@ -63,6 +64,8 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
       {(quiz.permission.playagain || quiz.playagain?.isPlayagain) && (
         <QuizScreenArchivePlayagain />
       )}
+
+      <PageAd type="quiz" />
 
       <QuizNote title="😏みんなのこたえ">
         <QuizScreenArchiveGraph />
