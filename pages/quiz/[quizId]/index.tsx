@@ -211,6 +211,10 @@ export default function Home(props: Props): React.ReactElement {
     return false
   }
 
+  const isQuizParticipant = (): boolean => {
+    return quizJoin.exists
+  }
+
   const getRemainingQuestionCount = () => {
     return quiz.flow.length - (quiz.flow.indexOf(quiz.currentQuestion) + 1)
   }
@@ -306,6 +310,7 @@ export default function Home(props: Props): React.ReactElement {
           isCorrectAnswer,
           isRemainingQuizExists,
           isMainAnswer,
+          isQuizParticipant,
           getRemainingQuestionCount,
           getCorrectAnswerAmount,
           getIncorrectAnswerAmount,

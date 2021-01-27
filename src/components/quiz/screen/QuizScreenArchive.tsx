@@ -17,7 +17,7 @@ import { useAuthentication } from '@hook/auth'
 import { useUI } from '@components/ui/context'
 
 export const QuizScreenArchive: React.FunctionComponent = () => {
-  const { quiz, userAnswer, getCorrectRate } = useContext(QuizContext)
+  const { quiz, isQuizParticipant, getCorrectRate } = useContext(QuizContext)
   const { data: message } = useCollection<{
     percent: number
     message: string
@@ -30,7 +30,7 @@ export const QuizScreenArchive: React.FunctionComponent = () => {
   return (
     <>
       <h2>全ての問題が終了しました！</h2>
-      {userAnswer && (
+      {isQuizParticipant && (
         <DashboardCard title="すべての問題が終わりました😆">
           <QuizCorrectCardBig />
           {message?.length > 0 && (
@@ -103,7 +103,7 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
   const user = useAuthentication()
   const { openModal, setModalView } = useUI()
   const [apiLoading, setApiLoading] = useState<boolean>(false)
-  const { quiz, userAnswer } = useContext(QuizContext)
+  const { quiz, isQuizParticipant } = useContext(QuizContext)
 
   const deplicate = async (quizId) => {
     if (!user?.userId) {
@@ -142,7 +142,7 @@ const QuizScreenArchivePlayagain: React.FunctionComponent = () => {
       <section className="QuizScreenArchivePlayagain">
         <div className="QuizScreenArchivePlayagain_card">
           <QuizNote
-            title={`${userAnswer?.length ? 'もう一度' : ''}「${
+            title={`${isQuizParticipant ? 'もう一度' : ''}「${
               quiz.title
             }」であそびませんか🙌`}>
             <p>
