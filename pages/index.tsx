@@ -9,6 +9,7 @@ import { GetStaticProps } from 'next'
 import { getTopics } from '@lib/api'
 import { TopicModel } from '@models'
 import { TopicSlider } from '@components/topic'
+import { PageAd } from '@components/ad'
 
 type Props = {
   topics: Array<TopicModel>
@@ -154,6 +155,8 @@ export default function Home(props: Props): ReactElement {
               </Link>
             </div>
           </section>
+
+          <PageAd type="normal" />
         </PageContainer>
 
         <style jsx>

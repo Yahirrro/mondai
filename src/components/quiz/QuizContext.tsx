@@ -12,6 +12,7 @@ type Context = {
   isCorrectAnswer: () => boolean
   isRemainingQuizExists: () => boolean
   isMainAnswer: () => boolean
+  isQuizParticipant: () => boolean
   getRemainingQuestionCount: () => number
   getCorrectAnswerAmount: () => number
   getIncorrectAnswerAmount: () => number

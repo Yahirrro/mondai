@@ -31,30 +31,6 @@ export const AppLayout: React.FunctionComponent<Props> = (props) => {
   const router = useRouter()
   return (
     <>
-      <Head>
-        <link rel="icon" href="/logo/LogoIcon.png" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
-        />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-               (adsbygoogle = window.adsbygoogle || []).push({
-                   google_ad_client: "ca-pub-6248776021404303",
-                   enable_page_level_ads: true
-              });
-                `,
-          }}
-        />
-      </Head>
       <DefaultSeo
         dangerouslySetAllPagesToNoIndex={
           getDomain() == 'https://dev.mondai.page' && true

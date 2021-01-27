@@ -14,6 +14,7 @@ import 'react-notion/src/styles.css'
 import Link from 'next/link'
 import { ScreenError } from '@components/screen'
 import { QuizCard } from '@components/quiz'
+import { PageAd } from '@components/ad'
 
 type Props = {
   params: ParsedUrlQuery
@@ -74,6 +75,8 @@ export default function Home(props: Props): React.ReactElement {
             </div>
           </section>
         )}
+
+        {props.topic.isCampaign == false && <PageAd type="normal" />}
       </PageContainer>
       <style jsx>
         {`

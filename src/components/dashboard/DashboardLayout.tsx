@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useDashboardQuizUI } from '@hook/dashboard'
 import dynamic from 'next/dynamic'
 import { useUI } from '@components/ui/context'
+import { PageAd } from '@components/ad'
 const DashboardQuestionFormAdd = dynamic(() =>
   import('@components/dashboard').then((lib) => lib.DashboardQuestionFormAdd)
 )
@@ -79,6 +80,11 @@ export const DashboardLayout: React.FunctionComponent<Props> = (props) => {
             {props.children}
           </div>
         </div>
+        {(router.pathname == '/dashboard' ||
+          router.pathname == '/dashboard/archive' ||
+          router.pathname == '/dashboard/played') && (
+          <PageAd type="normal" style={{ marginBottom: 0 }} />
+        )}
       </PageContainer>
 
       <PageModal

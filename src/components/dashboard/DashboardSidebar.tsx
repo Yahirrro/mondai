@@ -1,3 +1,4 @@
+import { PageAd } from '@components/ad'
 import { IconAdd, IconFace, PageButton, PageCard } from '@components/ui'
 import { useAuthentication } from '@hook/auth'
 import { useDashboardQuizUI } from '@hook/dashboard'
